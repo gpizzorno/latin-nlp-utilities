@@ -1,0 +1,6 @@
+conllu
+hypothesis
+pytest
+pytest-cov
+pytest-mock
+regex
