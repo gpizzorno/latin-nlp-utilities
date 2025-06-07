@@ -1,0 +1,52 @@
+name: Run tests
+on:
+  push:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+env:
+  PYTHON: 3.12
+
+jobs:
+  build:
+    name: 'Run tests'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+
+      - name: Test
+        uses: mathiasvr/command-output@v2.0.0
+        env:
+          TRAP: >
+            trap 'echo "exit-code=$?" >> "$GITHUB_OUTPUT"' EXIT
+          TEST: >
+            pytest
+            --cov=.
+            --cov-report=term-missing:skip-covered
+            --hypothesis-show-statistics
+            --junitxml=/tmp/pytest.xml
+            | tee /tmp/pytest-coverage.txt
+        with:
+          run: |
+            ${{ env.TRAP }}
+            ${{ env.TEST }}
+
+      - uses: MishaKav/pytest-coverage-comment@v1.1.51
+        with:
+          coverage-path-prefix: utilities/
+          junitxml-path: /tmp/pytest.xml
+          pytest-coverage-path: /tmp/pytest-coverage.txt
+
+  
