@@ -43,10 +43,4 @@ jobs:
             ${{ env.TRAP }}
             ${{ env.TEST }}
 
-      - uses: MishaKav/pytest-coverage-comment@v1.1.51
-        with:
-          coverage-path-prefix: utilities/
-          junitxml-path: /tmp/pytest.xml
-          pytest-coverage-path: /tmp/pytest-coverage.txt
-
   
