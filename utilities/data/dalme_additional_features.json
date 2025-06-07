@@ -1,0 +1,56 @@
+{
+  "Function": {
+    "type": "universal",
+    "doc": "local",
+    "permitted": 1,
+    "errors": [],
+    "uvalues": [
+      "Location",
+      "Unit"
+    ],
+    "lvalues": [],
+    "unused_uvalues": [],
+    "unused_lvalues": [],
+    "evalues": [],
+    "byupos": {
+      "ADJ": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "ADV": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "AUX": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "NOUN": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "NUM": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "PART": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "PRON": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "PROPN": {
+        "Location": 1,
+        "Unit": 1
+      },
+      "VERB": {
+        "Location": 1,
+        "Unit": 1
+      }
+    },
+    "lastchanged": "2021-09-13-20-16-17",
+    "lastchanger": "pizzorno"
+  }
+}
