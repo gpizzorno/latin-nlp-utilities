@@ -1,6 +1,6 @@
 import pytest
 
-from utilities.conllubio2brat import conllubio_to_brat
+from latin_utilities.conllubio2brat import conllubio_to_brat
 
 
 def test_basic_conversion(conllu_file, tmp_path):

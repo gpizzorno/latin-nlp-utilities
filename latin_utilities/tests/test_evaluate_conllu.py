@@ -2,7 +2,7 @@ import io
 
 import pytest
 
-from utilities import evaluate_conllu
+from latin_utilities import evaluate_conllu
 
 
 def test_process_enhanced_deps_basic():

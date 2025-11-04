@@ -31,7 +31,7 @@ pip install -r requirements.txt
 Convert Brat annotation files (`.ann` and `.txt`) to CoNLL-U format with dependency parsing and morphological feature alignment.
 
 ```python
-from utilities import brat_to_conllu
+from latin_utilities import brat_to_conllu
 
 brat_to_conllu(
     input_dir='path/to/brat/files',           # Directory containing .ann and .txt files
@@ -64,7 +64,7 @@ brat_to_conllu(
 Convert CoNLL-U dependency treebanks to Brat standoff format for annotation.
 
 ```python
-from utilities import conllu_to_brat
+from latin_utilities import conllu_to_brat
 
 conllu_to_brat(
     filename='input.conllu',                 # Path to input .conllu file
@@ -85,7 +85,7 @@ conllu_to_brat(
 Convert CoNLL-U files containing IOB (Inside-Outside-Begin) named entity tags to Brat format.
 
 ```python
-from utilities import conllubio_to_brat
+from latin_utilities import conllubio_to_brat
 
 conllubio_to_brat(
     filename='tagged_input.conllu',          # Path to input .conllu file with IOB tags
@@ -107,7 +107,7 @@ conllubio_to_brat(
 Comprehensive evaluation of system output against gold standard using [Universal Dependencies](https://universaldependencies.org/format.html) metrics.
 
 ```python
-from utilities import evaluate_ud_files
+from latin_utilities import evaluate_ud_files
 
 scores = evaluate_ud_files(
     gold_path='gold_standard.conllu',        # Path to gold-standard .conllu file
@@ -156,7 +156,7 @@ for metric, score in scores.items():
 Comprehensive validation of CoNLL-U files against [Universal Dependencies](https://universaldependencies.org/format.html) guidelines.
 
 ```python
-from utilities import validate_conllu
+from latin_utilities import validate_conllu
 
 with open('yourfile.conllu', encoding='utf-8') as f:
     validate_conllu(
@@ -192,7 +192,7 @@ with open('yourfile.conllu', encoding='utf-8') as f:
 Convert [DALME](https://dalme.org) Part-of-Speech (POS) tags to [Universal Dependencies PoS](https://universaldependencies.org/u/pos/index.html).
 
 ```python
-from utilities.converters import dalmepos_to_upos
+from latin_utilities.converters import dalmepos_to_upos
 
 upos = dalmepos_to_upos('adjective')                # Returns 'ADJ'
 upos = dalmepos_to_upos('coordinating conjunction') # Returns 'CCONJ'
@@ -204,7 +204,7 @@ upos = dalmepos_to_upos('unknown_tag')              # Returns 'X'
 Convert Universal POS tags to [Perseus Extended Part-of-Speech format](https://github.com/PerseusDL/treebank_data/blob/master/v2.1/Latin/TAGSET.txt).
 
 ```python
-from utilities.converters import upos_to_perseus
+from latin_utilities.converters import upos_to_perseus
 
 perseus_tag = upos_to_perseus('NOUN')        # Returns 'n'
 perseus_tag = upos_to_perseus('VERB')        # Returns 'v'
@@ -217,7 +217,7 @@ Convert morphological features from [ITTB](https://github.com/UniversalDependenc
 
 ```python
 # ITTB converters
-from utilities.converters.ittb_to_perseus import (
+from latin_utilities.converters.ittb_to_perseus import (
     gen_to_person, cas_to_case, tem_to_tense, mod_to_mood, mod_to_voice
 )
 
@@ -228,7 +228,7 @@ mood = mod_to_mood('A')                      # Returns 'i' (indicative)
 voice = mod_to_voice('A')                    # Returns 'a' (active)
 
 # PROIEL converters  
-from utilities.converters.proiel_to_perseus import (
+from latin_utilities.converters.proiel_to_perseus import (
     to_number, to_tense, to_mood, to_voice, to_gender, to_case, to_degree
 )
 
@@ -248,7 +248,7 @@ degree = to_degree('Pos')                    # Returns 'p' (positive)
 Convert between string and dictionary representations of morphological features.
 
 ```python
-from utilities import feature_string_to_dict, feature_dict_to_string
+from latin_utilities import feature_string_to_dict, feature_dict_to_string
 
 # String to dictionary
 d = feature_string_to_dict('Case=Nom|Gender=Masc|Number=Sing')
@@ -268,7 +268,7 @@ empty_str = feature_dict_to_string({})       # Returns: '_'
 Normalize morphological features based on UPOS tag and language-specific feature set.
 
 ```python
-from utilities import normalize_features, load_lang_features
+from latin_utilities import normalize_features, load_lang_features
 
 # Load feature definitions
 featset = load_lang_features('la', 'additional_features.json')
@@ -287,7 +287,7 @@ normalized = normalize_features(
 Normalize language-specific POS tags to Perseus format based on UPOS.
 
 ```python
-from utilities import normalize_xpos
+from latin_utilities import normalize_xpos
 
 # Normalize Perseus-style XPOS tag
 norm_xpos = normalize_xpos('NOUN', 'n-s---mn-')
@@ -303,14 +303,14 @@ norm_xpos = normalize_xpos('VERB', 'irregular_tag')
 Run the full test suite:
 
 ```sh
-pytest --cov=utilities
+pytest --cov=latin_utilities
 ```
 
 Run specific test modules:
 
 ```sh
-pytest utilities/tests/test_brat2conllu.py -v
-pytest utilities/tests/test_evaluate_conllu.py -v
+pytest latin_utilities/tests/test_brat2conllu.py -v
+pytest latin_utilities/tests/test_evaluate_conllu.py -v
 ```
 
 

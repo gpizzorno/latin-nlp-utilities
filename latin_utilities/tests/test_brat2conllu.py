@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from utilities.brat2conllu import (
+from latin_utilities.brat2conllu import (
     brat_to_conllu,
     conll2lists,
     conllu,
@@ -96,9 +96,9 @@ def test_get_best_fit_morpho_found():
 
     reference_corpus = [MockSentence()]
     with (
-        mock.patch('utilities.brat2conllu.normalize_xpos') as mock_normalize_xpos,
-        mock.patch('utilities.brat2conllu.normalize_features') as mock_normalize_features,
-        mock.patch('utilities.brat2conllu.feature_dict_to_string') as mock_feature_dict_to_string,
+        mock.patch('latin_utilities.brat2conllu.normalize_xpos') as mock_normalize_xpos,
+        mock.patch('latin_utilities.brat2conllu.normalize_features') as mock_normalize_features,
+        mock.patch('latin_utilities.brat2conllu.feature_dict_to_string') as mock_feature_dict_to_string,
     ):
         # Mock the normalization functions
         mock_normalize_xpos.return_value = 'NOUN_norm'
@@ -169,7 +169,7 @@ def test_conll2lists_no_sent_id(tmp_path):
     content = '# some comment\n1\tPuella\t_\tNOUN\t_\t_\t2\tnsubj\t_\t_\n2\tamat\t_\tVERB\t_\t_\t0\troot\t_\t_\n\n'
     file = tmp_path / 'no_sent_id.conllu'
     file.write_text(content)
-    ids, sentences, concordance = conll2lists(str(file))
+    ids, sentences, _concordance = conll2lists(str(file))
     assert ids == []
     assert sentences == [
         [
@@ -341,7 +341,7 @@ def test_brat_to_conllu_basic(tmp_path):
         '\n',
     )
 
-    with mock.patch('utilities.brat2conllu.load_lang_features') as mock_load_features:
+    with mock.patch('latin_utilities.brat2conllu.load_lang_features') as mock_load_features:
         mock_load_features.return_value = {}
 
         # Run the conversion
@@ -397,7 +397,7 @@ def test_brat_to_conllu_aux_correction(tmp_path):
     ref_corpus = tmp_path / 'reference.conllu'
     ref_corpus.write_text('')
 
-    with mock.patch('utilities.brat2conllu.load_lang_features') as mock_load_features:
+    with mock.patch('latin_utilities.brat2conllu.load_lang_features') as mock_load_features:
         mock_load_features.return_value = {}
 
         brat_to_conllu(
@@ -448,7 +448,7 @@ def test_brat_to_conllu_enhanced_deps(tmp_path):
     ref_corpus = tmp_path / 'reference.conllu'
     ref_corpus.write_text('')
 
-    with mock.patch('utilities.brat2conllu.load_lang_features') as mock_load_features:
+    with mock.patch('latin_utilities.brat2conllu.load_lang_features') as mock_load_features:
         mock_load_features.return_value = {}
 
         brat_to_conllu(
@@ -493,7 +493,7 @@ def test_brat_to_conllu_concordance_file(tmp_path):
     ref_corpus = tmp_path / 'reference.conllu'
     ref_corpus.write_text('')
 
-    with mock.patch('utilities.brat2conllu.load_lang_features') as mock_load_features:
+    with mock.patch('latin_utilities.brat2conllu.load_lang_features') as mock_load_features:
         mock_load_features.return_value = {}
 
         brat_to_conllu(
@@ -540,7 +540,7 @@ def test_brat_to_conllu_token_mismatch(tmp_path):
     ref_corpus = tmp_path / 'reference.conllu'
     ref_corpus.write_text('')
 
-    with mock.patch('utilities.brat2conllu.load_lang_features') as mock_load_features:
+    with mock.patch('latin_utilities.brat2conllu.load_lang_features') as mock_load_features:
         mock_load_features.return_value = {}
 
         with pytest.raises(AssertionError, match='token mismatch'):

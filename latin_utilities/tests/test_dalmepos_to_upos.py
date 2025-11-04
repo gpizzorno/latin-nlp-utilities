@@ -1,6 +1,6 @@
 import pytest
 
-from utilities.converters.dalmepos_to_upos import dalmepos_to_upos
+from latin_utilities.converters.dalmepos_to_upos import dalmepos_to_upos
 
 
 @pytest.mark.parametrize(

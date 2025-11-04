@@ -1,6 +1,6 @@
 import pytest
 
-from utilities.converters.upos_to_perseus import upos_to_perseus
+from latin_utilities.converters.upos_to_perseus import upos_to_perseus
 
 
 @pytest.mark.parametrize(

@@ -1,6 +1,6 @@
 import pytest
 
-from utilities.converters.ittb_to_perseus import (
+from latin_utilities.converters.ittb_to_perseus import (
     cas_to_case,
     cas_to_number,
     gen_to_gender,

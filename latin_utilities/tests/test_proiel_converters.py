@@ -1,6 +1,6 @@
 import pytest
 
-from utilities.converters.proiel_to_perseus import (
+from latin_utilities.converters.proiel_to_perseus import (
     to_case,
     to_degree,
     to_gender,

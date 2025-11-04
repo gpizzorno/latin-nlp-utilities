@@ -34,7 +34,7 @@ def conllu_stream(conllu_sentence):
 # Mock for upos_to_tag
 @pytest.fixture(autouse=True)
 def patch_upos_to_tag(monkeypatch):
-    monkeypatch.setattr('utilities.converters.upos_to_perseus', lambda upos: upos.lower())
+    monkeypatch.setattr('latin_utilities.converters.upos_to_perseus', lambda upos: upos.lower())
 
 
 @pytest.fixture

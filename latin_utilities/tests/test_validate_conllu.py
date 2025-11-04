@@ -1,7 +1,7 @@
 import pytest
 import regex as re
 
-from utilities.validate_conllu import (
+from latin_utilities.validate_conllu import (
     DEPREL,
     UPOS,
     deps_list,

@@ -2,7 +2,7 @@ import hashlib
 
 import pytest
 
-from utilities import utils
+from latin_utilities import utils
 
 
 def test_feature_string_to_dict_basic():

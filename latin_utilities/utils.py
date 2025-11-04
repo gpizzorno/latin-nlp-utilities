@@ -3,7 +3,7 @@ import json
 from collections import OrderedDict
 from pathlib import Path
 
-from utilities.converters import upos_to_perseus
+from latin_utilities.converters import upos_to_perseus
 
 
 def load_lang_features(lang, additional_features):

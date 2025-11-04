@@ -1,4 +1,4 @@
-"""Interface for utilities module."""
+"""Interface for latin_utilities module."""
 
 from .brat2conllu import brat_to_conllu
 from .conllu2brat import conllu_to_brat
