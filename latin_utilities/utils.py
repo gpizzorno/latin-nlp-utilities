@@ -15,7 +15,7 @@ from latin_utilities.converters.ittb_to_perseus import (
     mod_to_voice,
     tem_to_tense,
 )
-from latin_utilities.converters.proiel_converters import (
+from latin_utilities.converters.proiel_to_perseus import (
     to_case,
     to_degree,
     to_gender,
