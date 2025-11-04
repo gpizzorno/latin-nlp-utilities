@@ -1,8 +1,7 @@
 import hashlib
 import json
 from collections import OrderedDict
-
-import pkg_resources
+from importlib.resources import files
 
 from latin_utilities.converters import upos_to_perseus
 from latin_utilities.converters.ittb_to_perseus import (
@@ -29,21 +28,23 @@ from latin_utilities.converters.proiel_to_perseus import (
 
 def load_lang_features(lang, additional_features=None, dalme=False):
     """Load language-specific features from a JSON file."""
-    with open(pkg_resources.resource_filename('latin_utilities', 'data/feats.json')) as file:
+    feats_file = files('latin_utilities').joinpath('data/feats.json')
+    with feats_file.open('r') as file:
         all_features_0 = json.load(file)
 
     featset = all_features_0['features'][lang]
 
     if additional_features or dalme:
-        file_path = (
-            additional_features
-            if additional_features
-            else pkg_resources.resource_filename('latin_utilities', 'data/dalme_additional_features.json')
-        )
-        with open(file_path) as file:
-            xtra_features = json.load(file)
-            for f_name, f_dict in xtra_features.items():
-                featset[f_name] = f_dict
+        if additional_features:
+            with open(additional_features) as file:
+                xtra_features = json.load(file)
+        else:
+            dalme_file = files('latin_utilities').joinpath('data/dalme_additional_features.json')
+            with dalme_file.open('r') as file:
+                xtra_features = json.load(file)
+
+        for f_name, f_dict in xtra_features.items():
+            featset[f_name] = f_dict
 
     return featset
 

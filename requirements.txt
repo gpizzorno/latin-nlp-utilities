@@ -1,5 +1,6 @@
 conllu
 hypothesis
+importlib-resources
 pytest
 pytest-cov
 pytest-mock

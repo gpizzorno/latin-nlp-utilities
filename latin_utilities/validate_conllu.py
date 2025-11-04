@@ -2,9 +2,9 @@
 # modified by Gabe Pizzorno (2021)
 import json
 import unicodedata
+from importlib.resources import files
 from pathlib import Path
 
-import pkg_resources
 import regex as re
 
 THISDIR = Path(__file__).resolve().parent
@@ -2369,7 +2369,8 @@ def validate(inp, lang, level, check_tree_text, single_root, check_space_after, 
 def load_file(filename):
     """Load a file and return its content as a list of lines."""
     res = set()
-    with open(pkg_resources.resource_filename('latin_utilities', filename), encoding='utf-8') as f:
+    resource_file = files('latin_utilities').joinpath(filename)
+    with resource_file.open('r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()  # noqa: PLW2901
 
@@ -2386,13 +2387,15 @@ def load_feat_set(filename_langspec, lcode, add_features):
     global featdata  # noqa: PLW0603
     global warn_on_undoc_feats  # noqa: PLW0603
 
-    with open(pkg_resources.resource_filename('latin_utilities', filename_langspec), encoding='utf-8') as f:
+    resource_file = files('latin_utilities').joinpath(filename_langspec)
+    with resource_file.open('r', encoding='utf-8') as f:
         all_features_0 = json.load(f)
 
     featdata = all_features_0['features']
     featset = get_featdata_for_language(lcode)
     if add_features:
-        with open(pkg_resources.resource_filename('latin_utilities', add_features), encoding='utf-8') as file:
+        add_features_file = files('latin_utilities').joinpath(add_features)
+        with add_features_file.open('r', encoding='utf-8') as file:
             xtra_features = json.load(file)
             for f_name, f_dict in xtra_features.items():
                 featset[f_name] = f_dict
@@ -2462,7 +2465,8 @@ def load_deprel_set(filename_langspec, lcode):
     global depreldata  # noqa: PLW0603
     global warn_on_undoc_deps  # noqa: PLW0603
 
-    with open(pkg_resources.resource_filename('latin_utilities', filename_langspec), encoding='utf-8') as f:
+    resource_file = files('latin_utilities').joinpath(filename_langspec)
+    with resource_file.open('r', encoding='utf-8') as f:
         all_deprels_0 = json.load(f)
 
     depreldata = all_deprels_0['deprels']
@@ -2762,7 +2766,8 @@ def validate_conllu(input, lang, level, add_features, sentence_concordance=None)
         # This file must not be edited directly!
         # Use the web interface at https://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/langspec/specify_auxiliary.pl instead!
 
-        with open(pkg_resources.resource_filename('latin_utilities', 'data/data.json'), encoding='utf-8') as file:
+        data_file = files('latin_utilities').joinpath('data/data.json')
+        with data_file.open('r', encoding='utf-8') as file:
             jsondata = json.load(file)
 
         auxdata = jsondata['auxiliaries']
