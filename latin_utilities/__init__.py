@@ -1,5 +1,7 @@
 """Interface for latin_utilities module."""
 
+__version__ = '0.2'
+
 from .brat2conllu import brat_to_conllu
 from .conllu2brat import conllu_to_brat
 from .conllubio2brat import conllubio_to_brat
