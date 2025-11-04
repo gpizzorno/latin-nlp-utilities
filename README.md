@@ -298,6 +298,72 @@ norm_xpos = normalize_xpos('VERB', 'irregular_tag')
 # Returns 'v--------' (verb with empty morphology)
 ```
 
+#### **Format ITTB XPOS to Perseus**
+
+Convert ITTB (Index Thomisticus Treebank) UPOS and XPOS tags to Perseus positional format.
+
+```python
+from latin_utilities import format_ittb_xpos
+
+# Convert ITTB XPOS to Perseus format
+perseus_tag = format_ittb_xpos('NOUN', 'cas5|gen1')
+# Returns Perseus 9-character positional tag (e.g., 'n--s---mn-')
+
+# Handles all ITTB morphological categories
+perseus_tag = format_ittb_xpos('VERB', 'gen4|tem1|mod1')
+# Returns verb tag with person, tense, mood, voice (e.g., 'v1spia---')
+```
+
+**Features:**
+- Converts ITTB pipe-separated morphology codes to Perseus format
+- Extracts person, number, tense, mood, voice, gender, case, and degree
+- Returns 9-character positional tag: `[pos][person][number][tense][mood][voice][gender][case][degree]`
+- Uses '-' for absent morphological features
+
+#### **Format PROIEL XPOS to Perseus**
+
+Convert PROIEL UPOS and universal features to Perseus positional format.
+
+```python
+from latin_utilities import format_proiel_xpos
+
+# Convert PROIEL FEATS to Perseus format
+perseus_tag = format_proiel_xpos('NOUN', 'Case=Nom|Gender=Masc|Number=Sing')
+# Returns Perseus 9-character positional tag (e.g., 'n--s---mn-')
+
+# Handles all PROIEL morphological features
+perseus_tag = format_proiel_xpos('VERB', 'Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act')
+# Returns verb tag (e.g., 'v3spia---')
+```
+
+**Features:**
+- Converts UD-style morphological features to Perseus format
+- Extracts person, number, tense, mood, voice, gender, case, and degree from FEATS
+- Returns 9-character positional tag: `[pos][person][number][tense][mood][voice][gender][case][degree]`
+- Uses '-' for absent morphological features
+
+#### **Format LLCT XPOS to Perseus**
+
+Convert LLCT (Late Latin Charter Treebank) UPOS and XPOS to Perseus positional format.
+
+```python
+from latin_utilities import format_llct_xpos
+
+# Convert LLCT XPOS to Perseus format
+perseus_tag = format_llct_xpos('NOUN', 'n|-|s|-|-|-|m|n|-')
+# Returns Perseus 9-character positional tag with corrected POS (e.g., 'n-s---mn-')
+
+# Automatically corrects POS tag based on UPOS
+perseus_tag = format_llct_xpos('ADJ', 'n|-|s|-|-|-|m|n|p')
+# Returns adjusted tag with correct POS prefix (e.g., 'a-s---mnp')
+```
+
+**Features:**
+- Converts LLCT pipe-separated positional tags to Perseus format
+- Ensures POS tag matches the UPOS (first position)
+- Preserves morphological information from positions 2-9
+- Returns 9-character positional tag: `[pos][person][number][tense][mood][voice][gender][case][degree]`
+
 ## Testing
 
 Run the full test suite:
