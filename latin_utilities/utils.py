@@ -1,7 +1,8 @@
 import hashlib
 import json
 from collections import OrderedDict
-from pathlib import Path
+
+import pkg_resources
 
 from latin_utilities.converters import upos_to_perseus
 from latin_utilities.converters.ittb_to_perseus import (
@@ -26,16 +27,20 @@ from latin_utilities.converters.proiel_to_perseus import (
 )
 
 
-def load_lang_features(lang, additional_features):
+def load_lang_features(lang, additional_features=None, dalme=False):
     """Load language-specific features from a JSON file."""
-    path = Path(__file__).parent
-    with open(f'{path}/data/feats.json') as file:
+    with open(pkg_resources.resource_filename('latin_utilities', 'data/feats.json')) as file:
         all_features_0 = json.load(file)
 
     featset = all_features_0['features'][lang]
 
-    if additional_features:
-        with open(f'{path}/{additional_features}') as file:
+    if additional_features or dalme:
+        file_path = (
+            additional_features
+            if additional_features
+            else pkg_resources.resource_filename('latin_utilities', 'data/dalme_additional_features.json')
+        )
+        with open(file_path) as file:
             xtra_features = json.load(file)
             for f_name, f_dict in xtra_features.items():
                 featset[f_name] = f_dict

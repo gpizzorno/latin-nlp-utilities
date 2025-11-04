@@ -4,6 +4,7 @@ import json
 import unicodedata
 from pathlib import Path
 
+import pkg_resources
 import regex as re
 
 THISDIR = Path(__file__).resolve().parent
@@ -2171,7 +2172,7 @@ def validate_auxiliary_verbs(cols, children, nodes, line, lang, auxlist):  # noq
                 ilspecauxs = auxdict[ilang]
                 lspecauxs = lspecauxs + ilspecauxs
         else:
-            lspecauxs = auxdict.get(lang, None)
+            lspecauxs = auxdict.get(lang)
 
         if not lspecauxs:
             testlevel = 5
@@ -2242,7 +2243,7 @@ def validate_copula_lemmas(cols, children, nodes, line, lang, coplist):  # noqa:
                 ilspeccops = copdict[ilang]
                 lspeccops = lspeccops + ilspeccops
         else:
-            lspeccops = copdict.get(lang, None)
+            lspeccops = copdict.get(lang)
 
         if not lspeccops:
             testlevel = 5
@@ -2368,7 +2369,7 @@ def validate(inp, lang, level, check_tree_text, single_root, check_space_after, 
 def load_file(filename):
     """Load a file and return its content as a list of lines."""
     res = set()
-    with open(Path(THISDIR) / filename, encoding='utf-8') as f:
+    with open(pkg_resources.resource_filename('latin_utilities', filename), encoding='utf-8') as f:
         for line in f:
             line = line.strip()  # noqa: PLW2901
 
@@ -2385,13 +2386,13 @@ def load_feat_set(filename_langspec, lcode, add_features):
     global featdata  # noqa: PLW0603
     global warn_on_undoc_feats  # noqa: PLW0603
 
-    with open(Path(THISDIR) / filename_langspec, encoding='utf-8') as f:
+    with open(pkg_resources.resource_filename('latin_utilities', filename_langspec), encoding='utf-8') as f:
         all_features_0 = json.load(f)
 
     featdata = all_features_0['features']
     featset = get_featdata_for_language(lcode)
     if add_features:
-        with open(Path(THISDIR) / add_features) as file:
+        with open(pkg_resources.resource_filename('latin_utilities', add_features), encoding='utf-8') as file:
             xtra_features = json.load(file)
             for f_name, f_dict in xtra_features.items():
                 featset[f_name] = f_dict
@@ -2461,7 +2462,7 @@ def load_deprel_set(filename_langspec, lcode):
     global depreldata  # noqa: PLW0603
     global warn_on_undoc_deps  # noqa: PLW0603
 
-    with open(Path(THISDIR) / filename_langspec, encoding='utf-8') as f:
+    with open(pkg_resources.resource_filename('latin_utilities', filename_langspec), encoding='utf-8') as f:
         all_deprels_0 = json.load(f)
 
     depreldata = all_deprels_0['deprels']
@@ -2663,14 +2664,12 @@ def get_auxdata_for_language(lcode):
     if lcode == 'shopen':
         for lcode1, lemmalist in auxdata.items():
             auxlist = auxlist + [
-                x
-                for x in lemmalist
-                if len([y for y in auxdata[lcode1][x]['functions'] if y['function'] != 'cop.PRON']) > 0
+                x for x in lemmalist if len([y for y in lemmalist[x]['functions'] if y['function'] != 'cop.PRON']) > 0
             ]
             coplist = coplist + [
                 x
                 for x in lemmalist
-                if len([y for y in auxdata[lcode1][x]['functions'] if re.match(r'^cop\.', y['function'])]) > 0
+                if len([y for y in lemmalist[x]['functions'] if re.match(r'^cop\.', y['function'])]) > 0
             ]
     else:
         lemmalist = auxdata.get(lcode, {}).keys()
@@ -2763,8 +2762,8 @@ def validate_conllu(input, lang, level, add_features, sentence_concordance=None)
         # This file must not be edited directly!
         # Use the web interface at https://quest.ms.mff.cuni.cz/udvalidator/cgi-bin/unidep/langspec/specify_auxiliary.pl instead!
 
-        with open(Path(THISDIR) / 'data' / 'data.json', encoding='utf-8') as f:
-            jsondata = json.load(f)
+        with open(pkg_resources.resource_filename('latin_utilities', 'data/data.json'), encoding='utf-8') as file:
+            jsondata = json.load(file)
 
         auxdata = jsondata['auxiliaries']
         tagsets[AUX], tagsets[COP] = get_auxdata_for_language(lang)
