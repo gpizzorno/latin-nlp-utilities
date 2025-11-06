@@ -1,16 +1,15 @@
 """Convert Brat annotations to CoNLL-U format."""
 
 import json
-from pathlib import Path, PurePath
+from pathlib import Path
 
-import conllu
 import regex as re  # https://pypi.org/project/regex/
 
 from .utils import feature_dict_to_string, load_lang_features, normalize_features, normalize_xpos
 
 
 # define helper functions
-def conll2lists(filename):
+def conll2lists(filename, sents_per_doc):
     """Convert a CoNLL-U file to lists of sentences and IDs."""
     conllu_o_ids, conllu_o_sentences = [], []
     sentid_re = re.compile(r'^# sent_id\s*=\s*(\S+)$')
@@ -40,7 +39,7 @@ def conll2lists(filename):
     for idx, sent_id in enumerate(conllu_o_ids, start=1):
         sentence_concordance[sent_id] = {'alt_id': f'Brat {doc}:{sent}', 'order': idx}
 
-        if sent == 5:  # noqa: PLR2004
+        if sent == sents_per_doc:
             sent = 1
             doc += 1
         else:
@@ -109,13 +108,13 @@ def fix_annotations(annotations):  # noqa: C901
     for ann in annotations:
         vals = ann.strip().split('\t')
         if ann[0] == 'T':
-            upos, *offsets = vals[1].split(' ')
+            upos, *offsets = vals[1].split()
             word = vals[2]
             # Store all offsets as a single string (handles discontinuous spans)
             textbound.append([vals[0][0], vals[0][1:], upos, ' '.join(offsets), word])
         elif ann[0] == 'R':
             # format = TYPE, ID, REL, ARG1_VALUE, ARG2_VALUE
-            args = vals[1].split(' ')
+            args = vals[1].split()
             relations.append([vals[0][0], vals[0][1:], args[0], args[1][5:], args[2][5:]])
         elif ann[0] == '#':
             comments.append(ann)
@@ -239,7 +238,7 @@ def join_annotations(ann_files):  # noqa: C901, PLR0912, PLR0915
                 assert aid not in idmap
 
                 idmap[aid] = newid
-                line = '\t'.join([newid] + line.split('\t')[1:])
+                line = '\t'.join([newid, *line.split('\t')[1:]])
                 reserved[newid] = True
 
             anns[i][j] = line
@@ -279,30 +278,6 @@ def join_annotations(ann_files):  # noqa: C901, PLR0912, PLR0915
     return annotations
 
 
-def load_reference_corpus(reference_corpus_path):
-    """Load a reference corpus from a CoNLL-U file."""
-    with open(reference_corpus_path) as file:
-        return conllu.parse(file.read())
-
-
-def get_best_fit_morpho(word, upos, reference_corpus, featset):
-    """Get the best matching XPOS and FEATS for a word based on UPOS and reference corpus."""
-    mtokens = reference_corpus[0].filter(form=word, upos=upos)
-    xpos, feats = None, None
-    if len(mtokens) > 0:
-        for token in mtokens:
-            if token['xpos'] and not xpos:
-                xpos = normalize_xpos(upos, token['xpos'])
-
-            if token['feats'] and not feats:
-                feats = feature_dict_to_string(normalize_features(upos, token['feats'], featset))
-
-            if xpos and feats:
-                return (xpos, feats)
-
-    return (xpos, feats)
-
-
 def get_sentence_text(conll_list):
     """Get the text of a sentence from a CoNLL-U list."""
     tokens = [i[1] for i in conll_list]
@@ -313,25 +288,21 @@ def get_sentence_text(conll_list):
     return ' '.join(tokens) + fs
 
 
-def brat_to_conllu(input_dir, conllu_dir, lang, additional_features=None, reference_corpus_path=None):  # noqa: C901, PLR0912, PLR0915
+def brat_to_conllu(input_dir, conllu_path, sents_per_doc, lang, additional_features=None, dalme=False):  # noqa: C901, PLR0912, PLR0913, PLR0915
     """Convert Brat annotations to CoNLL-U format."""
     ann_files = sorted(str(p) for p in Path(input_dir).glob('*.ann'))
+
     # determine filenames
-    base_filename = re.sub(r'-doc-[0-9]+\.ann', '', PurePath(ann_files[0]).name, 0, 0).replace('rawdep', 'basic')
-
-    if 'morpho' in base_filename:
-        base_filename = base_filename.replace('_morpho', '')
-
-    output_filename = f'{base_filename.replace("basic", "fixeddep")}.conllu'
+    og_path = Path(conllu_path)
+    conllu_dir = og_path.parent
+    filename_stem = og_path.stem
+    output_filename = f'{filename_stem}-fixeddep.conllu'
 
     # get original (i.e. pre-annotation) CONLLU data
-    conllu_o_ids, conllu_o_sentences, sentence_concordance = conll2lists(f'{conllu_dir}/{base_filename}.conllu')
+    conllu_o_ids, conllu_o_sentences, sentence_concordance = conll2lists(conllu_path, sents_per_doc)
 
     # load feature data
-    featset = load_lang_features(lang, additional_features)
-
-    # load reference corpus
-    reference_corpus = load_reference_corpus(reference_corpus_path)
+    featset = load_lang_features(lang, additional_features, dalme)
 
     # join annotations
     annotations = join_annotations(ann_files)
@@ -341,13 +312,11 @@ def brat_to_conllu(input_dir, conllu_dir, lang, additional_features=None, refere
     # notes = [i for i in annotations if i[0][0] == '#']
     annotated_tokens = {}  # value format: ID TOKEN UPOS HEAD DEPREL DEPS
 
-    print('TOKENS', tokens)
-
     for token_data in tokens:
-        attribs = token_data[3].split(' ')
+        upos = token_data[2]
         _id = int(token_data[1])
         token = token_data[4]
-        annotated_tokens[_id] = [_id, token, attribs[0], None, None, []]
+        annotated_tokens[_id] = [_id, token, upos, None, None, []]
 
     processed_targets = []
     for relation in relations:
@@ -398,17 +367,8 @@ def brat_to_conllu(input_dir, conllu_dir, lang, additional_features=None, refere
 
             og_upos = og_sent[i][3]
             if og_upos != upos:
-                if reference_corpus:
-                    matched_xpos, matched_feats = get_best_fit_morpho(word, upos, reference_corpus, featset)
-                else:
-                    matched_xpos, matched_feats = None, None
-
-                og_sent[i][4] = matched_xpos if matched_xpos else normalize_xpos(upos, og_sent[i][4])
-                og_sent[i][5] = (
-                    matched_feats
-                    if matched_feats
-                    else feature_dict_to_string(normalize_features(upos, og_sent[i][5], featset))
-                )
+                og_sent[i][4] = normalize_xpos(upos, og_sent[i][4])
+                og_sent[i][5] = feature_dict_to_string(normalize_features(upos, og_sent[i][5], featset))
                 og_sent[i][3] = upos
 
             # update relations. If there is no data we fill with '_', which is not permitted

@@ -41,8 +41,8 @@ def conllu_to_brat(  # noqa: C901, PLR0915
         # add doc numbering if there is a sentence count limit,
         # implying multiple outputs per input
         fn_base = f'{Path(filename).name}-doc-{str(docnum).zfill(3)}' if sents_per_doc else Path(filename).name
-
         outfn = Path(output_directory) / fn_base
+
         with (
             codecs.open(f'{outfn}.txt', 'w', encoding='UTF-8') as txtout,
             codecs.open(f'{outfn}.ann', 'w', encoding='UTF-8') as soout,
@@ -50,45 +50,45 @@ def conllu_to_brat(  # noqa: C901, PLR0915
             offset, idnum, ridnum = 0, 1, 1
             doctext = ''
 
-            for si, sentence in enumerate(sentences):  # noqa: B007
+            for si, sentence in enumerate(sentences):
                 tokens, deps = sentence
 
-            idmap = {}  # store mapping from per-sentence token sequence IDs to document-unique token IDs
-            prev_form = None  # output tokens
+                idmap = {}  # store mapping from per-sentence token sequence IDs to document-unique token IDs
+                prev_form = None  # output tokens
 
-            if output_root:
-                tokens = [('0', 'ROOT', 'ROOT'), *tokens]  # add an explicit root node with seq ID 0 (zero)
+                if output_root:
+                    tokens = [('0', 'ROOT', 'ROOT'), *tokens]  # add an explicit root node with seq ID 0 (zero)
 
-            for ID, form, POS in tokens:  # noqa: N806
-                if prev_form is not None:
-                    doctext = doctext + ' '
+                for ID, form, POS in tokens:  # noqa: N806
+                    if prev_form is not None:
+                        doctext = doctext + ' '
+                        offset += 1
+
+                    # output a token annotation
+                    print(tokstr(offset, offset + len(form), POS, idnum, form), file=soout)
+                    assert ID not in idmap, 'Error in data: dup ID'
+                    idmap[ID] = idnum
+                    idnum += 1
+
+                    doctext = doctext + form
+                    offset += len(form)
+
+                    prev_form = form
+
+                # output dependencies
+                for dep, head, rel in deps:
+                    # if root is not added, skip deps to the root (idx 0)
+                    if not output_root and head == '0':
+                        continue
+
+                    print(depstr(idmap[dep], idmap[head], rel, ridnum), file=soout)
+                    ridnum += 1
+
+                if si + 1 != len(sentences):
+                    doctext = f'{doctext}\n'
                     offset += 1
 
-                # output a token annotation
-                print(tokstr(offset, offset + len(form), POS, idnum, form), file=soout)
-                assert ID not in idmap, 'Error in data: dup ID'
-                idmap[ID] = idnum
-                idnum += 1
-
-                doctext = doctext + form
-                offset += len(form)
-
-                prev_form = form
-
-            # output dependencies
-            for dep, head, rel in deps:
-                # if root is not added, skip deps to the root (idx 0)
-                if not output_root and head == '0':
-                    continue
-
-                print(depstr(idmap[dep], idmap[head], rel, ridnum), file=soout)
-                ridnum += 1
-
-            if si + 1 != len(sentences):
-                doctext = f'{doctext}\n'
-                offset += 1
-
-        print(doctext, file=txtout)
+            print(doctext, file=txtout)
 
     # main process
     docnum = 1
