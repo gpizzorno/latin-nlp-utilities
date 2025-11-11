@@ -68,7 +68,7 @@ def is_multiword_token(token_id: int | tuple[int, int] | str) -> bool:
     return bool(re.match(MULTIWORD_TOKEN, str(token_id)))
 
 
-def is_empty_node(token_id: int | tuple[int, int] | str) -> bool:
+def is_empty_node(token_id: int | tuple[int, str, int] | str) -> bool:
     """Check if the token ID represents an empty node (decimal like 1.1).
 
     Arguments:
@@ -80,34 +80,41 @@ def is_empty_node(token_id: int | tuple[int, int] | str) -> bool:
     Examples:
         >>> is_empty_node("2.1")
         True
+        >>> is_empty_node((2, '.', 1))
+        True
         >>> is_empty_node("10.25")
         True
         >>> is_empty_node(1)
         False
-        >>> is_empty_node((1, 2))
+        >>> is_empty_node((1, '-', 2))
         False
 
     """
-    if isinstance(token_id, (int, tuple)):
+    if isinstance(token_id, int):
         return False
+    if isinstance(token_id, tuple):
+        # conllu library parses empty nodes as (word_id, '.', empty_id)
+        return len(token_id) == 3 and token_id[1] == '.'  # noqa: PLR2004
     # String format
     return bool(re.match(EMPTY_NODE, str(token_id)))
 
 
-def parse_empty_node_id(token_id: str) -> tuple[str, str]:
+def parse_empty_node_id(token_id: tuple[int, str, int] | str) -> tuple[str, str]:
     """Parse an empty node ID into (word_id, empty_id) components.
 
     Arguments:
-        token_id: Empty node ID like "3.1"
+        token_id: Empty node ID like "3.1" or tuple (3, '.', 1)
 
     Returns:
-        Tuple of (word_id, empty_id), e.g., ("3", "1")
+        Tuple of (word_id, empty_id) as strings, e.g., ("3", "1")
 
     Raises:
         ValueError: If token_id is not a valid empty node ID
 
     Examples:
         >>> parse_empty_node_id("3.1")
+        ('3', '1')
+        >>> parse_empty_node_id((3, '.', 1))
         ('3', '1')
         >>> parse_empty_node_id("10.25")
         ('10', '25')
@@ -117,6 +124,14 @@ def parse_empty_node_id(token_id: str) -> tuple[str, str]:
         ValueError: Not a valid empty node ID: 1-2
 
     """
+    # Handle tuple format from conllu library: (word_id, '.', empty_id)
+    if isinstance(token_id, tuple):
+        if len(token_id) == 3 and token_id[1] == '.':  # noqa: PLR2004
+            return (str(token_id[0]), str(token_id[2]))
+        msg = f'Not a valid empty node ID tuple: {token_id}'
+        raise ValueError(msg)
+
+    # Handle string format
     m = re.match(EMPTY_NODE_ID, str(token_id))
     if not m:
         msg = f'Not a valid empty node ID: {token_id}'
