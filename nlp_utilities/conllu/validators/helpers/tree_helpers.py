@@ -18,10 +18,10 @@ class TreeHelperMixin:
             tree_node: Root node of subtree
 
         Returns:
-            Set of node IDs in the projection
+            Set of node IDs in the projection (including the root node itself)
 
         """
-        projection: set[int] = set()
+        projection: set[int] = {tree_node.token['id']}
         self._collect_projection_recursive(tree_node, projection)
         return projection
 
