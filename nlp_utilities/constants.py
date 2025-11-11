@@ -1,0 +1,393 @@
+"""Constants for Latin NLP Utilities."""
+
+from __future__ import annotations
+
+from importlib.resources import files
+
+import regex as re
+
+# Default data file paths
+DEFAULT_FEATURES = files('nlp_utilities').joinpath('data/feats.json')
+DEFAULT_DEPRELS = files('nlp_utilities').joinpath('data/deprels.json')
+DEFAULT_AUX = files('nlp_utilities').joinpath('data/auxiliaries.json')
+BRAT_ANNOTATION_CONF = files('nlp_utilities').joinpath('data/annotation.conf')
+BRAT_TOOLS_CONF = files('nlp_utilities').joinpath('data/tools.conf')
+BRAT_VISUAL_CONF = files('nlp_utilities').joinpath('data/visual.conf')
+
+# Additional data file paths
+DALME_FEATURES = files('nlp_utilities').joinpath('data/dalme_features.json')
+
+# Universal PoS tags
+UPOS_TAGS = [
+    'ADJ',
+    'ADP',
+    'ADV',
+    'AUX',
+    'CCONJ',
+    'DET',
+    'INTJ',
+    'NOUN',
+    'NUM',
+    'PART',
+    'PRON',
+    'PROPN',
+    'PUNCT',
+    'SCONJ',
+    'SYM',
+    'VERB',
+    'X',
+]
+
+# List of universal dependency relations
+UNIVERSAL_DEPRELS = {
+    'acl',
+    'advcl',
+    'advmod',
+    'amod',
+    'apposauxcase',
+    'cc',
+    'ccomp',
+    'clf',
+    'compound',
+    'conj',
+    'cop',
+    'csubj',
+    'dep',
+    'det',
+    'discourse',
+    'dislocated',
+    'expl',
+    'fixed',
+    'flat',
+    'goeswith',
+    'iobj',
+    'list',
+    'mark',
+    'nmod',
+    'nsubj',
+    'nummod',
+    'obj',
+    'obl',
+    'orphan',
+    'parataxis',
+    'punct',
+    'reparandum',
+    'root',
+    'vocative',
+    'xcomp',
+}
+
+# Known attributes for MISC column
+MISC_ATTRIBUTES = {
+    'SpaceAfter',
+    'Lang',
+    'Translit',
+    'LTranslit',
+    'Gloss',
+    'LId',
+    'LDeriv',
+}
+
+# Allowed children of functional relations
+FUNCTIONAL_RELATION_CHILDREN = {
+    'mark': {'advmod', 'obl', 'goeswith', 'fixed', 'reparandum', 'conj', 'cc', 'punct'},
+    'case': {'advmod', 'obl', 'goeswith', 'fixed', 'reparandum', 'conj', 'cc', 'punct'},
+    'aux': {'goeswith', 'fixed', 'reparandum', 'conj', 'cc', 'punct'},
+    'cop': {'goeswith', 'fixed', 'reparandum', 'conj', 'cc', 'punct'},
+    'det': {'goeswith', 'fixed', 'reparandum', 'conj', 'cc', 'punct'},  # Added det
+    'cc': {'goeswith', 'fixed', 'reparandum', 'conj', 'punct'},
+    'fixed': {'goeswith', 'reparandum', 'conj', 'punct'},
+    'goeswith': set(),  # No children allowed
+    'punct': {'punct'},  # Only punct children allowed
+}
+
+# Certain UD relations must always go left-to-right
+LEFT_TO_RIGHT_RELATIONS = {'conj', 'fixed', 'flat', 'goeswith', 'appos'}
+
+# Allowed relations for parents of orphan tokens
+ORPHAN_ALLOWED_PARENTS = {
+    'conj',
+    'parataxis',
+    'root',
+    'csubj',
+    'ccomp',
+    'advcl',
+    'acl',
+    'reparandum',
+}
+
+# Content relations
+CONTENT_DEPRELS = {
+    'nsubj',
+    'obj',
+    'iobj',
+    'csubj',
+    'ccomp',
+    'xcomp',
+    'obl',
+    'vocative',
+    'expl',
+    'dislocated',
+    'advcl',
+    'advmod',
+    'discourse',
+    'nmod',
+    'appos',
+    'nummod',
+    'acl',
+    'amod',
+    'conj',
+    'fixed',
+    'flat',
+    'compound',
+    'list',
+    'parataxis',
+    'orphan',
+    'goeswith',
+    'reparandum',
+    'root',
+    'dep',
+}
+
+# Functional relations
+FUNCTIONAL_DEPRELS = {
+    'aux',
+    'cop',
+    'mark',
+    'det',
+    'clf',
+    'case',
+    'cc',
+}
+
+# Functional relations for leaf validation
+FUNCTIONAL_LEAVES_RELATIONS = {*FUNCTIONAL_DEPRELS, 'fixed', 'goeswith', 'punct'}
+
+# Case relations for enhanced dependency processing
+CASE_DEPRELS = {'obl', 'nmod', 'conj', 'advcl'}
+
+# Universal dependency relation extensions
+UNIVERSAL_DEPREL_EXTENSIONS = {'pass', 'relcl', 'xsubj'}
+
+# Universal features (from UD guidelines)
+UNIVERSAL_FEATURES = {
+    'PronType',
+    'NumType',
+    'Poss',
+    'Reflex',
+    'Foreign',
+    'Abbr',
+    'Gender',
+    'Animacy',
+    'Number',
+    'Case',
+    'Definite',
+    'Degree',
+    'VerbForm',
+    'Mood',
+    'Tense',
+    'Aspect',
+    'Voice',
+    'Evident',
+    'Polarity',
+    'Person',
+    'Polite',
+}
+
+# Validity codes by POS for XPOS normalization
+VALIDITY_BY_POS = {
+    2: 'v',
+    3: 'nvapm',
+    4: 'v',
+    5: 'v',
+    6: 'v',
+    7: 'nvapm',
+    8: 'nvapm',
+    9: 'a',
+}
+
+# RegEx patterns
+MULTIWORD_TOKEN = r'^[1-9][0-9]*-[1-9][0-9]*$'
+EMPTY_NODE = r'^[0-9]+\.[1-9][0-9]*$'
+EMPTY_NODE_ID = r'^([0-9]+)\.([0-9]+)$'
+BASIC_HEAD_MATCHER = r'^(0|[1-9][0-9]*)$'
+ENHANCED_HEAD_MATCHER = r'^(0|[1-9][0-9]*)(\.[1-9][0-9]*)?$'
+ENHANCED_DEPREL_PART = r'[\p{Ll}\p{Lm}\p{Lo}\p{M}]+(_[\p{Ll}\p{Lm}\p{Lo}\p{M}]+)*'
+ENHANCED_DEPREL_MATCHER = rf'^[a-z]+(:[a-z]+)?(:{ENHANCED_DEPREL_PART})?(:[a-z]+)?$'
+INVALID_DEPREL_MATCHER = r'^[a-z]+(:[a-z]+)?$'
+# Feature format validation
+# Feature name can have optional layered brackets: Feature[layer]
+FEATURE_NAME_MATCHER = r'^[A-Z][A-Za-z0-9]*(?:\[[a-z0-9]+\])?$'
+FEATURE_VALUE_MATCHER = r'^[A-Z0-9][A-Za-z0-9]*$'
+# DEPREL-UPOS compatibility lists
+DET_UPOS = r'^(DET|PRON)$'
+NUMMOD_UPOS = r'^(NUM|NOUN|SYM)$'
+ADVMOD_UPOS = r'^(ADV|ADJ|CCONJ|DET|PART|SYM)$'
+EXPL_UPOS = r'^(PRON|DET|PART)$'
+COP_UPOS = r'^(AUX|PRON|DET|SYM)$'
+CASE_UPOS = r'^(PROPN|ADJ|PRON|DET|NUM|AUX)$'
+MARK_UPOS = r'^(NOUN|PROPN|ADJ|PRON|DET|NUM|VERB|AUX|INTJ)$'
+CC_UPOS = r'^(NOUN|PROPN|ADJ|PRON|DET|NUM|VERB|AUX|INTJ)$'
+# UPOS-DEPREL compatibility lists
+PUNCT_DEPREL = r'^(punct|root)$'
+
+# Character mapping for CoNLL-X types to brat-compatible types
+TYPE_TO_BRAT_TYPE = {
+    '<': '_lt_',
+    '>': '_gt_',
+    '+': '_plus_',
+    '?': '_question_',
+    '&': '_amp_',
+    ':': '_colon_',
+    '.': '_period_',
+    '!': '_exclamation_',
+}
+
+# Reverse mapping for brat-compatible types back to CoNLL-X types
+BRAT_TYPE_TO_TYPE = {v: k for k, v in TYPE_TO_BRAT_TYPE.items()}
+
+DEFAULT_WHITESPACE_EXCEPTIONS = [
+    re.compile(r'[0-9 ]+', re.UNICODE),
+    re.compile(r'[0-9 ]+[,.][0-9]+', re.UNICODE),
+]
+
+# Data for converters
+DALME_TAGS = {
+    'adjective': 'ADJ',
+    'adposition': 'ADP',
+    'adverb': 'ADV',
+    'coordinating conjunction': 'CCONJ',
+    'gerund': 'VERB',
+    'noun': 'NOUN',
+    'numeral': 'NUM',
+    'particle': 'PART',
+    'pronoun': 'PRON',
+    'proper noun': 'PROPN',
+    'verb': 'VERB',
+}
+
+# Mapping from UPOS tags to Perseus DL tagset codes
+# https://github.com/PerseusDL/treebank_data/blob/master/v2.1/Latin/TAGSET.txt
+# https://itreebank.marginalia.it/doc/Tagset_Perseus.pdf
+UPOS_TO_PERSEUS = {
+    'ADJ': 'a',
+    'ADP': 'r',
+    'ADV': 'd',
+    'AUX': 'v',
+    'CCONJ': 'c',
+    'DET': 'p',
+    'NOUN': 'n',
+    'NUM': 'm',
+    'PART': 't',
+    'PRON': 'p',
+    'PROPN': 'n',
+    'PUNCT': 'u',
+    'SCONJ': 'c',
+    'VERB': 'v',
+    'X': '-',
+}
+
+# Mappings for ITTB to Perseus XPOS conversions
+# https://github.com/PerseusDL/treebank_data/blob/master/v2.1/Latin/TAGSET.txt
+# https://itreebank.marginalia.it/doc/Tagset_Perseus.pdf
+# https://itreebank.marginalia.it/doc/Tagset_IT.pdf
+# https://itreebank.marginalia.it/doc/Tagset_IT_README.txt
+ITTB_CONCORDANCES = {
+    'gen_to_person': [
+        (['4', '7'], '1'),  # First person
+        (['5', '8'], '2'),  # Second person
+        (['6', '9'], '3'),  # Third person
+    ],
+    'gen_to_number': [
+        (['4', '5', '6'], 's'),  # Singular
+        (['7', '8', '9'], 'p'),  # Plural
+    ],
+    'cas_to_number': [
+        (['A', 'B', 'C', 'D', 'E', 'F'], 's'),  # Singular
+        (['J', 'K', 'L', 'M', 'N', 'O'], 'p'),  # Plural
+    ],
+    'tem_to_tense': {
+        '1': 'p',  # Present
+        '2': 'i',  # Imperfect
+        '3': 'f',  # Future
+        '4': 'r',  # Perfect
+        '5': 'l',  # Pluperfect
+        '6': 't',  # Future Perfect
+    },
+    'mod_to_mood': [
+        (['A', 'J'], 'i'),  # Indicative
+        (['B', 'K'], 's'),  # Subjunctive
+        (['H', 'Q'], 'n'),  # Infinitive
+        (['C', 'L'], 'm'),  # Imperative
+        (['D', 'M'], 'p'),  # Participle
+        (['E', 'N'], 'd'),  # Gerund
+        (['O'], 'g'),  # Gerundive
+        (['G', 'P'], 'u'),  # Uncertain
+    ],
+    'mod_to_voice': [
+        (['A', 'B', 'C', 'D', 'E', 'G', 'H'], 'a'),  # Active
+        (['J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'], 'p'),  # Passive
+    ],
+    'gen_to_gender': {
+        '1': 'm',  # Masculine
+        '2': 'f',  # Feminine
+        '3': 'n',  # Neuter
+    },
+    'cas_to_case': [
+        (['A', 'J'], 'n'),  # Nominative
+        (['B', 'K'], 'g'),  # Genitive
+        (['C', 'L'], 'd'),  # Dative
+        (['D', 'M'], 'a'),  # Accusative
+        (['E', 'N'], 'v'),  # Vocative
+        (['F', 'O'], 'b'),  # Ablative
+    ],
+    'grnp_to_degree': {
+        '1': 'p',  # Positive
+        '2': 'c',  # Comparative
+        '3': 's',  # Superlative
+    },
+}
+
+# Mappings for PROIEL to Perseus XPOS conversions
+# https://dev.syntacticus.org/development-guide/#part-of-speech-tags
+# https://github.com/PerseusDL/treebank_data/blob/master/v2.1/Latin/TAGSET.txt
+# https://itreebank.marginalia.it/doc/Tagset_Perseus.pdf
+PROIEL_CONCORDANCES = {
+    'to_number': {
+        'Sing': 's',  # Singular
+        'Plur': 'p',  # Plural
+    },
+    'to_tense': {
+        'Pres': 'p',  # Present
+        'Past': 'r',  # Perfect
+        'Pqp': 'l',  # Pluperfect
+        'Fut': 'f',  # Future
+    },
+    'to_mood': {
+        'Ind': 'i',  # Indicative
+        'Sub': 's',  # Subjunctive
+        'Imp': 'm',  # Imperative
+    },
+    'to_voice': {
+        'Act': 'a',  # Active
+        'Pass': 'p',  # Passive
+    },
+    'to_gender': {
+        'Fem': 'f',  # Feminine
+        'Masc': 'm',  # Masculine
+        'Neut': 'n',  # Neuter
+    },
+    'to_case': {
+        'Abl': 'b',  # Ablative
+        'Acc': 'a',  # Accusative
+        'Dat': 'd',  # Dative
+        'Gen': 'g',  # Genitive
+        'Nom': 'n',  # Nominative
+        'Voc': 'v',  # Vocative
+    },
+    'to_degree': {
+        'Cmp': 'c',  # Comparative
+        'Pos': 'p',  # Positive
+        'Sup': 's',  # Superlative
+    },
+}
