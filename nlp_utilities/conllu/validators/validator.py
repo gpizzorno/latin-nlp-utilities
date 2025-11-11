@@ -181,6 +181,7 @@ class ConlluValidator(
         self._validate_metadata(sentence)  # Level 2: Metadata
         self._validate_misc(sentence)  # Level 2: MISC column
         self._validate_character_constraints(sentence)  # Level 2: Character constraints
+        self._validate_feature_format(sentence)  # Level 2: Feature format and value
         self._validate_enhanced_dependencies(sentence)  # Level 2-3: Enhanced dependencies
 
         if self.level < 3:  # noqa: PLR2004
@@ -189,7 +190,6 @@ class ConlluValidator(
         # Level 3: left-to-right relations, single subject, orphans, goes with span,
         # fixed span, projective punctuation, functional leaves
         self._validate_content(sentence)
-        self._validate_feature_format(sentence)  # Level 4: Feature format and value
 
         if self.level < 4:  # noqa: PLR2004
             return
