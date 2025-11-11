@@ -1,2 +1,155 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "latin-nlp-utilities"
+version = "1.0.0"
+description = "A set of convenience tools for Natural Language Processing work with Latin treebanks and annotated corpora."
+readme = "README.md"
+authors = [{ name = "Gabe Pizzorno" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["latin", "nlp", "utilities", "conllu", ]
+dependencies = [
+    "conllu >= 6.0.0",
+    "importlib_resources >= 6.5.2",
+    "regex >= 2024.11.6",
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["factory_boy", "hypothesis", "mypy", "pytest", "pytest-cov", "pytest-mock"]
+
+[project.urls]
+Homepage = "https://github.com/gabep/latin-nlp-utilities"
+
+[tool.setuptools.package-data]
+"latin_nlp_utilities" = ["data/*.*"]
+
+# https://github.com/charliermarsh/ruff#configuration
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+ignore-init-module-imports = true
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+ignore = [
+  "D100",   # missing docstring in public module
+  "D104",   # missing docstring in public package
+  "FBT002", # boolean default in function definition
+  "RUF012", # mutable-class-default annotated with ClassVar
+  "T201", # print statements
+  "PTH123", # use Pathlib instead of built in open
+]
+select = [
+  "A",
+  "ARG",
+  "B",
+  "BLE",
+  "C4",
+  "C90",
+  "COM",
+  "D",
+  "DTZ",
+  "DJ",
+  "E",
+  "EM",
+  "F",
+  "FBT",
+  "FLY",
+  "G",
+  "I",
+  "ICN",
+  "INP",
+  "INT",
+  "ISC",
+  "N",
+  "PGH",
+  "PIE",
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  "PT",
+  "PTH",
+  "Q",
+  "RET",
+  "RUF",
+  "RSE",
+  "SLF",
+  "SIM",
+  "T",
+  "T10",
+  "T20",
+  "TID",
+  "TRY",
+  "UP",
+  "W",
+]
+
+[tool.ruff.flake8-quotes]
+docstring-quotes = "double"
+inline-quotes = "single"
+
+[tool.ruff.format]
+quote-style = "single" # Prefer single quotes over double quotes
+  
+[tool.ruff.isort]
+section-order = [
+  "future",
+  "standard-library",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["E402"] # ignore import violations in init files
+"*test*" = [
+  "D103",    # undocumented-public-function
+  "B018",    # useless-expression
+  "INP001",  # implicit-namespace-package
+  "PLR0913", # too-many-arguments
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 130 # to detect extra-long lines that the formatter can't automatically split
+
+[tool.mypy]
+disallow_any_generics = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+disallow_untyped_defs = true
+enable_error_code = "ignore-without-code"
+exclude = [".venv/"]
+follow_imports = "normal"
+ignore_missing_imports = true
+no_implicit_optional = true
+no_implicit_reexport = true
+python_version = "3.12"
+show_error_codes = true
+show_error_context = true
+strict_equality = true
+strict_optional = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unused_ignores = true
+
 [tool.coverage.run]
-omit = ["*/tests/*"]
+omit = [
+  "*/tests/*",
+]
+
+[tool.coverage.report]
+exclude_also = [
+  "from __future__ import annotations",
+  "if T.TYPE_CHECKING:",
+  "if TYPE_CHECKING:",
+]
