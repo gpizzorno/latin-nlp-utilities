@@ -23,6 +23,7 @@ def test_invalid_feature_name(tmp_path: Path, sentence_la_tokens: list[dict[str,
     sentence_la_tokens[0]['feats'] = 'case=Nom'
     sentence_la_tokens[0]['head'] = 0
     sentence_la_tokens[0]['deprel'] = 'root'
+    sentence_la_tokens[0]['deps'] = '_'
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
@@ -36,6 +37,7 @@ def test_invalid_feature_value(tmp_path: Path, sentence_la_tokens: list[dict[str
     sentence_la_tokens[0]['feats'] = 'Case=nom'
     sentence_la_tokens[0]['head'] = 0
     sentence_la_tokens[0]['deprel'] = 'root'
+    sentence_la_tokens[0]['deps'] = '_'
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
@@ -74,6 +76,7 @@ def test_unsorted_features(tmp_path: Path, sentence_la_tokens: list[dict[str, st
     sentence_la_tokens[0]['feats'] = 'Number=Sing|Case=Nom'
     sentence_la_tokens[0]['head'] = 0
     sentence_la_tokens[0]['deprel'] = 'root'
+    sentence_la_tokens[0]['deps'] = '_'
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
@@ -115,6 +118,7 @@ def test_layered_feature_invalid(tmp_path: Path, sentence_la_tokens: list[dict[s
     sentence_la_tokens[0]['feats'] = 'Case=Nom|Person[Psor]=1'
     sentence_la_tokens[0]['head'] = 0
     sentence_la_tokens[0]['deprel'] = 'root'
+    sentence_la_tokens[0]['deps'] = '_'
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
@@ -225,11 +229,13 @@ def test_multiple_tokens_with_features(tmp_path: Path, sentence_la_tokens: list[
     sentence_la_tokens[0]['feats'] = 'Number=Sing|Case=Nom'
     sentence_la_tokens[0]['head'] = 2
     sentence_la_tokens[0]['deprel'] = 'nsubj'
+    sentence_la_tokens[0]['deps'] = '_'
     sentence_la_tokens[1]['id'] = 2
     sentence_la_tokens[1]['upostag'] = 'VERB'
     sentence_la_tokens[1]['feats'] = 'case=Nom'
     sentence_la_tokens[1]['head'] = 0
     sentence_la_tokens[1]['deprel'] = 'root'
+    sentence_la_tokens[1]['deps'] = '_'
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
@@ -332,6 +338,7 @@ def test_multiple_feature_errors(tmp_path: Path, sentence_la_tokens: list[dict[s
     sentence_la_tokens[0]['feats'] = 'Number=Sing|case=nom|Case=Acc,Nom'
     sentence_la_tokens[0]['head'] = 0
     sentence_la_tokens[0]['deprel'] = 'root'
+    sentence_la_tokens[0]['deps'] = '_'
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)

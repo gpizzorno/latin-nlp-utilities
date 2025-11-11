@@ -156,11 +156,11 @@ def test_multiple_tokens_mixed(tmp_path: Path, sentence_en_tokens: list[dict[str
     validator = ConlluValidator(level=1)
     errors = validator.validate_string(text)
     unicode_errors = [e for e in errors if 'unicode-normalization' in e]
-    # Token 1 is normalized (0 errors)
-    # Token 2 has non-normalized FORM and LEMMA (2 errors)
+    # Token at index 2 (café) is normalized (0 errors)
+    # Token at index 3 (naïve with decomposed diacritics) has non-normalized FORM and LEMMA (2 errors)
     assert len(unicode_errors) == 2  # noqa: PLR2004
-    # Both errors should be for token 2
-    assert all('2' in e or 'nai' in e for e in unicode_errors)
+    # Both errors should mention Unicode normalization issues
+    assert all('DIAERESIS' in e or 'Unicode not normalized' in e for e in unicode_errors)
 
 
 def test_all_tokens_normalized(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:

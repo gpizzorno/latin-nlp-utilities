@@ -428,8 +428,10 @@ def test_multiword_token_reversed_range(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_string(text)
-    range_errors = [e for e in errors if 'invalid-mwt-range' in e or 'Invalid multiword token range' in e]
-    assert len(range_errors) == 1
+    # The conllu library catches this during parsing and raises a ParseException
+    # which is reported as a parse-error
+    assert len(errors) == 1
+    assert 'parse-error' in errors[0] or 'not a valid ID' in errors[0]
 
 
 def test_overlapping_multiword_tokens(tmp_path: Path) -> None:
