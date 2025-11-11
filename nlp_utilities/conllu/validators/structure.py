@@ -69,7 +69,8 @@ class StructureValidationMixin(BaseValidationMixin):
                 and token['deprel'] != '_'
                 and not (isinstance(token['id'], str) and is_empty_node(token['id']))
             ):
-                deprel = token['deprel'].split(':')[0]
+                full_deprel = token['deprel']
+                deprel = full_deprel.split(':')[0]
 
                 # Level 2-3: Validate against universal deprels
                 if (
@@ -79,12 +80,15 @@ class StructureValidationMixin(BaseValidationMixin):
                     and deprel not in self.universal_deprels
                 ):
                     self.reporter.warn(
-                        f"Unknown universal DEPREL: '{token['deprel']}'",
+                        f"Unknown universal DEPREL: '{full_deprel}'",
                         'Syntax',
                         testlevel=2,
                         testid='unknown-deprel',
                         node_id=str(token['id']),
                     )
+
+                # Note: Level 4+ language-specific DEPREL validation is handled by
+                # LanguageFormatValidationMixin._validate_deprel_subtype()
 
                 if token['head'] == 0 and deprel != 'root':
                     self.reporter.warn(
