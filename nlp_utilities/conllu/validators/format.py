@@ -29,7 +29,7 @@ class FormatValidationMixin(BaseValidationMixin):
         """
         for token in sentence:
             # Check for multiword tokens
-            if isinstance(token['id'], tuple):
+            if isinstance(token['id'], tuple) and token['id'][1] == '-':
                 # This is a multiword token - ID is (start, '-', end)
                 start, _separator, end = token['id']
                 if start >= end:
@@ -43,7 +43,7 @@ class FormatValidationMixin(BaseValidationMixin):
                 self._validate_multiword_token(token)
 
             # Check for empty nodes
-            if isinstance(token['id'], str) and is_empty_node(token['id']):
+            if is_empty_node(token['id']):
                 # Validate empty node ID format and requirements
                 self._validate_empty_node(token)
 
@@ -72,7 +72,7 @@ class FormatValidationMixin(BaseValidationMixin):
             token: Token representing an empty node
 
         """
-        token_id = str(token['id'])
+        token_id = token['id']
 
         # Validate empty node ID format
         try:
@@ -84,39 +84,42 @@ class FormatValidationMixin(BaseValidationMixin):
                 'Format',
                 testlevel=1,
                 testid='invalid-empty-node-id',
-                node_id=token_id,
+                node_id=str(token_id),
             )
             return
+
+        # Convert token_id to string for reporting
+        token_id_str = f'{token_id[0]}.{token_id[2]}' if isinstance(token_id, tuple) else str(token_id)
 
         # Level 2: Empty nodes must have _ in HEAD and DEPREL in basic dependencies
         # (They can have values in enhanced dependencies via DEPS column)
         if self.level >= 2:  # noqa: PLR2004
             if token.get('head') is not None and token['head'] != '_':
                 self.reporter.warn(
-                    f'Empty node {token_id} must have _ in HEAD column',
+                    f'Empty node {token_id_str} must have _ in HEAD column',
                     'Format',
                     testlevel=2,
                     testid='empty-node-head',
-                    node_id=token_id,
+                    node_id=token_id_str,
                 )
 
             if token.get('deprel') and token['deprel'] != '_':
                 self.reporter.warn(
-                    f'Empty node {token_id} must have _ in DEPREL column',
+                    f'Empty node {token_id_str} must have _ in DEPREL column',
                     'Format',
                     testlevel=2,
                     testid='empty-node-deprel',
-                    node_id=token_id,
+                    node_id=token_id_str,
                 )
 
             # Empty nodes should have _ in UPOS (they don't have a part of speech in basic annotation)
             if token.get('upos') and token['upos'] != '_':
                 self.reporter.warn(
-                    f'Empty node {token_id} should have _ in UPOS column',
+                    f'Empty node {token_id_str} should have _ in UPOS column',
                     'Format',
                     testlevel=2,
                     testid='empty-node-upos',
-                    node_id=token_id,
+                    node_id=token_id_str,
                 )
 
     def _validate_multiword_token(self, token: conllu.Token) -> None:
