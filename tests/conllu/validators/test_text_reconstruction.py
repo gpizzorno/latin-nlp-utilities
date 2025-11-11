@@ -11,37 +11,37 @@ def test_text_reconstruction_basic(tmp_path: Path) -> None:
     tokens = [
         {
             'id': 1,
-            'form': 'John',
-            'lemma': 'John',
-            'upostag': 'PROPN',
+            'form': 'The',
+            'lemma': 'the',
+            'upostag': 'DET',
             'xpostag': '_',
             'feats': '_',
             'head': 2,
-            'deprel': 'nsubj',
+            'deprel': 'det',
             'deps': '_',
             'misc': '_',
         },
         {
             'id': 2,
-            'form': 'saw',
-            'lemma': 'see',
-            'upostag': 'VERB',
+            'form': 'quick',
+            'lemma': 'quick',
+            'upostag': 'ADJ',
             'xpostag': '_',
             'feats': '_',
-            'head': 0,
-            'deprel': 'root',
+            'head': 3,
+            'deprel': 'amod',
             'deps': '_',
             'misc': '_',
         },
         {
             'id': 3,
-            'form': 'Mary',
-            'lemma': 'Mary',
-            'upostag': 'PROPN',
+            'form': 'brown',
+            'lemma': 'brown',
+            'upostag': 'ADJ',
             'xpostag': '_',
             'feats': '_',
-            'head': 2,
-            'deprel': 'obj',
+            'head': 0,
+            'deprel': 'root',
             'deps': '_',
             'misc': 'SpaceAfter=No',
         },
@@ -52,15 +52,20 @@ def test_text_reconstruction_basic(tmp_path: Path) -> None:
             'upostag': 'PUNCT',
             'xpostag': '_',
             'feats': '_',
-            'head': 2,
+            'head': 3,
             'deprel': 'punct',
             'deps': '_',
             'misc': '_',
         },
     ]
-    text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
+
+    test_file = ConlluSentenceFactory.as_file(
+        lang='en',
+        tmp_path=tmp_path,
+        tokens=tokens,
+    )
     validator = ConlluValidator(level=2)
-    errors = validator.validate_string(text)
+    errors = validator.validate_file(test_file)
     assert len(errors) == 0
 
 
@@ -69,37 +74,37 @@ def test_text_reconstruction_mismatch(tmp_path: Path) -> None:
     tokens = [
         {
             'id': 1,
-            'form': 'John',
-            'lemma': 'John',
-            'upostag': 'PROPN',
+            'form': 'The',
+            'lemma': 'the',
+            'upostag': 'DET',
             'xpostag': '_',
             'feats': '_',
             'head': 2,
-            'deprel': 'nsubj',
+            'deprel': 'det',
             'deps': '_',
             'misc': '_',
         },
         {
             'id': 2,
-            'form': 'saw',
-            'lemma': 'see',
-            'upostag': 'VERB',
+            'form': 'quick',
+            'lemma': 'quick',
+            'upostag': 'ADJ',
             'xpostag': '_',
             'feats': '_',
-            'head': 0,
-            'deprel': 'root',
+            'head': 3,
+            'deprel': 'amod',
             'deps': '_',
             'misc': '_',
         },
         {
             'id': 3,
-            'form': 'Mary',
-            'lemma': 'Mary',
-            'upostag': 'PROPN',
+            'form': 'brown',
+            'lemma': 'brown',
+            'upostag': 'ADJ',
             'xpostag': '_',
             'feats': '_',
-            'head': 2,
-            'deprel': 'obj',
+            'head': 0,
+            'deprel': 'root',
             'deps': '_',
             'misc': 'SpaceAfter=No',
         },
@@ -110,88 +115,94 @@ def test_text_reconstruction_mismatch(tmp_path: Path) -> None:
             'upostag': 'PUNCT',
             'xpostag': '_',
             'feats': '_',
-            'head': 2,
+            'head': 3,
             'deprel': 'punct',
             'deps': '_',
             'misc': '_',
         },
     ]
-    # Override the text metadata to create a mismatch
-    text = ConlluSentenceFactory.as_text(
+
+    # Override the text metadata to create a mismatch (space before period)
+    test_file = ConlluSentenceFactory.as_file(
         lang='en',
         tmp_path=tmp_path,
         tokens=tokens,
-        sent_id='test-1',
-        text='John saw Mary .',  # Mismatch: space before period
+        text='The quick brown .',  # Mismatch: space before period
     )
     validator = ConlluValidator(level=2)
-    errors = validator.validate_string(text)
+    errors = validator.validate_file(test_file)
     text_errors = [e for e in errors if 'text-mismatch' in e]
     assert len(text_errors) == 1
 
 
 def test_missing_text_attribute(tmp_path: Path) -> None:
     """Test detection of missing text attribute."""
+    # Manually construct file without text attribute (factory always includes it)
     tokens = [
         {
             'id': 1,
-            'form': 'John',
-            'lemma': 'John',
-            'upostag': 'PROPN',
+            'form': 'The',
+            'lemma': 'the',
+            'upostag': 'DET',
             'xpostag': '_',
             'feats': '_',
-            'head': 2,
-            'deprel': 'nsubj',
+            'head': 3,
+            'deprel': 'det',
             'deps': '_',
             'misc': '_',
         },
         {
             'id': 2,
-            'form': 'saw',
-            'lemma': 'see',
-            'upostag': 'VERB',
+            'form': 'quick',
+            'lemma': 'quick',
+            'upostag': 'ADJ',
             'xpostag': '_',
             'feats': '_',
-            'head': 0,
-            'deprel': 'root',
+            'head': 3,
+            'deprel': 'amod',
             'deps': '_',
             'misc': '_',
         },
     ]
-    # Generate text without the text metadata
-    text = ConlluSentenceFactory.as_text(
-        lang='en',
-        tmp_path=tmp_path,
-        tokens=tokens,
-        sent_id='test-1',
-        text=None,  # No text metadata
-    )
+
+    test_file = tmp_path / 'test.conllu'
+    lines = ['# sent_id = test-1']
+    for token in tokens:
+        line = '\t'.join(
+            str(token[field])
+            for field in ['id', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc']
+        )
+        lines.append(line)
+    lines.append('')  # Blank line
+    test_file.write_text('\n'.join(lines))
+
     validator = ConlluValidator(level=2)
-    errors = validator.validate_string(text)
+    errors = validator.validate_file(test_file)
     missing_text_errors = [e for e in errors if 'missing-text' in e]
     assert len(missing_text_errors) == 1
 
 
 def test_missing_sent_id_attribute(tmp_path: Path) -> None:
     """Test detection of missing sent_id attribute."""
+    # Manually construct file without sent_id attribute (factory always includes it)
     tokens = [
         {
             'id': 1,
-            'form': 'John',
-            'lemma': 'John',
-            'upostag': 'PROPN',
+            'form': 'The',
+            'lemma': 'the',
+            'upostag': 'DET',
             'xpostag': '_',
             'feats': '_',
             'head': 2,
-            'deprel': 'nsubj',
+            'deprel': 'det',
             'deps': '_',
             'misc': '_',
         },
         {
             'id': 2,
-            'form': 'saw',
-            'lemma': 'see',
-            'upostag': 'VERB',
+            'form': 'quick',
+            'lemma': 'quick',
+            'upostag': 'ADJ',
             'xpostag': '_',
             'feats': '_',
             'head': 0,
@@ -200,15 +211,19 @@ def test_missing_sent_id_attribute(tmp_path: Path) -> None:
             'misc': '_',
         },
     ]
-    # Generate text without the sent_id metadata
-    text = ConlluSentenceFactory.as_text(
-        lang='en',
-        tmp_path=tmp_path,
-        tokens=tokens,
-        sent_id=None,  # No sent_id metadata
-        text='John saw Mary.',
-    )
+
+    test_file = tmp_path / 'test.conllu'
+    lines = ['# text = The quick.']
+    for token in tokens:
+        line = '\t'.join(
+            str(token[field])
+            for field in ['id', 'form', 'lemma', 'upostag', 'xpostag', 'feats', 'head', 'deprel', 'deps', 'misc']
+        )
+        lines.append(line)
+    lines.append('')  # Blank line
+    test_file.write_text('\n'.join(lines))
+
     validator = ConlluValidator(level=2)
-    errors = validator.validate_string(text)
+    errors = validator.validate_file(test_file)
     missing_id_errors = [e for e in errors if 'missing-sent-id' in e]
     assert len(missing_id_errors) == 1
