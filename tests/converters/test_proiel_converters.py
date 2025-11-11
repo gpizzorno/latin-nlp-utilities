@@ -1,6 +1,6 @@
 import pytest
 
-from latin_utilities.converters.proiel_to_perseus import (
+from nlp_utilities.converters.xpos.proiel_converters import (
     to_case,
     to_degree,
     to_gender,
@@ -21,7 +21,7 @@ from latin_utilities.converters.proiel_to_perseus import (
         (None, '-'),
     ],
 )
-def test_to_number(input_value, expected):
+def test_to_number(input_value: str | None, expected: str) -> None:
     assert to_number(input_value) == expected
 
 
@@ -37,7 +37,7 @@ def test_to_number(input_value, expected):
         (None, '-'),
     ],
 )
-def test_to_tense(input_value, expected):
+def test_to_tense(input_value: str | None, expected: str) -> None:
     assert to_tense(input_value) == expected
 
 
@@ -52,7 +52,7 @@ def test_to_tense(input_value, expected):
         (None, '-'),
     ],
 )
-def test_to_mood(input_value, expected):
+def test_to_mood(input_value: str | None, expected: str) -> None:
     assert to_mood(input_value) == expected
 
 
@@ -66,7 +66,7 @@ def test_to_mood(input_value, expected):
         (None, '-'),
     ],
 )
-def test_to_voice(input_value, expected):
+def test_to_voice(input_value: str | None, expected: str) -> None:
     assert to_voice(input_value) == expected
 
 
@@ -81,7 +81,7 @@ def test_to_voice(input_value, expected):
         (None, '-'),
     ],
 )
-def test_to_gender(input_value, expected):
+def test_to_gender(input_value: str | None, expected: str) -> None:
     assert to_gender(input_value) == expected
 
 
@@ -99,7 +99,7 @@ def test_to_gender(input_value, expected):
         (None, '-'),
     ],
 )
-def test_to_case(input_value, expected):
+def test_to_case(input_value: str | None, expected: str) -> None:
     assert to_case(input_value) == expected
 
 
@@ -114,5 +114,5 @@ def test_to_case(input_value, expected):
         (None, '-'),
     ],
 )
-def test_to_degree(input_value, expected):
+def test_to_degree(input_value: str | None, expected: str) -> None:
     assert to_degree(input_value) == expected

@@ -1,6 +1,6 @@
 import pytest
 
-from latin_utilities.converters.ittb_to_perseus import (
+from nlp_utilities.converters.xpos.ittb_converters import (
     cas_to_case,
     cas_to_number,
     gen_to_gender,
@@ -26,7 +26,7 @@ from latin_utilities.converters.ittb_to_perseus import (
         ('x', '-'),
     ],
 )
-def test_gen_to_person(value, expected):
+def test_gen_to_person(value: str | None, expected: str) -> None:
     assert gen_to_person(value) == expected
 
 
@@ -43,7 +43,7 @@ def test_gen_to_person(value, expected):
         ('x', '-'),
     ],
 )
-def test_gen_to_number(value, expected):
+def test_gen_to_number(value: str | None, expected: str) -> None:
     assert gen_to_number(value) == expected
 
 
@@ -66,7 +66,7 @@ def test_gen_to_number(value, expected):
         ('', '-'),
     ],
 )
-def test_cas_to_number(value, expected):
+def test_cas_to_number(value: str | None, expected: str) -> None:
     assert cas_to_number(value) == expected
 
 
@@ -83,7 +83,7 @@ def test_cas_to_number(value, expected):
         ('x', '-'),
     ],
 )
-def test_tem_to_tense(value, expected):
+def test_tem_to_tense(value: str | None, expected: str) -> None:
     assert tem_to_tense(value) == expected
 
 
@@ -109,7 +109,7 @@ def test_tem_to_tense(value, expected):
         ('', '-'),
     ],
 )
-def test_mod_to_mood(value, expected):
+def test_mod_to_mood(value: str | None, expected: str) -> None:
     assert mod_to_mood(value) == expected
 
 
@@ -135,7 +135,7 @@ def test_mod_to_mood(value, expected):
         ('', '-'),
     ],
 )
-def test_mod_to_voice(value, expected):
+def test_mod_to_voice(value: str | None, expected: str) -> None:
     assert mod_to_voice(value) == expected
 
 
@@ -149,7 +149,7 @@ def test_mod_to_voice(value, expected):
         ('x', '-'),
     ],
 )
-def test_gen_to_gender(value, expected):
+def test_gen_to_gender(value: str | None, expected: str) -> None:
     assert gen_to_gender(value) == expected
 
 
@@ -172,7 +172,7 @@ def test_gen_to_gender(value, expected):
         ('', '-'),
     ],
 )
-def test_cas_to_case(value, expected):
+def test_cas_to_case(value: str | None, expected: str) -> None:
     assert cas_to_case(value) == expected
 
 
@@ -186,5 +186,5 @@ def test_cas_to_case(value, expected):
         ('x', '-'),
     ],
 )
-def test_grnp_to_degree(value, expected):
+def test_grnp_to_degree(value: str | None, expected: str) -> None:
     assert grnp_to_degree(value) == expected

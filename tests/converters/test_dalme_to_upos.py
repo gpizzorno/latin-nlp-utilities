@@ -1,10 +1,10 @@
 import pytest
 
-from latin_utilities.converters.dalmepos_to_upos import dalmepos_to_upos
+from nlp_utilities.converters.upos import dalme_to_upos
 
 
 @pytest.mark.parametrize(
-    ('dalmepos_tag', 'expected_upos'),
+    ('dalme_tag', 'expected_upos'),
     [
         ('adjective', 'ADJ'),
         ('adposition', 'ADP'),
@@ -19,8 +19,8 @@ from latin_utilities.converters.dalmepos_to_upos import dalmepos_to_upos
         ('verb', 'VERB'),
     ],
 )
-def test_dalmepos_to_upos_known_tags(dalmepos_tag, expected_upos):
-    assert dalmepos_to_upos(dalmepos_tag) == expected_upos
+def test_dalme_to_upos_known_tags(dalme_tag: str, expected_upos: str) -> None:
+    assert dalme_to_upos(dalme_tag) == expected_upos
 
 
 @pytest.mark.parametrize(
@@ -34,5 +34,5 @@ def test_dalmepos_to_upos_known_tags(dalmepos_tag, expected_upos):
         123,
     ],
 )
-def test_dalmepos_to_upos_unknown_tags(unknown_tag):
-    assert dalmepos_to_upos(unknown_tag) == 'X'
+def test_dalme_to_upos_unknown_tags(unknown_tag: str | None) -> None:
+    assert dalme_to_upos(unknown_tag) == 'X'  # type: ignore [arg-type]
