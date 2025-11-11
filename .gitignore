@@ -1,5 +1,13 @@
 # MacOS
 .DS_Store
+test_data/
+.notes/
+.vscode/
+models/
+*_bak/
+temp_*
+tex/
+TODO*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
