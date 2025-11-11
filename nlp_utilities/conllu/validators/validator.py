@@ -17,6 +17,7 @@ from .enhanced_deps import EnhancedDepsValidationMixin
 from .error_reporter import ErrorReporter
 from .feature_format import FeatureValidationMixin
 from .format import FormatValidationMixin
+from .id_sequence import IdSequenceValidationMixin
 from .language_content import LanguageContentValidationMixin
 from .language_format import LanguageFormatValidationMixin
 from .metadata import MetadataValidationMixin
@@ -27,6 +28,7 @@ from .unicode import UnicodeValidationMixin
 
 class ConlluValidator(
     FormatValidationMixin,
+    IdSequenceValidationMixin,
     UnicodeValidationMixin,
     EnhancedDepsValidationMixin,
     MetadataValidationMixin,
@@ -170,6 +172,7 @@ class ConlluValidator(
         """
         self._validate_unicode(sentence)  # Level 1: Unicode
         self._validate_format(sentence)  # Level 1+2: Format
+        self._validate_id_sequence(sentence)  # Level 1: ID sequence
         self._validate_structure(sentence)  # Level 1+2: Structural
 
         if self.level < 2:  # noqa: PLR2004
