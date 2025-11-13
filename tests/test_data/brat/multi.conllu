@@ -1,0 +1,24 @@
+# sent_id = 1
+# text = Gallia est omnis divisa in partes tres
+1	Gallia	Gallia	PROPN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	4	nsubj:pass	4:nsubj:pass	_
+2	est	sum	AUX	v3spia---	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	4	aux:pass	4:aux:pass	_
+3	omnis	omnis	ADJ	a-s---fn-	Case=Nom|Gender=Fem|Number=Sing	1	amod	1:amod	_
+4	divisa	divido	VERB	v-sppefn-	Case=Nom|Gender=Fem|Number=Sing|VerbForm=Part|Voice=Pass	0	root	0:root	_
+5	in	in	ADP	r--------	_	6	case	6:case	_
+6	partes	pars	NOUN	n-p---fa-	Case=Acc|Gender=Fem|Number=Plur	4	obl	4:obl	_
+7	tres	tres	NUM	n-p---fa-	Case=Acc|Gender=Fem|Number=Plur	6	nummod	6:nummod	SpaceAfter=No
+8	.	.	PUNCT	u--------	_	4	punct	4:punct	_
+
+# sent_id = 2
+# text = Item unum alium smaragdum et aliud saphirum cum virgis aureis .
+1	Item	item	ADV	d--------	_	4	advmod	4:advmod	_
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	4	nummod	4:nummod	_
+3	alium	alius	DET	p-s---ma-	Case=Acc|Gender=Masc|Number=Sing|PronType=Ind	4	det	4:det	_
+4	smaragdum	smaragdus	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	_
+5	et	et	CCONJ	c--------	_	6	cc	6:cc	_
+6	aliud	alius	PRON	p-s---nn-	Case=Nom|Gender=Neut|Number=Sing|PronType=Ind	4	conj	4:conj	_
+7	saphirum	sapphirus	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	6	nmod	6:nmod	_
+8	cum	cum	SCONJ	c--------	_	9	mark	9:mark	_
+9	virgis	virga	NOUN	n-p---mb-	Case=Abl|Gender=Masc|Number=Plur	4	acl	4:acl	_
+10	aureis	aureus	ADJ	a-p---mbp	Case=Abl|Degree=Pos|Gender=Masc|Number=Plur	9	amod	9:amod	_
+11	.	.	PUNCT	u--------	_	4	punct	4:punct	_
