@@ -30,7 +30,20 @@ dependencies = [
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-dev = ["factory_boy", "hypothesis", "mypy", "pytest", "pytest-cov", "pytest-mock"]
+dev = [
+    "factory_boy",
+    "hypothesis",
+    "mypy",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+]
+docs = [
+    "sphinx>=7.2.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "sphinx-autodoc-typehints>=1.25.0",
+    "myst-parser>=2.0.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/gabep/latin-nlp-utilities/"
@@ -44,6 +57,7 @@ line-length = 120
 target-version = "py39"
 ignore-init-module-imports = true
 extend-include = ["*.ipynb"]
+exclude = ["docs"]
 
 [tool.ruff.lint]
 ignore = [
@@ -137,7 +151,7 @@ disallow_untyped_calls = true
 disallow_untyped_decorators = true
 disallow_untyped_defs = true
 enable_error_code = "ignore-without-code"
-exclude = [".venv/"]
+exclude = [".venv/", "docs"]
 follow_imports = "normal"
 ignore_missing_imports = true
 no_implicit_optional = true
