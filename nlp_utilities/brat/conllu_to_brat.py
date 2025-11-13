@@ -15,7 +15,7 @@ from .utils import (
 
 
 # Based on https://github.com/nlplab/brat/blob/master/tools/conllXtostandoff.py
-def conllu_to_brat(  # noqa: C901
+def conllu_to_brat(
     conllu_filename: str,
     output_directory: str,
     sents_per_doc: int | None = None,
@@ -41,7 +41,7 @@ def conllu_to_brat(  # noqa: C901
     if not output_path.is_dir():
         output_path.mkdir(parents=True, exist_ok=True)
 
-    docnum = 1
+    docnum = 0 if sents_per_doc is None else 1
     metadata = {
         'conllu_filename': conllu_filename,
         'sents_per_doc': sents_per_doc,
@@ -74,19 +74,15 @@ def conllu_to_brat(  # noqa: C901
                 _write_document(sentences, conllu_filename, output_directory, docnum)
                 sentences = []
                 docnum += 1
-                continue
 
-            # process leftovers, if any
-            if len(entities) > 0:
-                sentences.append((sent_id, entities, relations))
-
-            if len(sentences) > 0:
-                _write_document(sentences, conllu_filename, output_directory, docnum)
+    # process leftovers, if any
+    if len(sentences) > 0:
+        _write_document(sentences, conllu_filename, output_directory, docnum)
 
     write_auxiliary_files(output_directory, metadata)
 
 
-def _write_document(
+def _write_document(  # noqa: C901, PLR0915
     sentences: list[tuple[str, list[dict[str, str | int]], list[dict[str, str | int]]]],
     ref_filename: str,
     output_directory: str,
@@ -102,10 +98,12 @@ def _write_document(
         docnum: An optional document number to append to the output filename.
 
     """
-    fn_base = f'{Path(ref_filename).name}-doc-{str(docnum).zfill(3)}' if docnum != 0 else Path(ref_filename).name
+    # Remove .conllu extension if present to avoid .conllu.ann and .conllu.txt files
+    base_name = Path(ref_filename).stem if Path(ref_filename).suffix == '.conllu' else Path(ref_filename).name
+    fn_base = f'{base_name}-doc-{str(docnum).zfill(3)}' if docnum != 0 else base_name
     output_path = Path(output_directory) / fn_base
 
-    offset = 1
+    offset = 0
     next_ent_id = 1
     next_rel_id = 1
     doctext = []
@@ -138,16 +136,26 @@ def _write_document(
             tokens.append(form)
             entity['start'] = offset
             entity['end'] = offset + len(form)
-            entity['upos'] = type_to_safe_type(entity.get('upos', 'X'))  # type: ignore [arg-type]
+            upos = entity.get('upos')
+            if not upos or upos == '_':
+                upos = 'X'
+            entity['upos'] = type_to_safe_type(upos)  # type: ignore [arg-type]
             offset += len(form) + 1  # +1 for space
 
             annotations.append(entity)
+
+        # Add the text for this sentence
+        if tokens:
             doctext.append(' '.join(tokens))
 
         # output relations
         for relation in relations:
             head_id = relation['head']
             dep_id = relation['id']
+
+            # Skip relations where head or dep is None (from HEAD='_')
+            if head_id is None or dep_id is None:
+                continue
 
             if head_id not in id_map or dep_id not in id_map:
                 msg = f'Invalid relation IDs in sentence {sent_id}: head {head_id}, dep {dep_id}.'
@@ -156,10 +164,13 @@ def _write_document(
             relation['head'] = id_map[head_id]
             relation['dep'] = id_map[dep_id]
             relation['id'] = next_rel_id
-            relation['deprel'] = type_to_safe_type(relation.get('deprel', 'X'))  # type: ignore [arg-type]
+            deprel = relation.get('deprel')
+            if not deprel or deprel == '_':
+                deprel = 'X'
+            relation['deprel'] = type_to_safe_type(deprel)  # type: ignore [arg-type]
             next_rel_id += 1
 
             annotations.append(relation)
 
-    write_annotations(output_path, annotations)
-    write_text(output_path, doctext)
+    write_annotations(f'{output_path}.ann', annotations)
+    write_text(f'{output_path}.txt', doctext)
