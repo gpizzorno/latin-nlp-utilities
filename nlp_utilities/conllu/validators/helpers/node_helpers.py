@@ -40,7 +40,7 @@ def is_word(token_id: int | tuple[int, int] | str) -> bool:
     return bool(re.match(r'^[1-9][0-9]*$', str(token_id)))
 
 
-def is_multiword_token(token_id: int | tuple[int, int] | str) -> bool:
+def is_multiword_token(token_id: int | tuple[int, str, int] | str) -> bool:
     """Check if the token ID represents a multiword token (range like 1-2).
 
     Arguments:
@@ -60,7 +60,7 @@ def is_multiword_token(token_id: int | tuple[int, int] | str) -> bool:
         False
 
     """
-    if isinstance(token_id, tuple):
+    if isinstance(token_id, tuple) and not is_empty_node(token_id):
         return True
     if isinstance(token_id, int):
         return False
@@ -146,8 +146,8 @@ def is_word_part_of_mwt(
 ) -> bool:
     """Check if a word token ID is part of a multiword token range."""
     for token in sentence:
-        if isinstance(token['id'], tuple):
-            start, _sep, end = token['id']
+        if is_multiword_token(token['id']):
+            start, _sep, end = get_mwt_range_from_id(token['id'])
             if start <= token_id <= end:
                 return True
     return False
@@ -161,6 +161,31 @@ def is_part_of_mwt(
     if not isinstance(token_id, int):
         return False
     return any(start <= token_id <= end for start, end in mwt_ranges)
+
+
+def get_mwt_range_from_id(token_id: tuple[int, str, int] | str) -> tuple[int, str, int]:
+    """Get the MWT range (start, end) from a token ID if it is an MWT.
+
+    Arguments:
+        token_id: Token ID as tuple or string
+
+    Returns:
+        Tuple of (start, separator, end)
+
+    Raises:
+        ValueError: If token_id is not a valid MWT ID
+
+    """
+    if isinstance(token_id, tuple):
+        return token_id
+    if isinstance(token_id, str):
+        m = re.match(MULTIWORD_TOKEN, token_id)
+        if m:
+            start_str, sep, end_str = m.groups()
+            return (int(start_str), sep, int(end_str))
+
+    msg = f'Not a valid MWT ID: {token_id}'
+    raise ValueError(msg)
 
 
 def add_token_to_reconstruction(
