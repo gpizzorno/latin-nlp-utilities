@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_mwt_before_words(tmp_path: Path) -> None:
@@ -49,7 +50,7 @@ def test_mwt_before_words(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert not any('mwt-not-before-words' in e for e in errors)
+    assert_no_errors_of_type(errors, 'mwt-not-before-words')
 
 
 def test_mwt_after_words(tmp_path: Path) -> None:
@@ -95,8 +96,8 @@ def test_mwt_after_words(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('mwt-not-before-words' in e for e in errors)
-    assert any('1-2' in e for e in errors)
+    assert_error_count(errors, 1, 'mwt-not-before-words')
+    assert_error_contains(errors, 'mwt-not-before-words', '1-2')
 
 
 def test_mwt_between_words(tmp_path: Path) -> None:
@@ -142,4 +143,4 @@ def test_mwt_between_words(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('mwt-not-before-words' in e for e in errors)
+    assert_error_count(errors, 1, 'mwt-not-before-words')

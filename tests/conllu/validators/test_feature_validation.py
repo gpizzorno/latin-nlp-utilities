@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 # Test Level 2 feature format validation
@@ -15,7 +16,7 @@ def test_valid_features(tmp_path: Path, sentence_la_tokens: list[dict[str, str |
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
-    assert not any('Feature' in err or 'feature' in err for err in errors)
+    assert_no_errors_of_type(errors, 'invalid-feature')
 
 
 def test_invalid_feature_name(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -27,9 +28,8 @@ def test_invalid_feature_name(tmp_path: Path, sentence_la_tokens: list[dict[str,
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'invalid-feature' in error_str
-    assert 'Invalid feature name' in error_str
+    assert_error_count(errors, 1, 'invalid-feature')
+    assert_error_contains(errors, 'invalid-feature', 'case')
 
 
 def test_invalid_feature_value(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -41,9 +41,8 @@ def test_invalid_feature_value(tmp_path: Path, sentence_la_tokens: list[dict[str
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'invalid-feature-value' in error_str
-    assert 'Spurious value' in error_str
+    assert_error_count(errors, 1, 'invalid-feature-value')
+    assert_error_contains(errors, 'invalid-feature-value', 'nom')
 
 
 def test_repeated_feature(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -80,9 +79,7 @@ def test_unsorted_features(tmp_path: Path, sentence_la_tokens: list[dict[str, st
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'unsorted-features' in error_str
-    assert 'must be sorted' in error_str
+    assert_error_count(errors, 1, 'unsorted-features')
 
 
 def test_unsorted_feature_values(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -109,8 +106,7 @@ def test_layered_feature_valid(tmp_path: Path, sentence_la_tokens: list[dict[str
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
     # Should not report format errors (though may report unknown feature at Level 4)
-    error_str = '\n'.join(errors)
-    assert 'invalid-feature' not in error_str
+    assert_no_errors_of_type(errors, 'invalid-feature')
 
 
 def test_layered_feature_invalid(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -122,9 +118,8 @@ def test_layered_feature_invalid(tmp_path: Path, sentence_la_tokens: list[dict[s
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Layered brackets must be lowercase
-    assert 'invalid-feature' in error_str
+    assert_error_count(errors, 1, 'invalid-feature')
 
 
 # Test Level 4 feature value validation against feats.json
@@ -136,9 +131,8 @@ def test_unknown_feature(tmp_path: Path, sentence_la_tokens: list[dict[str, str 
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'feature-unknown' in error_str
-    assert 'not documented' in error_str
+    assert_error_count(errors, 1, 'feature-unknown')
+    assert_error_contains(errors, 'feature-unknown', 'not documented')
 
 
 def test_feature_not_permitted(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -163,9 +157,8 @@ def test_unknown_feature_value(tmp_path: Path, sentence_la_tokens: list[dict[str
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should report unknown value (if Case is permitted for Latin)
-    assert 'feature-value-unknown' in error_str or 'feature-unknown' in error_str
+    assert_error_count(errors, 1, 'feature-value-unknown')
 
 
 def test_feature_upos_not_permitted(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -205,9 +198,8 @@ def test_layered_feature_value_validation(tmp_path: Path, sentence_la_tokens: li
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should report unknown value for Person feature (999 is not a valid person value)
-    assert 'feature-value-unknown' in error_str or 'feature-unknown' in error_str
+    assert_error_count(errors, 1, 'feature-value-unknown')
 
 
 def test_valid_latin_features(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -239,11 +231,10 @@ def test_multiple_tokens_with_features(tmp_path: Path, sentence_la_tokens: list[
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Token 1: unsorted features
-    assert 'unsorted-features' in error_str
+    assert_error_count(errors, 1, 'unsorted-features')
     # Token 2: invalid feature name (lowercase)
-    assert 'invalid-feature' in error_str
+    assert_error_count(errors, 1, 'invalid-feature')
 
 
 def test_skip_multiword_tokens(tmp_path: Path) -> None:
@@ -290,8 +281,10 @@ def test_skip_multiword_tokens(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
     # Should not crash or report errors for MWT range (1-2)
-    _error_str = '\n'.join(errors)
     # Valid features on word tokens should not trigger errors
+    assert_no_errors_of_type(errors, 'word-id-sequence')
+    assert_no_errors_of_type(errors, 'invalid-upos')
+    assert_no_errors_of_type(errors, 'invalid-deprel')
 
 
 def test_empty_features(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -303,7 +296,7 @@ def test_empty_features(tmp_path: Path, sentence_la_tokens: list[dict[str, str |
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
     # Empty features should not trigger feature validation errors
-    assert not any('feature' in err.lower() for err in errors)
+    assert_no_errors_of_type(errors, 'Morpho')
 
 
 def test_level_2_only_format(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -315,7 +308,7 @@ def test_level_2_only_format(tmp_path: Path, sentence_la_tokens: list[dict[str, 
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
     # At Level 2, should not report feature-unknown
-    assert not any('feature-unknown' in err for err in errors)
+    assert_no_errors_of_type(errors, 'feature-unknown')
     # But format errors like invalid-feature should still be caught if format is wrong
 
 
@@ -327,10 +320,9 @@ def test_level_4_includes_format_and_values(tmp_path: Path, sentence_la_tokens: 
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should report both unsorted features (Level 2) and unknown feature (Level 4)
-    assert 'unsorted-features' in error_str
-    assert 'feature-unknown' in error_str
+    assert_error_count(errors, 1, 'feature-unknown')
+    assert_error_count(errors, 1, 'unsorted-features')
 
 
 def test_multiple_feature_errors(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -347,4 +339,6 @@ def test_multiple_feature_errors(tmp_path: Path, sentence_la_tokens: list[dict[s
     # - invalid feature name (case should be Case)
     # - invalid feature value (nom should be Nom)
     # - unsorted values (Acc,Nom should be Acc,Nom - already sorted!)
-    assert any('unsorted-features' in err or 'invalid-feature' in err for err in errors)
+    assert_error_count(errors, 1, 'unsorted-features')
+    assert_error_count(errors, 1, 'invalid-feature')
+    assert_error_count(errors, 1, 'invalid-feature-value')  # nom is invalid value

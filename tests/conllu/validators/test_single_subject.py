@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_single_subject(tmp_path: Path) -> None:
@@ -37,8 +38,7 @@ def test_valid_single_subject(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='cat runs')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    subject_errors = [e for e in errors if 'too-many-subjects' in e]
-    assert len(subject_errors) == 0
+    assert_no_errors_of_type(errors, 'too-many-subjects')
 
 
 def test_valid_two_subjects(tmp_path: Path) -> None:
@@ -96,8 +96,7 @@ def test_valid_two_subjects(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='he thinks cat runs')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    subject_errors = [e for e in errors if 'too-many-subjects' in e]
-    assert len(subject_errors) == 0
+    assert_no_errors_of_type(errors, 'too-many-subjects')
 
 
 def test_invalid_three_subjects(tmp_path: Path) -> None:
@@ -155,9 +154,8 @@ def test_invalid_three_subjects(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='cat dog bird run')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    subject_errors = [e for e in errors if 'too-many-subjects' in e]
-    assert len(subject_errors) == 1
-    assert any('[1, 2, 3]' in e for e in subject_errors)
+    assert_error_count(errors, 1, 'too-many-subjects')
+    assert_error_contains(errors, 'too-many-subjects', '[1, 2, 3]')
 
 
 def test_csubj_counted_as_subject(tmp_path: Path) -> None:
@@ -216,5 +214,4 @@ def test_csubj_counted_as_subject(tmp_path: Path) -> None:
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
     # Should not have too-many-subjects error (nsubj + csubj = 2)
-    subject_errors = [e for e in errors if 'too-many-subjects' in e]
-    assert len(subject_errors) == 0
+    assert_no_errors_of_type(errors, 'too-many-subjects')

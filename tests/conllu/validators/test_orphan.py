@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_orphan_with_conj_parent(tmp_path: Path) -> None:
@@ -90,8 +91,7 @@ def test_valid_orphan_with_conj_parent(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    orphan_errors = [e for e in errors if 'orphan-parent' in e]
-    assert len(orphan_errors) == 0
+    assert_no_errors_of_type(errors, 'orphan-parent')
 
 
 def test_valid_orphan_with_parataxis_parent(tmp_path: Path) -> None:
@@ -178,8 +178,7 @@ def test_valid_orphan_with_parataxis_parent(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    orphan_errors = [e for e in errors if 'orphan-parent' in e]
-    assert len(orphan_errors) == 0
+    assert_no_errors_of_type(errors, 'orphan-parent')
 
 
 def test_valid_orphan_with_csubj_parent(tmp_path: Path) -> None:
@@ -237,8 +236,7 @@ def test_valid_orphan_with_csubj_parent(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='he thinks Mary vegetables')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    orphan_errors = [e for e in errors if 'orphan-parent' in e]
-    assert len(orphan_errors) == 0
+    assert_no_errors_of_type(errors, 'orphan-parent')
 
 
 def test_invalid_orphan_with_nsubj_parent(tmp_path: Path) -> None:
@@ -313,9 +311,8 @@ def test_invalid_orphan_with_nsubj_parent(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    orphan_errors = [e for e in errors if 'orphan-parent' in e]
-    assert len(orphan_errors) == 1
-    assert any('nsubj' in e for e in orphan_errors)
+    assert_error_count(errors, 1, 'orphan-parent')
+    assert_error_contains(errors, 'orphan-parent', 'nsubj')
 
 
 def test_invalid_orphan_with_obj_parent(tmp_path: Path) -> None:
@@ -390,9 +387,8 @@ def test_invalid_orphan_with_obj_parent(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    orphan_errors = [e for e in errors if 'orphan-parent' in e]
-    assert len(orphan_errors) == 1
-    assert any('obj' in e for e in orphan_errors)
+    assert_error_count(errors, 1, 'orphan-parent')
+    assert_error_contains(errors, 'orphan-parent', 'obj')
 
 
 def test_orphan_with_subtype(tmp_path: Path) -> None:
@@ -480,5 +476,4 @@ def test_orphan_with_subtype(tmp_path: Path) -> None:
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
     # Should not have orphan-parent error (base relation is orphan, parent is conj)
-    orphan_errors = [e for e in errors if 'orphan-parent' in e]
-    assert len(orphan_errors) == 0
+    assert_no_errors_of_type(errors, 'orphan-parent')

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_no_errors_of_type
 
 
 # Test negation exception for functional words
@@ -50,8 +51,7 @@ def test_valid_negation_on_aux(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-aux-cop' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-aux-cop')
 
 
 def test_valid_negation_on_mark(tmp_path: Path) -> None:
@@ -85,8 +85,7 @@ def test_valid_negation_on_mark(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_valid_negation_on_case(tmp_path: Path) -> None:
@@ -120,8 +119,7 @@ def test_valid_negation_on_case(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_negation_not_allowed_on_punct(tmp_path: Path) -> None:
@@ -167,6 +165,5 @@ def test_negation_not_allowed_on_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Punct cannot have advmod children, even negation
-    assert 'leaf-punct' in error_str
+    assert_no_errors_of_type(errors, 'leaf-punct')

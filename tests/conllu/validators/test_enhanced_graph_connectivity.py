@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_connected_enhanced_graph(tmp_path: Path) -> None:
@@ -37,9 +38,7 @@ def test_connected_enhanced_graph(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    connectivity_errors = [e for e in errors if 'unconnected' in e or 'not reachable' in e]
-    assert len(connectivity_errors) == 0, f'Expected no connectivity errors, got: {connectivity_errors}'
+    assert_no_errors_of_type(errors, 'unconnected-egraph')
 
 
 def test_disconnected_enhanced_graph_single_node(tmp_path: Path) -> None:
@@ -74,10 +73,8 @@ def test_disconnected_enhanced_graph_single_node(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    assert any('unconnected-egraph' in e and "'2'" in e for e in errors), (
-        f'Expected unconnected-egraph error for node 2, got: {errors}'
-    )
+    assert_error_count(errors, 1, 'unconnected-egraph')
+    assert_error_contains(errors, 'unconnected-egraph', "'2'")
 
 
 def test_disconnected_enhanced_graph_multiple_nodes(tmp_path: Path) -> None:
@@ -124,13 +121,9 @@ def test_disconnected_enhanced_graph_multiple_nodes(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    connectivity_errors = [e for e in errors if 'unconnected-egraph' in e]
-    assert len(connectivity_errors) == 1, f'Expected 1 connectivity error, got: {len(connectivity_errors)}'
-    # Should mention both nodes
-    error_text = connectivity_errors[0]
-    assert '2' in error_text, f'Expected error to mention node 2, got: {error_text}'
-    assert '3' in error_text, f'Expected error to mention node 3, got: {error_text}'
+    assert_error_count(errors, 1, 'unconnected-egraph')
+    assert_error_contains(errors, 'unconnected-egraph', "'2'")
+    assert_error_contains(errors, 'unconnected-egraph', "'3'")
 
 
 def test_connected_with_empty_nodes(tmp_path: Path) -> None:
@@ -176,9 +169,7 @@ def test_connected_with_empty_nodes(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    connectivity_errors = [e for e in errors if 'unconnected-egraph' in e]
-    assert len(connectivity_errors) == 0, f'Expected no connectivity errors, got: {connectivity_errors}'
+    assert_no_errors_of_type(errors, 'unconnected-egraph')
 
 
 def test_disconnected_empty_node(tmp_path: Path) -> None:
@@ -225,10 +216,8 @@ def test_disconnected_empty_node(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    assert any('unconnected-egraph' in e and '1.1' in e for e in errors), (
-        f'Expected unconnected-egraph error for empty node 1.1, got: {errors}'
-    )
+    assert_error_count(errors, 1, 'unconnected-egraph')
+    assert_error_contains(errors, 'unconnected-egraph', "'1.1'")
 
 
 def test_no_enhanced_deps(tmp_path: Path) -> None:
@@ -263,11 +252,7 @@ def test_no_enhanced_deps(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    connectivity_errors = [e for e in errors if 'unconnected-egraph' in e]
-    assert len(connectivity_errors) == 0, (
-        f'Expected no connectivity errors when DEPS is absent, got: {connectivity_errors}'
-    )
+    assert_no_errors_of_type(errors, 'unconnected-egraph')
 
 
 def test_partial_enhanced_deps(tmp_path: Path) -> None:
@@ -314,11 +299,9 @@ def test_partial_enhanced_deps(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
     # Should report node 2 as unreachable (word 3 is reachable)
-    assert any('unconnected-egraph' in e and "'2'" in e for e in errors), (
-        f'Expected unconnected-egraph error for node 2, got: {errors}'
-    )
+    assert_error_count(errors, 1, 'unconnected-egraph')
+    assert_error_contains(errors, 'unconnected-egraph', "'2'")
 
 
 def test_complex_connected_graph(tmp_path: Path) -> None:
@@ -376,9 +359,7 @@ def test_complex_connected_graph(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    connectivity_errors = [e for e in errors if 'unconnected-egraph' in e]
-    assert len(connectivity_errors) == 0, f'Expected no connectivity errors, got: {connectivity_errors}'
+    assert_no_errors_of_type(errors, 'unconnected-egraph')
 
 
 def test_cycle_in_enhanced_graph(tmp_path: Path) -> None:
@@ -425,7 +406,5 @@ def test_cycle_in_enhanced_graph(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    connectivity_errors = [e for e in errors if 'unconnected-egraph' in e]
     # Should not crash and should not report connectivity errors (all reachable)
-    assert len(connectivity_errors) == 0, f'Expected no connectivity errors with cycle, got: {connectivity_errors}'
+    assert_no_errors_of_type(errors, 'unconnected-egraph')

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_basic_mwt(tmp_path: Path) -> None:
@@ -66,8 +67,7 @@ def test_basic_mwt(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 0, f'Unexpected text mismatch errors: {text_errors}'
+    assert_no_errors_of_type(errors, 'text-mismatch')
 
 
 def test_multiple_mwts(tmp_path: Path) -> None:
@@ -178,8 +178,7 @@ def test_multiple_mwts(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 0, f'Unexpected text mismatch errors: {text_errors}'
+    assert_no_errors_of_type(errors, 'text-mismatch')
 
 
 def test_mwt_with_spaceafter_no(tmp_path: Path) -> None:
@@ -254,8 +253,7 @@ def test_mwt_with_spaceafter_no(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 0, f'Unexpected text mismatch errors: {text_errors}'
+    assert_no_errors_of_type(errors, 'text-mismatch')
 
 
 def test_consecutive_mwts(tmp_path: Path) -> None:
@@ -366,8 +364,7 @@ def test_consecutive_mwts(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 0, f'Unexpected text mismatch errors: {text_errors}'
+    assert_no_errors_of_type(errors, 'text-mismatch')
 
 
 def test_mwt_with_empty_nodes(tmp_path: Path) -> None:
@@ -442,8 +439,7 @@ def test_mwt_with_empty_nodes(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 0, f'Unexpected text mismatch errors: {text_errors}'
+    assert_no_errors_of_type(errors, 'text-mismatch')
 
 
 def test_three_way_mwt(tmp_path: Path) -> None:
@@ -506,8 +502,7 @@ def test_three_way_mwt(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 0, f'Unexpected text mismatch errors: {text_errors}'
+    assert_no_errors_of_type(errors, 'text-mismatch')
 
 
 def test_mwt_reconstruction_error(tmp_path: Path) -> None:
@@ -571,5 +566,4 @@ def test_mwt_reconstruction_error(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 1, f'Expected text mismatch error but got: {errors}'
+    assert_error_count(errors, 1, 'text-mismatch')

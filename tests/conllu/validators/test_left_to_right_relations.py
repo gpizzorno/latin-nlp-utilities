@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_conj_left_to_right(tmp_path: Path) -> None:
@@ -49,8 +50,7 @@ def test_valid_conj_left_to_right(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='cats and dogs')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    conj_errors = [e for e in errors if 'right-to-left-conj' in e]
-    assert len(conj_errors) == 0
+    assert_no_errors_of_type(errors, 'right-to-left-conj')
 
 
 def test_invalid_conj_right_to_left(tmp_path: Path) -> None:
@@ -96,8 +96,7 @@ def test_invalid_conj_right_to_left(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='cats and dogs')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    conj_errors = [e for e in errors if 'right-to-left-conj' in e]
-    assert len(conj_errors) == 1
+    assert_error_count(errors, 1, 'right-to-left-conj')
 
 
 def test_valid_fixed_left_to_right(tmp_path: Path) -> None:
@@ -131,8 +130,7 @@ def test_valid_fixed_left_to_right(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='in fact')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    fixed_errors = [e for e in errors if 'right-to-left-fixed' in e]
-    assert len(fixed_errors) == 0
+    assert_no_errors_of_type(errors, 'right-to-left-fixed')
 
 
 def test_invalid_fixed_right_to_left(tmp_path: Path) -> None:
@@ -166,8 +164,7 @@ def test_invalid_fixed_right_to_left(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='in fact')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    fixed_errors = [e for e in errors if 'right-to-left-fixed' in e]
-    assert len(fixed_errors) == 1
+    assert_error_count(errors, 1, 'right-to-left-fixed')
 
 
 def test_valid_goeswith_left_to_right(tmp_path: Path) -> None:
@@ -201,8 +198,7 @@ def test_valid_goeswith_left_to_right(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='qui ckly')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    goeswith_errors = [e for e in errors if 'right-to-left-goeswith' in e]
-    assert len(goeswith_errors) == 0
+    assert_no_errors_of_type(errors, 'right-to-left-goeswith')
 
 
 def test_invalid_goeswith_right_to_left(tmp_path: Path) -> None:
@@ -236,8 +232,7 @@ def test_invalid_goeswith_right_to_left(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='qui ckly')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    goeswith_errors = [e for e in errors if 'right-to-left-goeswith' in e]
-    assert len(goeswith_errors) == 1
+    assert_error_count(errors, 1, 'right-to-left-goeswith')
 
 
 def test_valid_flat_left_to_right(tmp_path: Path) -> None:
@@ -271,8 +266,7 @@ def test_valid_flat_left_to_right(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='New York')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    flat_errors = [e for e in errors if 'right-to-left-flat' in e]
-    assert len(flat_errors) == 0
+    assert_no_errors_of_type(errors, 'right-to-left-flat')
 
 
 def test_valid_appos_left_to_right(tmp_path: Path) -> None:
@@ -306,8 +300,7 @@ def test_valid_appos_left_to_right(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='Obama president')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    appos_errors = [e for e in errors if 'right-to-left-appos' in e]
-    assert len(appos_errors) == 0
+    assert_no_errors_of_type(errors, 'right-to-left-appos')
 
 
 def test_relation_with_subtype(tmp_path: Path) -> None:
@@ -354,5 +347,4 @@ def test_relation_with_subtype(tmp_path: Path) -> None:
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
     # Should have right-to-left-conj error (base relation is conj)
-    conj_errors = [e for e in errors if 'right-to-left-conj' in e]
-    assert len(conj_errors) == 1
+    assert_error_count(errors, 1, 'right-to-left-conj')

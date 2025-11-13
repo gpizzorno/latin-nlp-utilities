@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_goeswith_contiguous(tmp_path: Path) -> None:
@@ -49,8 +50,8 @@ def test_valid_goeswith_contiguous(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='some text')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    goeswith_errors = [e for e in errors if 'goeswith-gap' in e or 'goeswith-nospace' in e]
-    assert len(goeswith_errors) == 0
+    assert_no_errors_of_type(errors, 'goeswith-gap')
+    assert_no_errors_of_type(errors, 'goeswith-nospace')
 
 
 def test_invalid_goeswith_gap(tmp_path: Path) -> None:
@@ -108,8 +109,7 @@ def test_invalid_goeswith_gap(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='some text')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    gap_errors = [e for e in errors if 'goeswith-gap' in e]
-    assert len(gap_errors) == 1
+    assert_error_count(errors, 1, 'goeswith-gap')
 
 
 def test_invalid_goeswith_no_space(tmp_path: Path) -> None:
@@ -155,8 +155,7 @@ def test_invalid_goeswith_no_space(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='something')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    nospace_errors = [e for e in errors if 'goeswith-nospace' in e]
-    assert len(nospace_errors) == 1
+    assert_error_count(errors, 1, 'goeswith-nospace')
 
 
 def test_valid_goeswith_with_space(tmp_path: Path) -> None:
@@ -202,8 +201,7 @@ def test_valid_goeswith_with_space(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='some thing')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    nospace_errors = [e for e in errors if 'goeswith-nospace' in e]
-    assert len(nospace_errors) == 0
+    assert_no_errors_of_type(errors, 'goeswith-nospace')
 
 
 def test_goeswith_middle_node_no_space(tmp_path: Path) -> None:
@@ -249,8 +247,7 @@ def test_goeswith_middle_node_no_space(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='something')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    nospace_errors = [e for e in errors if 'goeswith-nospace' in e]
-    assert len(nospace_errors) == 1
+    assert_error_count(errors, 1, 'goeswith-nospace')
 
 
 def test_goeswith_with_subtype(tmp_path: Path) -> None:
@@ -296,5 +293,4 @@ def test_goeswith_with_subtype(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='some text')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    gap_errors = [e for e in errors if 'goeswith-gap' in e]
-    assert len(gap_errors) == 0
+    assert_no_errors_of_type(errors, 'goeswith-gap')

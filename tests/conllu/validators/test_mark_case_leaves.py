@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_no_errors_of_type
 
 
 # Test mark and case as functional leaves
@@ -50,8 +51,7 @@ def test_valid_mark_with_advmod(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_valid_case_with_obl(tmp_path: Path) -> None:
@@ -97,8 +97,7 @@ def test_valid_case_with_obl(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_valid_mark_with_fixed(tmp_path: Path) -> None:
@@ -156,8 +155,7 @@ def test_valid_mark_with_fixed(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_valid_mark_with_conj(tmp_path: Path) -> None:
@@ -203,8 +201,7 @@ def test_valid_mark_with_conj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_valid_mark_with_punct(tmp_path: Path) -> None:
@@ -250,8 +247,7 @@ def test_valid_mark_with_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_invalid_mark_with_nsubj(tmp_path: Path) -> None:
@@ -297,8 +293,7 @@ def test_invalid_mark_with_nsubj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
 
 
 def test_invalid_case_with_obj(tmp_path: Path) -> None:
@@ -344,5 +339,4 @@ def test_invalid_case_with_obj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' in error_str
+    assert_no_errors_of_type(errors, 'leaf-mark-case')

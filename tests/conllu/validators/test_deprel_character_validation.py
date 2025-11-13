@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_deprel(tmp_path: Path) -> None:
@@ -13,8 +14,7 @@ def test_valid_deprel(tmp_path: Path) -> None:
     errors = validator.validate_file(test_file)
 
     # Should not have invalid-deprel errors
-    error_text = '\n'.join(errors)
-    assert 'invalid-deprel' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-deprel')
 
 
 def test_valid_deprel_with_subtype(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -25,8 +25,7 @@ def test_valid_deprel_with_subtype(tmp_path: Path, sentence_en_tokens: list[dict
     errors = validator.validate_file(test_file)
 
     # Should not have invalid-deprel errors
-    error_text = '\n'.join(errors)
-    assert 'invalid-deprel' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-deprel')
 
 
 def test_invalid_deprel_uppercase(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -37,9 +36,8 @@ def test_invalid_deprel_uppercase(tmp_path: Path, sentence_en_tokens: list[dict[
     errors = validator.validate_file(test_file)
 
     # Should have invalid-deprel error
-    error_text = '\n'.join(errors)
-    assert 'invalid-deprel' in error_text
-    assert 'CC' in error_text
+    assert_error_count(errors, 1, 'invalid-deprel')
+    assert_error_contains(errors, 'invalid-deprel', 'CC')
 
 
 def test_invalid_deprel_mixed_case(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -50,8 +48,7 @@ def test_invalid_deprel_mixed_case(tmp_path: Path, sentence_en_tokens: list[dict
     errors = validator.validate_file(test_file)
 
     # Should have invalid-deprel error
-    error_text = '\n'.join(errors)
-    assert 'invalid-deprel' in error_text
+    assert_error_count(errors, 1, 'invalid-deprel')
 
 
 def test_invalid_deprel_with_numbers(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -62,8 +59,7 @@ def test_invalid_deprel_with_numbers(tmp_path: Path, sentence_en_tokens: list[di
     errors = validator.validate_file(test_file)
 
     # Should have invalid-deprel error
-    error_text = '\n'.join(errors)
-    assert 'invalid-deprel' in error_text
+    assert_error_count(errors, 1, 'invalid-deprel')
 
 
 def test_empty_node_deprel_underscore(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -75,5 +71,4 @@ def test_empty_node_deprel_underscore(tmp_path: Path, sentence_en_tokens: list[d
     errors = validator.validate_file(test_file)
 
     # Should not have invalid-deprel errors for empty node
-    error_text = '\n'.join(errors)
-    assert 'invalid-deprel' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-deprel')

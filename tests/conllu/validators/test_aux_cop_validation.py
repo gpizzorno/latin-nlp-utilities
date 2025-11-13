@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 # Test validation of auxiliary verb lemmas
@@ -20,7 +21,7 @@ def test_valid_latin_auxiliary_sum(tmp_path: Path, sentence_la_tokens: list[dict
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    assert not any('aux-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'aux-lemma')
 
 
 def test_valid_latin_auxiliary_habeo(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -36,7 +37,7 @@ def test_valid_latin_auxiliary_habeo(tmp_path: Path, sentence_la_tokens: list[di
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    assert not any('aux-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'aux-lemma')
 
 
 def test_invalid_latin_auxiliary(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -52,10 +53,9 @@ def test_invalid_latin_auxiliary(tmp_path: Path, sentence_la_tokens: list[dict[s
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    aux_errors = [e for e in errors if 'aux-lemma' in e]
-    assert len(aux_errors) == 1
-    assert "'invalid'" in aux_errors[0]
-    assert 'not an auxiliary verb' in aux_errors[0]
+    assert_error_count(errors, 1, 'aux-lemma')
+    assert_error_contains(errors, 'aux-lemma', 'invalid')
+    assert_error_contains(errors, 'aux-lemma', 'not an auxiliary verb')
 
 
 def test_auxiliary_empty_lemma(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -71,7 +71,7 @@ def test_auxiliary_empty_lemma(tmp_path: Path, sentence_la_tokens: list[dict[str
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    assert not any('aux-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'aux-lemma')
 
 
 def test_auxiliary_non_aux_upos(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -84,7 +84,7 @@ def test_auxiliary_non_aux_upos(tmp_path: Path, sentence_la_tokens: list[dict[st
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    assert not any('aux-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'aux-lemma')
 
 
 def test_auxiliary_multiword_token_skipped(tmp_path: Path) -> None:
@@ -143,8 +143,7 @@ def test_auxiliary_multiword_token_skipped(tmp_path: Path) -> None:
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
     # MWT should be skipped, but token 1 should be validated
-    aux_errors = [e for e in errors if 'aux-lemma' in e]
-    assert len(aux_errors) == 1
+    assert_error_count(errors, 1, 'aux-lemma')
 
 
 # Test validation of copula lemmas
@@ -164,7 +163,7 @@ def test_valid_latin_copula_sum(tmp_path: Path, sentence_la_tokens: list[dict[st
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    assert not any('cop-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'cop-lemma')
 
 
 def test_invalid_latin_copula(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -183,10 +182,9 @@ def test_invalid_latin_copula(tmp_path: Path, sentence_la_tokens: list[dict[str,
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    cop_errors = [e for e in errors if 'cop-lemma' in e]
-    assert len(cop_errors) == 1
-    assert "'invalid'" in cop_errors[0]
-    assert 'not a copula' in cop_errors[0]
+    assert_error_count(errors, 1, 'cop-lemma')
+    assert_error_contains(errors, 'cop-lemma', "'invalid'")
+    assert_error_contains(errors, 'cop-lemma', 'not a copula')
 
 
 def test_copula_empty_lemma(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -205,7 +203,7 @@ def test_copula_empty_lemma(tmp_path: Path, sentence_la_tokens: list[dict[str, s
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    assert not any('cop-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'cop-lemma')
 
 
 def test_copula_non_cop_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -218,7 +216,7 @@ def test_copula_non_cop_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    assert not any('cop-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'cop-lemma')
 
 
 def test_copula_multiword_token_skipped(tmp_path: Path) -> None:
@@ -277,8 +275,7 @@ def test_copula_multiword_token_skipped(tmp_path: Path) -> None:
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
     # MWT should be skipped, but token 1 should be validated
-    cop_errors = [e for e in errors if 'cop-lemma' in e]
-    assert len(cop_errors) == 1
+    assert_error_count(errors, 1, 'cop-lemma')
 
 
 # Test that aux/cop validation only runs at Level 5
@@ -296,7 +293,7 @@ def test_level_4_no_aux_validation(tmp_path: Path, sentence_la_tokens: list[dict
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_string(text)
     # Level 4 should not check auxiliaries
-    assert not any('aux-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'aux-lemma')
 
 
 def test_level_5_aux_validation(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -313,7 +310,7 @@ def test_level_5_aux_validation(tmp_path: Path, sentence_la_tokens: list[dict[st
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
     # Level 5 should check auxiliaries
-    assert any('aux-lemma' in e for e in errors)
+    assert_error_count(errors, 1, 'aux-lemma')
 
 
 def test_level_4_no_cop_validation(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -333,7 +330,7 @@ def test_level_4_no_cop_validation(tmp_path: Path, sentence_la_tokens: list[dict
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_string(text)
     # Level 4 should not check copulas
-    assert not any('cop-lemma' in e for e in errors)
+    assert_no_errors_of_type(errors, 'cop-lemma')
 
 
 def test_level_5_cop_validation(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -353,7 +350,7 @@ def test_level_5_cop_validation(tmp_path: Path, sentence_la_tokens: list[dict[st
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
     # Level 5 should check copulas
-    assert any('cop-lemma' in e for e in errors)
+    assert_error_count(errors, 1, 'cop-lemma')
 
 
 # Test alternative language handling with Lang= attribute
@@ -373,9 +370,9 @@ def test_aux_alternative_language(tmp_path: Path, sentence_la_tokens: list[dict[
     errors = validator.validate_string(text)
     # Should validate against English auxiliaries, not Latin
     # 'be' is valid in English
-    aux_errors = [e for e in errors if 'aux-lemma' in e]
+    aux_errors = [e for e in errors.errors if e[3].error_type == 'aux-lemma']
     # Depending on whether 'be' is in English aux list
-    assert not aux_errors or '[en]' in aux_errors[0]
+    assert not aux_errors or '[en]' in aux_errors[0][3].msg
 
 
 def test_cop_alternative_language(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -396,9 +393,9 @@ def test_cop_alternative_language(tmp_path: Path, sentence_la_tokens: list[dict[
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
     # Should validate against English copulas, not Latin
-    cop_errors = [e for e in errors if 'cop-lemma' in e]
+    cop_errors = [e for e in errors.errors if e[3].error_type == 'cop-lemma']
     # Depending on whether 'be' is in English cop list
-    assert not cop_errors or '[en]' in cop_errors[0]
+    assert not cop_errors or '[en]' in cop_errors[0][3].msg
 
 
 # Test handling of languages without aux/cop data
@@ -420,10 +417,9 @@ def test_aux_no_data_warning(tmp_path: Path, sentence_la_tokens: list[dict[str, 
     validator = ConlluValidator(lang='xx', level=5)
     errors = validator.validate_string(text)
     # Should warn about no auxiliaries
-    aux_errors = [e for e in errors if 'aux-lemma' in e]
     # No auxdata for xx, so no validation happens
     # (validation only happens if lang in auxdata)
-    assert len(aux_errors) == 0
+    assert_no_errors_of_type(errors, 'aux-lemma')
 
 
 def test_cop_no_data_warning(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -444,8 +440,7 @@ def test_cop_no_data_warning(tmp_path: Path, sentence_la_tokens: list[dict[str, 
     validator = ConlluValidator(lang='xx', level=5)
     errors = validator.validate_string(text)
     # No copdata for xx, so no validation happens
-    cop_errors = [e for e in errors if 'cop-lemma' in e]
-    assert len(cop_errors) == 0
+    assert_no_errors_of_type(errors, 'cop-lemma')
 
 
 # Integration tests for auxiliary/copula validation
@@ -504,10 +499,9 @@ def test_multiple_auxiliaries(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    aux_errors = [e for e in errors if 'aux-lemma' in e]
+    assert_error_count(errors, 1, 'aux-lemma')
     # Only 'invalid' should be flagged
-    assert len(aux_errors) == 1
-    assert "'invalid'" in aux_errors[0]
+    assert_error_contains(errors, 'aux-lemma', 'invalid')
 
 
 def test_aux_and_cop_together(tmp_path: Path) -> None:
@@ -554,8 +548,8 @@ def test_aux_and_cop_together(tmp_path: Path) -> None:
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
     # Both should be valid
-    assert not any('aux-lemma' in e for e in errors)
-    assert not any('cop-lemma' in e for e in errors)
+    assert_error_count(errors, 0, 'aux-lemma')
+    assert_error_count(errors, 0, 'cop-lemma')
 
 
 def test_mixed_validity(tmp_path: Path) -> None:
@@ -625,8 +619,6 @@ def test_mixed_validity(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=5)
     errors = validator.validate_string(text)
-    aux_errors = [e for e in errors if 'aux-lemma' in e]
-    cop_errors = [e for e in errors if 'cop-lemma' in e]
     # Should have 1 aux error and 1 cop error
-    assert len(aux_errors) == 1
-    assert len(cop_errors) == 1
+    assert_error_count(errors, 1, 'aux-lemma')
+    assert_error_count(errors, 1, 'cop-lemma')

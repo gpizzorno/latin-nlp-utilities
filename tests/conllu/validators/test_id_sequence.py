@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_sequence(tmp_path: Path) -> None:
@@ -12,7 +13,7 @@ def test_valid_sequence(tmp_path: Path) -> None:
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
     # Should not have sequence errors
-    assert not any('sequence' in e.lower() for e in errors)
+    assert_no_errors_of_type(errors, 'word-id-sequence')
 
 
 def test_out_of_order_ids(tmp_path: Path) -> None:
@@ -58,9 +59,9 @@ def test_out_of_order_ids(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('word-id-sequence' in e for e in errors)
-    assert any('1,3,2' in e for e in errors)  # Actual sequence
-    assert any('1,2,3' in e for e in errors)  # Expected sequence
+    assert_error_count(errors, 1, 'word-id-sequence')
+    assert_error_contains(errors, 'word-id-sequence', '1,3,2')  # Actual sequence
+    assert_error_contains(errors, 'word-id-sequence', '1,2,3')  # Expected sequence
 
 
 def test_gap_in_ids(tmp_path: Path) -> None:
@@ -94,9 +95,9 @@ def test_gap_in_ids(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('word-id-sequence' in e for e in errors)
-    assert any('1,3' in e for e in errors)  # Actual sequence
-    assert any('1,2' in e for e in errors)  # Expected sequence
+    assert_error_count(errors, 1, 'word-id-sequence')
+    assert_error_contains(errors, 'word-id-sequence', '1,3')  # Actual sequence
+    assert_error_contains(errors, 'word-id-sequence', '1,2')  # Expected sequence
 
 
 def test_duplicate_ids(tmp_path: Path) -> None:
@@ -142,9 +143,9 @@ def test_duplicate_ids(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('duplicate-word-id' in e for e in errors)
+    assert_error_count(errors, 1, 'duplicate-word-id')
     # Should also have sequence error (1,2,2 != 1,2,3)
-    assert any('word-id-sequence' in e for e in errors)
+    assert_error_contains(errors, 'word-id-sequence', '1,2,2')  # Actual sequence
 
 
 def test_ids_not_starting_at_1(tmp_path: Path) -> None:
@@ -178,9 +179,9 @@ def test_ids_not_starting_at_1(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('word-id-not-starting-at-1' in e for e in errors)
+    assert_error_count(errors, 1, 'word-id-not-starting-at-1')
     # Should also have sequence error
-    assert any('word-id-sequence' in e for e in errors)
+    assert_error_count(errors, 1, 'word-id-sequence')
 
 
 def test_multiple_errors(tmp_path: Path) -> None:
@@ -239,9 +240,9 @@ def test_multiple_errors(tmp_path: Path) -> None:
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
     # Should detect: gap in IDs (1,3), empty node skipping 1.1, MWT after words
-    assert any('word-id-sequence' in e for e in errors)
-    assert any('empty-node-sequence' in e for e in errors)
-    assert any('mwt-not-before-words' in e for e in errors)
+    assert_error_count(errors, 1, 'word-id-sequence')
+    assert_error_count(errors, 1, 'empty-node-sequence')
+    assert_error_count(errors, 1, 'mwt-not-before-words')
 
 
 def test_mwt_with_empty_nodes(tmp_path: Path) -> None:
@@ -312,6 +313,6 @@ def test_mwt_with_empty_nodes(tmp_path: Path) -> None:
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
     # All IDs are valid
-    assert not any('sequence' in e.lower() for e in errors)
-    assert not any('mwt-not-before-words' in e for e in errors)
-    assert not any('empty-node' in e for e in errors)
+    assert_no_errors_of_type(errors, 'word-id-sequence')
+    assert_no_errors_of_type(errors, 'empty-node-sequence')
+    assert_no_errors_of_type(errors, 'mwt-not-before-words')

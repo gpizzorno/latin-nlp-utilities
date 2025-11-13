@@ -318,15 +318,15 @@ class TestProjectivity:
         tree = sentence.to_tree()
 
         # Find root (token 3)
-        node = validator._find_node_in_tree(tree, 3)  # noqa: SLF001
+        node = validator._find_node_in_tree(tree, 3)
         assert node is not None, 'Should find root node'
         assert node.token['form'] == 'barked', f"Expected 'barked', got {node.token['form']}"
 
         # Find child (token 1)
-        node = validator._find_node_in_tree(tree, 1)  # noqa: SLF001
+        node = validator._find_node_in_tree(tree, 1)
         assert node is not None, 'Should find child node'
         assert node.token['form'] == 'The', f"Expected 'The', got {node.token['form']}"
 
         # Find non-existent node
-        node = validator._find_node_in_tree(tree, 99)  # noqa: SLF001
+        node = validator._find_node_in_tree(tree, 99)
         assert node is None, 'Should not find non-existent node'

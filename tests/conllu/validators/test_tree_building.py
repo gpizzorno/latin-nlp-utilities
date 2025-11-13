@@ -3,6 +3,7 @@
 import conllu
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
+from tests.helpers.assertion import assert_error_count
 
 
 def test_valid_tree() -> None:
@@ -46,20 +47,18 @@ def test_valid_tree() -> None:
         },
     ]
     sentence = conllu.models.TokenList(tokens, {'sent_id': 'test1', 'text': 'He came.'})  # type: ignore [arg-type]
-
     validator = ConlluValidator(level=2)
     validator.reporter.sentence_id = 'test1'
     validator.reporter.tree_counter = 1
 
     # Build tree
-    tree = validator._build_and_validate_tree(sentence)  # noqa: SLF001
+    tree = validator._build_and_validate_tree(sentence)
 
     assert tree is not None, 'Tree should be built successfully'
     assert tree.token['form'] == 'came', f"Root should be 'came', got {tree.token['form']}"
-    assert len(tree.children) == 2, f'Root should have 2 children, got {len(tree.children)}'  # noqa: PLR2004
+    assert len(tree.children) == 2, f'Root should have 2 children, got {len(tree.children)}'
 
-    errors = validator.reporter.format_errors()
-    assert len(errors) == 0, f'Should have no errors, got: {errors}'
+    assert_error_count(validator.reporter, 0)
 
 
 def test_self_loop() -> None:
@@ -96,12 +95,11 @@ def test_self_loop() -> None:
     validator.reporter.sentence_id = 'test2'
     validator.reporter.tree_counter = 1
 
-    tree = validator._build_and_validate_tree(sentence)  # noqa: SLF001
+    tree = validator._build_and_validate_tree(sentence)
 
     assert tree is None, 'Tree should not be built with self-loop'
 
-    errors = validator.reporter.format_errors()
-    assert any('head-self-loop' in e for e in errors), f'Expected head-self-loop error, got: {errors}'
+    assert_error_count(validator.reporter, 1, 'head-self-loop')
 
 
 def test_projection() -> None:
@@ -147,7 +145,7 @@ def test_projection() -> None:
     sentence = conllu.models.TokenList(tokens, {'sent_id': 'test3', 'text': 'He came home.'})  # type: ignore [arg-type]
 
     validator = ConlluValidator(level=2)
-    tree = validator._build_and_validate_tree(sentence)  # noqa: SLF001
+    tree = validator._build_and_validate_tree(sentence)
 
     assert tree is not None
 
@@ -155,10 +153,10 @@ def test_projection() -> None:
     projection = validator.get_projection(tree)
 
     # Should include root and all descendants
-    assert 2 in projection, 'Projection should include root (2)'  # noqa: PLR2004
+    assert 2 in projection, 'Projection should include root (2)'
     assert 1 in projection, 'Projection should include child 1'
-    assert 3 in projection, 'Projection should include child 3'  # noqa: PLR2004
-    assert len(projection) == 3, f'Projection should have 3 nodes, got {len(projection)}'  # noqa: PLR2004
+    assert 3 in projection, 'Projection should include child 3'
+    assert len(projection) == 3, f'Projection should have 3 nodes, got {len(projection)}'
 
 
 def test_collect_ancestors() -> None:

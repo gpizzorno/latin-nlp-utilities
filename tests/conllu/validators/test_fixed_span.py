@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_fixed_contiguous(tmp_path: Path) -> None:
@@ -61,8 +62,7 @@ def test_valid_fixed_contiguous(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='in order to')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    fixed_errors = [e for e in errors if 'fixed-gap' in e]
-    assert len(fixed_errors) == 0
+    assert_no_errors_of_type(errors, 'fixed-gap')
 
 
 def test_valid_fixed_with_punct(tmp_path: Path) -> None:
@@ -132,8 +132,7 @@ def test_valid_fixed_with_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='in order , to')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    fixed_errors = [e for e in errors if 'fixed-gap' in e]
-    assert len(fixed_errors) == 0
+    assert_no_errors_of_type(errors, 'fixed-gap')
 
 
 def test_invalid_fixed_gap(tmp_path: Path) -> None:
@@ -203,8 +202,7 @@ def test_invalid_fixed_gap(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='in some order to')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    fixed_errors = [e for e in errors if 'fixed-gap' in e]
-    assert len(fixed_errors) == 1
+    assert_error_count(errors, 1, 'fixed-gap')
 
 
 def test_fixed_with_subtype(tmp_path: Path) -> None:
@@ -262,8 +260,7 @@ def test_fixed_with_subtype(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='in order to')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    fixed_errors = [e for e in errors if 'fixed-gap' in e]
-    assert len(fixed_errors) == 0
+    assert_no_errors_of_type(errors, 'fixed-gap')
 
 
 def test_fixed_two_word_expression(tmp_path: Path) -> None:
@@ -309,5 +306,4 @@ def test_fixed_two_word_expression(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='because of him')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    fixed_errors = [e for e in errors if 'fixed-gap' in e]
-    assert len(fixed_errors) == 0
+    assert_no_errors_of_type(errors, 'fixed-gap')

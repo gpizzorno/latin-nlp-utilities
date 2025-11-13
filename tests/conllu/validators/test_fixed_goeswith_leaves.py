@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 # Test fixed as functional leaves
@@ -50,8 +51,7 @@ def test_valid_fixed_with_goeswith(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-fixed' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-fixed')
 
 
 def test_valid_fixed_with_conj(tmp_path: Path) -> None:
@@ -97,8 +97,7 @@ def test_valid_fixed_with_conj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-fixed' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-fixed')
 
 
 def test_valid_fixed_with_punct(tmp_path: Path) -> None:
@@ -168,8 +167,7 @@ def test_valid_fixed_with_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-fixed' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-fixed')
 
 
 def test_invalid_fixed_with_fixed(tmp_path: Path) -> None:
@@ -215,8 +213,7 @@ def test_invalid_fixed_with_fixed(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-fixed' in error_str
+    assert_error_count(errors, 1, 'leaf-fixed')
 
 
 def test_invalid_fixed_with_nsubj(tmp_path: Path) -> None:
@@ -262,8 +259,7 @@ def test_invalid_fixed_with_nsubj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-fixed' in error_str
+    assert_error_count(errors, 1, 'leaf-fixed')
 
 
 # Test goeswith as functional leaves
@@ -310,8 +306,7 @@ def test_invalid_goeswith_with_any_child(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-goeswith' in error_str
+    assert_error_count(errors, 1, 'leaf-goeswith')
 
 
 def test_invalid_goeswith_with_goeswith_child(tmp_path: Path) -> None:
@@ -357,8 +352,7 @@ def test_invalid_goeswith_with_goeswith_child(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-goeswith' in error_str
+    assert_error_count(errors, 1, 'leaf-goeswith')
 
 
 def test_invalid_goeswith_with_punct(tmp_path: Path) -> None:
@@ -404,5 +398,4 @@ def test_invalid_goeswith_with_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-goeswith' in error_str
+    assert_error_count(errors, 1, 'leaf-goeswith')

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 # Test enhanced dependency validation
@@ -38,7 +39,7 @@ def test_valid_enhanced_deps(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    assert len(errors) == 0, f'Expected no errors, got: {errors}'
+    assert_error_count(errors, 0)
 
 
 def test_invalid_enhanced_head_reference(tmp_path: Path) -> None:
@@ -72,8 +73,8 @@ def test_invalid_enhanced_head_reference(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    assert any('unknown-ehead' in e for e in errors), f'Expected unknown-ehead error, got: {errors}'
-    assert any('99' in e for e in errors), f'Expected error about head 99, got: {errors}'
+    assert_error_count(errors, 1, 'unknown-ehead')
+    assert_error_contains(errors, 'unknown-ehead', '99')
 
 
 def test_self_loop_in_deps(tmp_path: Path) -> None:
@@ -107,7 +108,7 @@ def test_self_loop_in_deps(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    assert any('deps-self-loop' in e for e in errors), f'Expected deps-self-loop error, got: {errors}'
+    assert_error_count(errors, 1, 'deps-self-loop')
 
 
 def test_root_consistency_in_deps(tmp_path: Path) -> None:
@@ -142,7 +143,7 @@ def test_root_consistency_in_deps(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    assert any('enhanced-0-is-not-root' in e for e in errors), f'Expected enhanced-0-is-not-root error, got: {errors}'
+    assert_error_count(errors, 1, 'enhanced-0-is-not-root')
 
 
 def test_enhanced_deps_with_empty_nodes(tmp_path: Path) -> None:
@@ -189,9 +190,7 @@ def test_enhanced_deps_with_empty_nodes(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should not have errors about unknown head 1.1
-    assert not any('unknown-ehead' in e and '1.1' in e for e in errors), (
-        f'Should not error on valid empty node reference, got: {errors}'
-    )
+    assert_no_errors_of_type(errors, 'unknown-ehead')
 
 
 def test_orphan_with_empty_nodes(tmp_path: Path) -> None:
@@ -237,7 +236,7 @@ def test_orphan_with_empty_nodes(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    assert any('eorphan-with-empty-node' in e for e in errors), f'Expected eorphan-with-empty-node error, got: {errors}'
+    assert_error_count(errors, 1, 'eorphan-with-empty-node')
 
 
 def test_multiple_enhanced_deps(tmp_path: Path) -> None:
@@ -284,7 +283,7 @@ def test_multiple_enhanced_deps(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should not have any errors - this is valid
-    assert len(errors) == 0, f'Expected no errors for multiple enhanced deps, got: {errors}'
+    assert_error_count(errors, 0)
 
 
 def test_enhanced_deps_underscore(tmp_path: Path) -> None:
@@ -320,8 +319,7 @@ def test_enhanced_deps_underscore(tmp_path: Path) -> None:
     errors = validator.validate_string(text)
     # Should not crash - underscore is valid (means no enhanced deps)
     # Filter out non-deps related errors
-    deps_errors = [e for e in errors if 'deps' in e.lower() or 'enhanced' in e.lower()]
-    assert len(deps_errors) == 0, f'Expected no deps errors, got: {deps_errors}'
+    assert_no_errors_of_type(errors, 'unknown-ehead')
 
 
 def test_enhanced_deps_with_multiword_tokens(tmp_path: Path) -> None:
@@ -369,8 +367,7 @@ def test_enhanced_deps_with_multiword_tokens(tmp_path: Path) -> None:
     errors = validator.validate_string(text)
     # Should not crash or report errors for MWT range (1-2)
     # Filter to deps-related errors
-    deps_errors = [e for e in errors if 'deps' in e.lower() or 'enhanced' in e.lower()]
-    assert len(deps_errors) == 0, f'Expected no deps errors, got: {deps_errors}'
+    assert_no_errors_of_type(errors, 'deps')
 
 
 def test_enhanced_deps_with_subtypes(tmp_path: Path) -> None:
@@ -405,7 +402,7 @@ def test_enhanced_deps_with_subtypes(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should handle subtypes in DEPS
-    assert len(errors) == 0, f'Expected no errors for deps with subtypes, got: {errors}'
+    assert_error_count(errors, 0)
 
 
 def test_enhanced_deps_zero_head_with_root(tmp_path: Path) -> None:
@@ -440,4 +437,4 @@ def test_enhanced_deps_zero_head_with_root(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # This should be valid
-    assert len(errors) == 0, f'Expected no errors, got: {errors}'
+    assert_error_count(errors, 0)

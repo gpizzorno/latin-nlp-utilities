@@ -12,6 +12,7 @@ from nlp_utilities.conllu.validators.helpers.node_helpers import (
 )
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 # Test helper functions for detecting node types
@@ -164,8 +165,7 @@ def test_empty_node_with_valid_format(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should have no critical errors about empty node format
-    error_text = '\n'.join(errors)
-    assert 'invalid-empty-node-id' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-empty-node-id')
 
 
 def test_empty_node_with_head_value(tmp_path: Path) -> None:
@@ -236,8 +236,7 @@ def test_empty_node_with_head_value(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should have error about empty node HEAD
-    error_text = '\n'.join(errors)
-    assert 'empty-node-head' in error_text or 'must have _ in HEAD' in error_text
+    assert_error_count(errors, 1, 'empty-node-head')
 
 
 def test_empty_node_with_deprel_value(tmp_path: Path) -> None:
@@ -308,8 +307,8 @@ def test_empty_node_with_deprel_value(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should have error about empty node DEPREL
-    error_text = '\n'.join(errors)
-    assert 'empty-node-deprel' in error_text or 'must have _ in DEPREL' in error_text
+    assert_error_count(errors, 1, 'empty-node-deprel')
+    assert_error_contains(errors, 'empty-node-deprel', '2.1')
 
 
 def test_empty_node_with_upos_value(tmp_path: Path) -> None:
@@ -380,8 +379,8 @@ def test_empty_node_with_upos_value(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should have warning about empty node UPOS
-    error_text = '\n'.join(errors)
-    assert 'empty-node-upos' in error_text or 'should have _ in UPOS' in error_text
+    assert_error_count(errors, 1, 'empty-node-upos')
+    assert_error_contains(errors, 'empty-node-upos', '2.1')
 
 
 def test_empty_nodes_not_counted_as_roots(tmp_path: Path) -> None:
@@ -440,6 +439,5 @@ def test_empty_nodes_not_counted_as_roots(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # Should not complain about multiple roots
-    error_text = '\n'.join(errors)
-    assert 'multiple-roots' not in error_text
-    assert 'no-root' not in error_text
+    assert_no_errors_of_type(errors, 'multiple-roots')
+    assert_no_errors_of_type(errors, 'no-root')

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_upos(tmp_path: Path) -> None:
@@ -11,10 +12,8 @@ def test_valid_upos(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
     # Should not have invalid-upos errors
-    error_text = '\n'.join(errors)
-    assert 'invalid-upos' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-upos')
 
 
 def test_invalid_upos_lowercase(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -23,11 +22,9 @@ def test_invalid_upos_lowercase(tmp_path: Path, sentence_en_tokens: list[dict[st
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
     # Should have invalid-upos error
-    error_text = '\n'.join(errors)
-    assert 'invalid-upos' in error_text
-    assert 'noun' in error_text
+    assert_error_count(errors, 1, 'invalid-upos')
+    assert_error_contains(errors, 'invalid-upos', 'noun')
 
 
 def test_invalid_upos_mixed_case(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -36,10 +33,8 @@ def test_invalid_upos_mixed_case(tmp_path: Path, sentence_en_tokens: list[dict[s
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
     # Should have invalid-upos error
-    error_text = '\n'.join(errors)
-    assert 'invalid-upos' in error_text
+    assert_error_count(errors, 1, 'invalid-upos')
 
 
 def test_invalid_upos_with_numbers(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -48,10 +43,8 @@ def test_invalid_upos_with_numbers(tmp_path: Path, sentence_en_tokens: list[dict
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
     # Should have invalid-upos error
-    error_text = '\n'.join(errors)
-    assert 'invalid-upos' in error_text
+    assert_error_count(errors, 1, 'invalid-upos')
 
 
 def test_empty_node_upos_underscore(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -61,7 +54,5 @@ def test_empty_node_upos_underscore(tmp_path: Path, sentence_en_tokens: list[dic
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
     # Should not have invalid-upos errors for empty node
-    error_text = '\n'.join(errors)
-    assert 'invalid-upos' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-upos')

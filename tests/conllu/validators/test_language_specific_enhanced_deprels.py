@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_enhanced_global_deprel_passes_level4(tmp_path: Path) -> None:
@@ -37,13 +38,8 @@ def test_enhanced_global_deprel_passes_level4(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_file(test_file)
-
-    edeprel_errors = [
-        e
-        for e in errors
-        if 'enhanced' in e.lower() and 'obl:arg' in e.lower() and ('unknown' in e.lower() or 'permitted' in e.lower())
-    ]
-    assert len(edeprel_errors) == 0
+    assert_no_errors_of_type(errors, 'unknown-edeprel')
+    assert_no_errors_of_type(errors, 'unpermitted-edeprel')
 
 
 def test_enhanced_local_deprel_passes_level4(tmp_path: Path) -> None:
@@ -77,13 +73,8 @@ def test_enhanced_local_deprel_passes_level4(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_file(test_file)
-
-    edeprel_errors = [
-        e
-        for e in errors
-        if 'enhanced' in e.lower() and 'advcl:abs' in e.lower() and ('unknown' in e.lower() or 'permitted' in e.lower())
-    ]
-    assert len(edeprel_errors) == 0
+    assert_no_errors_of_type(errors, 'unknown-edeprel')
+    assert_no_errors_of_type(errors, 'unpermitted-edeprel')
 
 
 def test_enhanced_lspec_unpermitted_deprel_fails_level4(tmp_path: Path) -> None:
@@ -117,12 +108,9 @@ def test_enhanced_lspec_unpermitted_deprel_fails_level4(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_file(test_file)
-
     # Should have an error about unpermitted enhanced deprel
-    unpermitted_errors = [
-        e for e in errors if 'enhanced' in e.lower() and 'permitted' in e.lower() and 'acl:appos' in e.lower()
-    ]
-    assert len(unpermitted_errors) == 1
+    assert_error_count(errors, 1, 'unpermitted-edeprel')
+    assert_error_contains(errors, 'unpermitted-edeprel', 'acl:appos')
 
 
 def test_enhanced_unknown_deprel_fails_level4(tmp_path: Path) -> None:
@@ -156,12 +144,9 @@ def test_enhanced_unknown_deprel_fails_level4(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_file(test_file)
-
     # Should have an error about unknown enhanced deprel
-    unknown_errors = [
-        e for e in errors if 'enhanced' in e.lower() and 'unknown' in e.lower() and 'obl:fakerelation' in e.lower()
-    ]
-    assert len(unknown_errors) == 1
+    assert_error_count(errors, 1, 'unknown-edeprel-subtype')
+    assert_error_contains(errors, 'unknown-edeprel-subtype', 'obl:fakerelation')
 
 
 def test_enhanced_ref_relation_allowed(tmp_path: Path) -> None:
@@ -195,10 +180,9 @@ def test_enhanced_ref_relation_allowed(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_file(test_file)
-
     # 'ref' should be allowed
-    ref_errors = [e for e in errors if 'ref' in e.lower() and ('unknown' in e.lower() or 'permitted' in e.lower())]
-    assert len(ref_errors) == 0
+    assert_no_errors_of_type(errors, 'unknown-edeprel')
+    assert_no_errors_of_type(errors, 'unpermitted-edeprel')
 
 
 def test_enhanced_deprel_level2_only_checks_universal(tmp_path: Path) -> None:
@@ -232,11 +216,7 @@ def test_enhanced_deprel_level2_only_checks_universal(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=2)
     errors = validator.validate_file(test_file)
-
-    edeprel_errors = [
-        e for e in errors if 'enhanced' in e.lower() and 'obl:arg' in e.lower() and 'unknown' in e.lower()
-    ]
-    assert len(edeprel_errors) == 0
+    assert_no_errors_of_type(errors, 'unknown-edeprel')
 
 
 def test_multiple_enhanced_deps_with_mixed_validity(tmp_path: Path) -> None:
@@ -270,15 +250,7 @@ def test_multiple_enhanced_deps_with_mixed_validity(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(lang='la', level=4)
     errors = validator.validate_file(test_file)
-
     # obl:arg should pass (global, permitted)
     # acl:appos should fail (lspec, not permitted)
-    unpermitted_errors = [
-        e for e in errors if 'enhanced' in e.lower() and 'acl:appos' in e.lower() and 'permitted' in e.lower()
-    ]
-    assert len(unpermitted_errors) == 1
-    # obl:arg should not have errors
-    obl_arg_errors = [
-        e for e in errors if 'obl:arg' in e.lower() and ('unknown' in e.lower() or 'permitted' in e.lower())
-    ]
-    assert len(obl_arg_errors) == 0
+    assert_error_count(errors, 1, 'unpermitted-edeprel')
+    assert_error_contains(errors, 'unpermitted-edeprel', 'acl:appos')

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_multiple_span_issues(tmp_path: Path) -> None:
@@ -62,10 +63,8 @@ def test_multiple_span_issues(tmp_path: Path) -> None:
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
     # Should detect both goeswith issues
-    nospace_errors = [e for e in errors if 'goeswith-nospace' in e]
-    gap_errors = [e for e in errors if 'goeswith-gap' in e]
-    assert len(nospace_errors) >= 1
-    assert len(gap_errors) >= 1
+    assert_error_count(errors, 1, 'goeswith-nospace')
+    assert_error_count(errors, 1, 'goeswith-gap')
 
 
 def test_no_span_issues(tmp_path: Path) -> None:
@@ -123,18 +122,8 @@ def test_no_span_issues(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='The cat sleeps .')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    span_errors = [
-        e
-        for e in errors
-        if any(
-            err_type in e
-            for err_type in [
-                'goeswith-gap',
-                'goeswith-nospace',
-                'fixed-gap',
-                'punct-causes-nonproj',
-                'punct-is-nonproj',
-            ]
-        )
-    ]
-    assert len(span_errors) == 0
+    assert_no_errors_of_type(errors, 'goeswith-gap')
+    assert_no_errors_of_type(errors, 'goeswith-nospace')
+    assert_no_errors_of_type(errors, 'fixed-gap')
+    assert_no_errors_of_type(errors, 'punct-causes-nonproj')
+    assert_no_errors_of_type(errors, 'punct-is-nonproj')

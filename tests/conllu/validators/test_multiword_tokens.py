@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_multiword_token(tmp_path: Path) -> None:
@@ -73,8 +74,8 @@ def test_valid_multiword_token(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    mwt_errors = [e for e in errors if 'mwt-nonempty' in e or 'overlapping-mwt' in e]
-    assert len(mwt_errors) == 0
+    assert_no_errors_of_type(errors, 'mwt-nonempty')
+    assert_no_errors_of_type(errors, 'overlapping-mwt')
 
 
 def test_multiword_token_with_lemma(tmp_path: Path) -> None:
@@ -144,8 +145,7 @@ def test_multiword_token_with_lemma(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    lemma_errors = [e for e in errors if 'mwt-nonempty-lemma' in e or 'must have _ in LEMMA' in e]
-    assert len(lemma_errors) == 1
+    assert_error_count(errors, 1, 'mwt-nonempty-lemma')
 
 
 def test_multiword_token_with_upos(tmp_path: Path) -> None:
@@ -215,8 +215,7 @@ def test_multiword_token_with_upos(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    upos_errors = [e for e in errors if 'mwt-nonempty-upos' in e or 'must have _ in UPOS' in e]
-    assert len(upos_errors) == 1
+    assert_error_count(errors, 1, 'mwt-nonempty-upos')
 
 
 def test_multiword_token_with_head(tmp_path: Path) -> None:
@@ -286,8 +285,7 @@ def test_multiword_token_with_head(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    head_errors = [e for e in errors if 'mwt-nonempty-head' in e or 'must have _ in HEAD' in e]
-    assert len(head_errors) == 1
+    assert_error_count(errors, 1, 'mwt-nonempty-head')
 
 
 def test_multiword_token_with_deprel(tmp_path: Path) -> None:
@@ -357,8 +355,7 @@ def test_multiword_token_with_deprel(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    deprel_errors = [e for e in errors if 'mwt-nonempty-deprel' in e or 'must have _ in DEPREL' in e]
-    assert len(deprel_errors) == 1
+    assert_error_count(errors, 1, 'mwt-nonempty-deprel')
 
 
 def test_multiword_token_reversed_range(tmp_path: Path) -> None:
@@ -430,8 +427,7 @@ def test_multiword_token_reversed_range(tmp_path: Path) -> None:
     errors = validator.validate_string(text)
     # The conllu library catches this during parsing and raises a ParseException
     # which is reported as a parse-error
-    assert len(errors) == 1
-    assert 'parse-error' in errors[0] or 'not a valid ID' in errors[0]
+    assert_error_count(errors, 1, 'parse-error')
 
 
 def test_overlapping_multiword_tokens(tmp_path: Path) -> None:
@@ -501,8 +497,7 @@ def test_overlapping_multiword_tokens(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_string(text)
-    overlap_errors = [e for e in errors if 'overlapping-mwt' in e or 'overlaps with other ranges' in e]
-    assert len(overlap_errors) == 1
+    assert_error_count(errors, 1, 'overlapping-mwt')
 
 
 def test_multiword_token_invalid_word_reference(tmp_path: Path) -> None:
@@ -548,8 +543,7 @@ def test_multiword_token_invalid_word_reference(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_string(text)
-    invalid_errors = [e for e in errors if 'mwt-invalid-range' in e or 'non-existent word ID' in e]
-    assert len(invalid_errors) == 1
+    assert_error_count(errors, 1, 'mwt-invalid-range')
 
 
 def test_multiword_token_with_misc(tmp_path: Path) -> None:
@@ -620,8 +614,8 @@ def test_multiword_token_with_misc(tmp_path: Path) -> None:
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
     # MISC can have content for multiword tokens
-    nonempty_errors = [e for e in errors if 'mwt-nonempty-lemma' in e or 'mwt-nonempty-upos' in e]
-    assert len(nonempty_errors) == 0
+    assert_no_errors_of_type(errors, 'mwt-nonempty-lemma')
+    assert_no_errors_of_type(errors, 'mwt-nonempty-upos')
 
 
 def test_multiple_multiword_tokens_valid(tmp_path: Path) -> None:
@@ -751,5 +745,5 @@ def test_multiple_multiword_tokens_valid(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    mwt_errors = [e for e in errors if 'overlapping-mwt' in e or 'mwt-invalid-range' in e]
-    assert len(mwt_errors) == 0
+    assert_no_errors_of_type(errors, 'mwt-invalid-range')
+    assert_no_errors_of_type(errors, 'overlapping-mwt')

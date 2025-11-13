@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 # Test integration and edge cases
@@ -74,10 +75,9 @@ def test_multiple_violations(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should detect violations for both aux and cc
-    assert 'leaf-aux-cop' in error_str
-    assert 'leaf-cc' in error_str
+    assert_error_count(errors, 1, 'leaf-aux-cop')
+    assert_error_count(errors, 1, 'leaf-cc')
 
 
 def test_no_violations(tmp_path: Path) -> None:
@@ -135,13 +135,12 @@ def test_no_violations(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-mark-case' not in error_str
-    assert 'leaf-aux-cop' not in error_str
-    assert 'leaf-cc' not in error_str
-    assert 'leaf-fixed' not in error_str
-    assert 'leaf-goeswith' not in error_str
-    assert 'leaf-punct' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-aux-cop')
+    assert_no_errors_of_type(errors, 'leaf-cc')
+    assert_no_errors_of_type(errors, 'leaf-mark-case')
+    assert_no_errors_of_type(errors, 'leaf-fixed')
+    assert_no_errors_of_type(errors, 'leaf-goeswith')
+    assert_no_errors_of_type(errors, 'leaf-punct')
 
 
 def test_relation_with_subtype(tmp_path: Path) -> None:
@@ -187,6 +186,5 @@ def test_relation_with_subtype(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should extract base deprel 'case' and detect violation
-    assert 'leaf-mark-case' in error_str
+    assert_error_count(errors, 1, 'leaf-mark-case')

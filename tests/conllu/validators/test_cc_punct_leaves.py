@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 # Test cc as functional leaves
@@ -38,8 +39,7 @@ def test_valid_cc_with_fixed(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-cc' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-cc')
 
 
 def test_valid_cc_with_conj(tmp_path: Path) -> None:
@@ -73,8 +73,7 @@ def test_valid_cc_with_conj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-cc' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-cc')
 
 
 def test_valid_cc_with_punct(tmp_path: Path) -> None:
@@ -108,8 +107,7 @@ def test_valid_cc_with_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-cc' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-cc')
 
 
 def test_invalid_cc_with_nsubj(tmp_path: Path) -> None:
@@ -155,8 +153,7 @@ def test_invalid_cc_with_nsubj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-cc' in error_str
+    assert_error_count(errors, 1, 'leaf-cc')
 
 
 def test_invalid_cc_with_cc(tmp_path: Path) -> None:
@@ -202,8 +199,7 @@ def test_invalid_cc_with_cc(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-cc' in error_str
+    assert_error_count(errors, 1, 'leaf-cc')
 
 
 # Test punct as functional leaves
@@ -238,8 +234,7 @@ def test_valid_punct_with_punct_child(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-punct' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-punct')
 
 
 def test_invalid_punct_with_nsubj(tmp_path: Path) -> None:
@@ -285,8 +280,7 @@ def test_invalid_punct_with_nsubj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-punct' in error_str
+    assert_error_count(errors, 1, 'leaf-punct')
 
 
 def test_invalid_punct_with_advmod(tmp_path: Path) -> None:
@@ -332,5 +326,4 @@ def test_invalid_punct_with_advmod(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-punct' in error_str
+    assert_error_count(errors, 1, 'leaf-punct')

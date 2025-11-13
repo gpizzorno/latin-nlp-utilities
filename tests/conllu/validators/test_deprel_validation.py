@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 # Test basic DEPREL validation at Level 4
@@ -15,7 +16,7 @@ def test_valid_universal_deprel(tmp_path: Path, sentence_la_tokens: list[dict[st
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
     # Should not report DEPREL errors for valid universal relation
-    assert not any('deprel' in err.lower() for err in errors)
+    assert_no_errors_of_type(errors, 'invalid-deprel')
 
 
 def test_valid_latin_subtype(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -36,8 +37,7 @@ def test_valid_latin_subtype(tmp_path: Path, sentence_la_tokens: list[dict[str, 
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
     # advcl:abs is a valid Latin subtype
-    error_str = '\n'.join(errors)
-    assert 'unknown-deprel' not in error_str
+    assert_no_errors_of_type(errors, 'unknown-deprel')
 
 
 def test_unknown_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -47,9 +47,8 @@ def test_unknown_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str, str |
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'unknown-deprel' in error_str
-    assert 'fakedeprel' in error_str
+    assert_error_count(errors, 1, 'unknown-deprel')
+    assert_error_contains(errors, 'unknown-deprel', 'fakedeprel')
 
 
 def test_unknown_deprel_subtype(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -59,9 +58,9 @@ def test_unknown_deprel_subtype(tmp_path: Path, sentence_la_tokens: list[dict[st
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should report unknown subtype (base nmod exists, but nmod:fakesubtype doesn't)
-    assert 'unknown-deprel' in error_str or 'subtype' in error_str.lower()
+    assert_error_count(errors, 1, 'unknown-deprel-subtype')
+    assert_error_contains(errors, 'unknown-deprel-subtype', 'nmod:fakesubtype')
 
 
 def test_deprel_not_permitted(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -76,9 +75,9 @@ def test_deprel_not_permitted(tmp_path: Path, sentence_la_tokens: list[dict[str,
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should report that acl:appos is not permitted
-    assert 'deprel-not-permitted' in error_str or 'not permitted' in error_str.lower()
+    assert_error_count(errors, 1, 'deprel-not-permitted')
+    assert_error_contains(errors, 'deprel-not-permitted', 'acl:appos')
 
 
 # Test difference between Level 2 and Level 4 DEPREL validation
@@ -89,9 +88,8 @@ def test_level_2_no_subtype_check(tmp_path: Path, sentence_la_tokens: list[dict[
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=2, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # At Level 2, should not report unknown subtype
-    assert 'unknown-deprel' not in error_str
+    assert_no_errors_of_type(errors, 'unknown-deprel')
 
 
 def test_level_4_checks_subtypes(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -101,9 +99,9 @@ def test_level_4_checks_subtypes(tmp_path: Path, sentence_la_tokens: list[dict[s
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # At Level 4, should report unknown subtype
-    assert 'unknown-deprel' in error_str or 'subtype' in error_str.lower()
+    assert_error_count(errors, 1, 'unknown-deprel-subtype')
+    assert_error_contains(errors, 'unknown-deprel-subtype', 'nmod:fakesubtype')
 
 
 # Test various valid Latin DEPREL subtypes
@@ -174,9 +172,8 @@ def test_valid_advcl_subtypes(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # These are all valid Latin subtypes
-    assert 'unknown-deprel' not in error_str
+    assert_no_errors_of_type(errors, 'unknown-deprel')
 
 
 def test_valid_advmod_subtypes(tmp_path: Path) -> None:
@@ -258,9 +255,8 @@ def test_valid_advmod_subtypes(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # These are all valid Latin subtypes
-    assert 'unknown-deprel' not in error_str
+    assert_no_errors_of_type(errors, 'unknown-deprel')
 
 
 def test_valid_aux_pass_subtype(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -277,9 +273,8 @@ def test_valid_aux_pass_subtype(tmp_path: Path, sentence_la_tokens: list[dict[st
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:2])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # aux:pass is a valid universal subtype
-    assert 'unknown-deprel' not in error_str
+    assert_no_errors_of_type(errors, 'unknown-deprel')
 
 
 # Integration tests for DEPREL validation
@@ -338,11 +333,10 @@ def test_multiple_tokens_with_subtypes(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should report error for token 4 but not token 3
-    assert 'unknown-deprel' in error_str or 'subtype' in error_str.lower()
+    assert_error_count(errors, 1, 'unknown-deprel-subtype')
     # Error should reference the invalid subtype
-    assert 'fakesubtype' in error_str
+    assert_error_contains(errors, 'unknown-deprel-subtype', 'fakesubtype')
 
 
 def test_skip_multiword_tokens(tmp_path: Path) -> None:
@@ -389,9 +383,9 @@ def test_skip_multiword_tokens(tmp_path: Path) -> None:
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
     # Should not crash or report errors for MWT range (1-2)
-    error_str = '\n'.join(errors)
+    assert_no_errors_of_type(errors, 'unknown-deprel')
     # Valid Latin subtype advmod:neg should not trigger errors
-    assert 'unknown-deprel' not in error_str
+    assert_no_errors_of_type(errors, 'advmod:neg')
 
 
 def test_empty_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -472,9 +466,8 @@ def test_universal_deprels_always_valid(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # All universal relations should be valid
-    assert 'unknown-deprel' not in error_str
+    assert_no_errors_of_type(errors, 'unknown-deprel')
 
 
 def test_base_deprel_exists_message(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -484,9 +477,8 @@ def test_base_deprel_exists_message(tmp_path: Path, sentence_la_tokens: list[dic
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should mention that base relation exists
-    assert 'nmod' in error_str or 'base' in error_str.lower() or 'subtype' in error_str.lower()
+    assert_error_contains(errors, 'unknown-deprel-subtype', 'invalidsubtype')
 
 
 def test_completely_unknown_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -496,10 +488,9 @@ def test_completely_unknown_deprel(tmp_path: Path, sentence_la_tokens: list[dict
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should report as unknown
-    assert 'unknown-deprel' in error_str
-    assert 'totallyfake' in error_str
+    assert_error_count(errors, 1, 'unknown-deprel')
+    assert_error_contains(errors, 'unknown-deprel', 'totallyfake')
 
 
 def test_extract_base_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str, str | int]]) -> None:
@@ -511,6 +502,5 @@ def test_extract_base_deprel(tmp_path: Path, sentence_la_tokens: list[dict[str, 
     text = ConlluSentenceFactory.as_text(lang='la', tmp_path=tmp_path, tokens=sentence_la_tokens[:1])
     validator = ConlluValidator(level=4, lang='la')
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
     # Should handle complex subtypes (obl:fake:extra -> obl)
-    assert 'unknown-deprel' in error_str or 'subtype' in error_str.lower()
+    assert_no_errors_of_type(errors, 'unknown-deprel')

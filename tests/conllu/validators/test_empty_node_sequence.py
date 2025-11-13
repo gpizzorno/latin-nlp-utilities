@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_empty_node_sequence(tmp_path: Path) -> None:
@@ -61,7 +62,7 @@ def test_valid_empty_node_sequence(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert not any('empty-node-sequence' in e for e in errors)
+    assert_no_errors_of_type(errors, 'empty-node-sequence')
 
 
 def test_empty_node_skipping_1(tmp_path: Path) -> None:
@@ -107,9 +108,9 @@ def test_empty_node_skipping_1(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('empty-node-sequence' in e for e in errors)
-    assert any('1.2' in e for e in errors)
-    assert any('1.1' in e for e in errors)
+    assert_error_count(errors, 1, 'empty-node-sequence')
+    assert_error_contains(errors, 'empty-node-sequence', '1.2')
+    assert_error_contains(errors, 'empty-node-sequence', '1.1')
 
 
 def test_empty_node_gap(tmp_path: Path) -> None:
@@ -167,7 +168,7 @@ def test_empty_node_gap(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('empty-node-sequence' in e for e in errors)
+    assert_error_count(errors, 1, 'empty-node-sequence')
 
 
 def test_duplicate_empty_node(tmp_path: Path) -> None:
@@ -225,8 +226,8 @@ def test_duplicate_empty_node(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('duplicate-empty-node-id' in e for e in errors)
-    assert any('1.1' in e for e in errors)
+    assert_error_count(errors, 1, 'duplicate-empty-node-id')
+    assert_error_contains(errors, 'duplicate-empty-node-id', '1.1')
 
 
 def test_empty_node_wrong_word(tmp_path: Path) -> None:
@@ -273,7 +274,8 @@ def test_empty_node_wrong_word(tmp_path: Path) -> None:
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
     # Empty node 1.1 comes after word 2, so it should appear before word 2
-    assert any('empty-node-not-before-next-word' in e for e in errors)
+    assert_error_count(errors, 1, 'empty-node-not-before-next-word')
+    assert_error_contains(errors, 'empty-node-not-before-next-word', '1.1')
 
 
 def test_empty_node_before_word(tmp_path: Path) -> None:
@@ -319,4 +321,4 @@ def test_empty_node_before_word(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=1)
     errors = validator.validate_file(test_file)
-    assert any('empty-node-not-after-word' in e for e in errors)
+    assert_error_count(errors, 1, 'empty-node-not-after-word')

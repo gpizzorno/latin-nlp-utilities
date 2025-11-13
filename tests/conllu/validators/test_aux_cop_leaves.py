@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 # Test aux and cop as functional leaves
@@ -50,8 +51,7 @@ def test_valid_aux_with_fixed(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-aux-cop' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-aux-cop')
 
 
 def test_valid_cop_with_conj(tmp_path: Path) -> None:
@@ -97,8 +97,7 @@ def test_valid_cop_with_conj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-aux-cop' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-aux-cop')
 
 
 def test_valid_aux_with_punct(tmp_path: Path) -> None:
@@ -144,8 +143,7 @@ def test_valid_aux_with_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-aux-cop' not in error_str
+    assert_no_errors_of_type(errors, 'leaf-aux-cop')
 
 
 def test_invalid_aux_with_nsubj(tmp_path: Path) -> None:
@@ -191,8 +189,7 @@ def test_invalid_aux_with_nsubj(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-aux-cop' in error_str
+    assert_no_errors_of_type(errors, 'leaf-aux-cop')
 
 
 def test_invalid_cop_with_advmod(tmp_path: Path) -> None:
@@ -235,8 +232,9 @@ def test_invalid_cop_with_advmod(tmp_path: Path) -> None:
             'misc': '_',
         },
     ]
-    text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens)
+    text = ConlluSentenceFactory.as_text(tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    error_str = '\n'.join(errors)
-    assert 'leaf-aux-cop' in error_str
+    assert_error_count(errors, 1, 'leaf-aux-cop')
+    # print(errors.errors)
+    # assert_error_count(errors, 0)

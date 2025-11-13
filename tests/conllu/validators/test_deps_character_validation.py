@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_deps(tmp_path: Path) -> None:
@@ -13,8 +14,7 @@ def test_valid_deps(tmp_path: Path) -> None:
     errors = validator.validate_file(test_file)
 
     # Should not have invalid-edeprel errors
-    error_text = '\n'.join(errors)
-    assert 'invalid-edeprel' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-edeprel')
 
 
 def test_valid_deps_with_subtype(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -25,8 +25,7 @@ def test_valid_deps_with_subtype(tmp_path: Path, sentence_en_tokens: list[dict[s
     errors = validator.validate_file(test_file)
 
     # Should not have invalid-edeprel errors
-    error_text = '\n'.join(errors)
-    assert 'invalid-edeprel' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-edeprel')
 
 
 def test_valid_deps_with_unicode_preposition(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -37,8 +36,7 @@ def test_valid_deps_with_unicode_preposition(tmp_path: Path, sentence_en_tokens:
     errors = validator.validate_file(test_file)
 
     # Should not have invalid-edeprel errors
-    error_text = '\n'.join(errors)
-    assert 'invalid-edeprel' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-edeprel')
 
 
 def test_invalid_deps_uppercase(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -49,9 +47,8 @@ def test_invalid_deps_uppercase(tmp_path: Path, sentence_en_tokens: list[dict[st
     errors = validator.validate_file(test_file)
 
     # Should have invalid-edeprel error
-    error_text = '\n'.join(errors)
-    assert 'invalid-edeprel' in error_text
-    assert 'CC' in error_text
+    assert_error_count(errors, 1, 'invalid-edeprel')
+    assert_error_contains(errors, 'invalid-edeprel', 'CC')
 
 
 def test_invalid_deps_with_numbers(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -62,8 +59,7 @@ def test_invalid_deps_with_numbers(tmp_path: Path, sentence_en_tokens: list[dict
     errors = validator.validate_file(test_file)
 
     # Should have invalid-edeprel error
-    error_text = '\n'.join(errors)
-    assert 'invalid-edeprel' in error_text
+    assert_error_count(errors, 1, 'invalid-edeprel')
 
 
 def test_multiple_deps_relations(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -74,8 +70,7 @@ def test_multiple_deps_relations(tmp_path: Path, sentence_en_tokens: list[dict[s
     errors = validator.validate_file(test_file)
 
     # Should not have invalid-edeprel errors
-    error_text = '\n'.join(errors)
-    assert 'invalid-edeprel' not in error_text
+    assert_no_errors_of_type(errors, 'invalid-edeprel')
 
 
 def test_invalid_multiple_deps_relations(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -86,6 +81,5 @@ def test_invalid_multiple_deps_relations(tmp_path: Path, sentence_en_tokens: lis
     errors = validator.validate_file(test_file)
 
     # Should have invalid-edeprel error for OBJ
-    error_text = '\n'.join(errors)
-    assert 'invalid-edeprel' in error_text
-    assert 'OBJ' in error_text
+    assert_error_count(errors, 1, 'invalid-edeprel')
+    assert_error_contains(errors, 'invalid-edeprel', 'OBJ')

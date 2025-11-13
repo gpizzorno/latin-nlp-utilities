@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_deps_sorted_by_head(tmp_path: Path) -> None:
@@ -38,9 +39,8 @@ def test_deps_sorted_by_head(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    deps_errors = [e for e in errors if 'unsorted-deps' in e or 'repeated-deps' in e]
-    assert len(deps_errors) == 0, f'Expected no DEPS errors, got: {deps_errors}'
+    assert_no_errors_of_type(errors, 'unsorted-deps')
+    assert_no_errors_of_type(errors, 'repeated-deps')
 
 
 def test_deps_unsorted_by_head(tmp_path: Path) -> None:
@@ -75,10 +75,8 @@ def test_deps_unsorted_by_head(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    assert any('unsorted-deps' in e and '2:nsubj|0:root' in e for e in errors), (
-        f'Expected unsorted-deps error, got: {errors}'
-    )
+    assert_error_count(errors, 1, 'unsorted-deps')
+    assert_error_contains(errors, 'unsorted-deps', '2:nsubj|0:root')
 
 
 def test_deps_duplicate_relation(tmp_path: Path) -> None:
@@ -101,8 +99,8 @@ def test_deps_duplicate_relation(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    assert any('repeated-deps' in e and '0:root' in e for e in errors), f'Expected repeated-deps error, got: {errors}'
+    assert_error_count(errors, 1, 'repeated-deps')
+    assert_error_contains(errors, 'repeated-deps', '0:root')
 
 
 def test_deps_same_head_sorted_relations(tmp_path: Path) -> None:
@@ -137,9 +135,8 @@ def test_deps_same_head_sorted_relations(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    deps_errors = [e for e in errors if 'unsorted-deps' in e or 'repeated-deps' in e]
-    assert len(deps_errors) == 0, f'Expected no DEPS errors, got: {deps_errors}'
+    assert_no_errors_of_type(errors, 'unsorted-deps')
+    assert_no_errors_of_type(errors, 'repeated-deps')
 
 
 def test_deps_same_head_unsorted_relations(tmp_path: Path) -> None:
@@ -174,10 +171,8 @@ def test_deps_same_head_unsorted_relations(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    assert any('unsorted-deps-2' in e and "head '2'" in e for e in errors), (
-        f'Expected unsorted-deps-2 error for same-head relations, got: {errors}'
-    )
+    assert_error_count(errors, 1, 'unsorted-deps-2')
+    assert_error_contains(errors, 'unsorted-deps-2', "head '2'")
 
 
 def test_deps_with_empty_nodes(tmp_path: Path) -> None:
@@ -224,9 +219,8 @@ def test_deps_with_empty_nodes(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    deps_errors = [e for e in errors if 'unsorted-deps' in e or 'repeated-deps' in e]
-    assert len(deps_errors) == 0, f'Expected no DEPS errors with empty nodes, got: {deps_errors}'
+    assert_no_errors_of_type(errors, 'unsorted-deps')
+    assert_no_errors_of_type(errors, 'repeated-deps')
 
 
 def test_deps_single_dependency(tmp_path: Path) -> None:
@@ -249,6 +243,5 @@ def test_deps_single_dependency(tmp_path: Path) -> None:
     test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-
-    deps_errors = [e for e in errors if 'unsorted-deps' in e or 'repeated-deps' in e]
-    assert len(deps_errors) == 0, f'Expected no DEPS errors for single dependency, got: {deps_errors}'
+    assert_no_errors_of_type(errors, 'unsorted-deps')
+    assert_no_errors_of_type(errors, 'repeated-deps')

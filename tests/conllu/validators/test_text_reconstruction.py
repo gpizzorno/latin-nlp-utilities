@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count
 
 
 def test_text_reconstruction_basic(tmp_path: Path) -> None:
@@ -66,7 +67,7 @@ def test_text_reconstruction_basic(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    assert len(errors) == 0
+    assert_error_count(errors, 0)
 
 
 def test_text_reconstruction_mismatch(tmp_path: Path) -> None:
@@ -131,8 +132,7 @@ def test_text_reconstruction_mismatch(tmp_path: Path) -> None:
     )
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    text_errors = [e for e in errors if 'text-mismatch' in e]
-    assert len(text_errors) == 1
+    assert_error_count(errors, 1, 'text-mismatch')
 
 
 def test_missing_text_attribute(tmp_path: Path) -> None:
@@ -178,8 +178,7 @@ def test_missing_text_attribute(tmp_path: Path) -> None:
 
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    missing_text_errors = [e for e in errors if 'missing-text' in e]
-    assert len(missing_text_errors) == 1
+    assert_error_count(errors, 1, 'missing-text')
 
 
 def test_missing_sent_id_attribute(tmp_path: Path) -> None:
@@ -225,5 +224,4 @@ def test_missing_sent_id_attribute(tmp_path: Path) -> None:
 
     validator = ConlluValidator(level=2)
     errors = validator.validate_file(test_file)
-    missing_id_errors = [e for e in errors if 'missing-sent-id' in e]
-    assert len(missing_id_errors) == 1
+    assert_error_count(errors, 1, 'missing-sent-id')

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_contains, assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_misc_spaceafter(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -12,8 +13,7 @@ def test_valid_misc_spaceafter(tmp_path: Path, sentence_en_tokens: list[dict[str
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    misc_errors = [e for e in errors if 'invalid-spaceafter-value' in e]
-    assert len(misc_errors) == 0
+    assert_no_errors_of_type(errors, 'invalid-spaceafter-value')
 
 
 def test_invalid_misc_spaceafter_yes(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -22,9 +22,8 @@ def test_invalid_misc_spaceafter_yes(tmp_path: Path, sentence_en_tokens: list[di
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    misc_errors = [e for e in errors if 'invalid-spaceafter-value' in e]
-    assert len(misc_errors) == 1
-    assert 'Yes' in misc_errors[0]
+    assert_error_count(errors, 1, 'invalid-spaceafter-value')
+    assert_error_contains(errors, 'invalid-spaceafter-value', 'Yes')
 
 
 def test_invalid_misc_spaceafter_wrong_value(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -33,9 +32,8 @@ def test_invalid_misc_spaceafter_wrong_value(tmp_path: Path, sentence_en_tokens:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    misc_errors = [e for e in errors if 'invalid-spaceafter-value' in e]
-    assert len(misc_errors) == 1
-    assert 'False' in misc_errors[0]
+    assert_error_count(errors, 1, 'invalid-spaceafter-value')
+    assert_error_contains(errors, 'invalid-spaceafter-value', 'False')
 
 
 def test_valid_misc_multiple_attributes(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -44,8 +42,7 @@ def test_valid_misc_multiple_attributes(tmp_path: Path, sentence_en_tokens: list
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    misc_errors = [e for e in errors if 'invalid-spaceafter-value' in e]
-    assert len(misc_errors) == 0
+    assert_no_errors_of_type(errors, 'invalid-spaceafter-value')
 
 
 def test_misc_underscore(tmp_path: Path) -> None:
@@ -53,8 +50,7 @@ def test_misc_underscore(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    misc_errors = [e for e in errors if 'invalid-spaceafter-value' in e]
-    assert len(misc_errors) == 0
+    assert_no_errors_of_type(errors, 'invalid-spaceafter-value')
 
 
 def test_misc_empty_node(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -77,8 +73,7 @@ def test_misc_empty_node(tmp_path: Path, sentence_en_tokens: list[dict[str, str 
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens_with_empty)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    misc_errors = [e for e in errors if 'invalid-spaceafter-value' in e]
-    assert len(misc_errors) == 0
+    assert_no_errors_of_type(errors, 'invalid-spaceafter-value')
 
 
 def test_misc_multiword_token(tmp_path: Path) -> None:
@@ -136,6 +131,5 @@ def test_misc_multiword_token(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='es', tmp_path=tmp_path, tokens=tokens)
     validator = ConlluValidator(level=2)
     errors = validator.validate_string(text)
-    misc_errors = [e for e in errors if 'invalid-spaceafter-value' in e]
     # MWT should be skipped, so no error about SpaceAfter=Yes
-    assert len(misc_errors) == 0
+    assert_no_errors_of_type(errors, 'invalid-spaceafter-value')

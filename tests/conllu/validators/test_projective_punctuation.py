@@ -2,8 +2,10 @@
 
 from pathlib import Path
 
+from nlp_utilities.conllu.validators.error_reporter import ErrorReporter
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_valid_projective_punct(tmp_path: Path) -> None:
@@ -61,8 +63,8 @@ def test_valid_projective_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='Hello , world !')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    punct_errors = [e for e in errors if 'punct-causes-nonproj' in e or 'punct-is-nonproj' in e]
-    assert len(punct_errors) == 0
+    assert_no_errors_of_type(errors, 'punct-causes-nonproj')
+    assert_no_errors_of_type(errors, 'punct-is-nonproj')
 
 
 def test_invalid_nonprojective_punct(tmp_path: Path) -> None:
@@ -120,8 +122,7 @@ def test_invalid_nonprojective_punct(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='The cat sleeps .')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    nonproj_errors = [e for e in errors if 'punct-is-nonproj' in e]
-    assert len(nonproj_errors) == 1
+    assert_error_count(errors, 1, 'punct-is-nonproj')
 
 
 def test_punct_causes_nonprojectivity(tmp_path: Path) -> None:
@@ -205,7 +206,7 @@ def test_punct_causes_nonprojectivity(tmp_path: Path) -> None:
     errors = validator.validate_string(text)
     # This might cause nonprojectivity depending on exact attachment
     # At minimum, should not crash
-    assert isinstance(errors, list)
+    assert isinstance(errors, ErrorReporter)
 
 
 def test_punct_at_sentence_end(tmp_path: Path) -> None:
@@ -251,8 +252,8 @@ def test_punct_at_sentence_end(tmp_path: Path) -> None:
     text = ConlluSentenceFactory.as_text(lang='en', tmp_path=tmp_path, tokens=tokens, text='Hello world .')
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
-    punct_errors = [e for e in errors if 'punct-causes-nonproj' in e or 'punct-is-nonproj' in e]
-    assert len(punct_errors) == 0
+    assert_no_errors_of_type(errors, 'punct-causes-nonproj')
+    assert_no_errors_of_type(errors, 'punct-is-nonproj')
 
 
 def test_multiple_punct(tmp_path: Path) -> None:
@@ -335,7 +336,7 @@ def test_multiple_punct(tmp_path: Path) -> None:
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
     # Should handle multiple punctuation marks without errors
-    assert isinstance(errors, list)
+    assert isinstance(errors, ErrorReporter)
 
 
 def test_punct_with_subtype(tmp_path: Path) -> None:
@@ -382,5 +383,5 @@ def test_punct_with_subtype(tmp_path: Path) -> None:
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
     # Subtype should not affect validation
-    punct_errors = [e for e in errors if 'punct-causes-nonproj' in e or 'punct-is-nonproj' in e]
-    assert len(punct_errors) == 0
+    assert_no_errors_of_type(errors, 'punct-causes-nonproj')
+    assert_no_errors_of_type(errors, 'punct-is-nonproj')

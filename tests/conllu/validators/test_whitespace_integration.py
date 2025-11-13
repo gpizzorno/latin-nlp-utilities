@@ -4,6 +4,7 @@ from pathlib import Path
 
 from nlp_utilities.conllu.validators.validator import ConlluValidator
 from tests.factories.conllu import ConlluSentenceFactory
+from tests.helpers.assertion import assert_error_count, assert_no_errors_of_type
 
 
 def test_level_3_no_whitespace_validation(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -13,7 +14,7 @@ def test_level_3_no_whitespace_validation(tmp_path: Path, sentence_en_tokens: li
     validator = ConlluValidator(level=3)
     errors = validator.validate_file(test_file)
     # Level 3 should not check whitespace
-    assert not any('invalid-word-with-space' in e for e in errors)
+    assert_no_errors_of_type(errors, 'invalid-word-with-space')
 
 
 def test_level_4_whitespace_validation(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -23,7 +24,7 @@ def test_level_4_whitespace_validation(tmp_path: Path, sentence_en_tokens: list[
     validator = ConlluValidator(level=4)
     errors = validator.validate_file(test_file)
     # Level 4 should check whitespace
-    assert any('invalid-word-with-space' in e for e in errors)
+    assert_error_count(errors, 1, 'invalid-word-with-space')
 
 
 def test_number_pattern_with_spaces(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -40,12 +41,10 @@ def test_number_pattern_with_spaces(tmp_path: Path, sentence_en_tokens: list[dic
         test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
         validator = ConlluValidator(level=4)
         errors = validator.validate_file(test_file)
-        whitespace_errors = [e for e in errors if 'invalid-word-with-space' in e]
-
         if should_pass:
-            assert len(whitespace_errors) == 0, f"Expected '{form}' to pass but got errors: {whitespace_errors}"
+            assert_no_errors_of_type(errors, 'invalid-word-with-space')
         else:
-            assert len(whitespace_errors) > 0, f"Expected '{form}' to fail but got no whitespace errors"
+            assert_error_count(errors, 1, 'invalid-word-with-space')
 
 
 def test_decimal_pattern_with_spaces(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -62,12 +61,10 @@ def test_decimal_pattern_with_spaces(tmp_path: Path, sentence_en_tokens: list[di
         test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
         validator = ConlluValidator(level=4)
         errors = validator.validate_file(test_file)
-        whitespace_errors = [e for e in errors if 'invalid-word-with-space' in e]
-
         if should_pass:
-            assert len(whitespace_errors) == 0, f"Expected '{form}' to pass but got errors: {whitespace_errors}"
+            assert_no_errors_of_type(errors, 'invalid-word-with-space')
         else:
-            assert len(whitespace_errors) > 0, f"Expected '{form}' to fail but got no whitespace errors"
+            assert_error_count(errors, 1, 'invalid-word-with-space')
 
 
 def test_non_matching_patterns(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -85,9 +82,7 @@ def test_non_matching_patterns(tmp_path: Path, sentence_en_tokens: list[dict[str
         test_file = ConlluSentenceFactory.as_file(lang='en', tmp_path=tmp_path, tokens=sentence_en_tokens)
         validator = ConlluValidator(level=4)
         errors = validator.validate_file(test_file)
-        assert any('invalid-word-with-space' in e for e in errors), (
-            f"Expected '{form}' to fail but got no whitespace errors"
-        )
+        assert_error_count(errors, 1, 'invalid-word-with-space')
 
 
 def test_multiple_tokens_mixed_validity(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -100,9 +95,7 @@ def test_multiple_tokens_mixed_validity(tmp_path: Path, sentence_en_tokens: list
     validator = ConlluValidator(level=4)
     errors = validator.validate_file(test_file)
     # Should have 2 errors: tokens 2 and 4 have invalid spaces
-    whitespace_errors = [e for e in errors if 'invalid-word-with-space' in e]
-    expected_error_count = 2
-    assert len(whitespace_errors) == expected_error_count
+    assert_error_count(errors, 2, 'invalid-word-with-space')
 
 
 def test_ud_language_no_validation(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -113,7 +106,7 @@ def test_ud_language_no_validation(tmp_path: Path, sentence_en_tokens: list[dict
     errors = validator.validate_file(test_file)
     # With lang='ud', no language-specific data is loaded
     # So whitespace validation should still happen but with empty exception list
-    assert any('invalid-word-with-space' in e for e in errors)
+    assert_error_count(errors, 1, 'invalid-word-with-space')
 
 
 def test_empty_form_no_validation(tmp_path: Path, sentence_en_tokens: list[dict[str, str | int]]) -> None:
@@ -123,4 +116,4 @@ def test_empty_form_no_validation(tmp_path: Path, sentence_en_tokens: list[dict[
     validator = ConlluValidator(level=4)
     errors = validator.validate_file(test_file)
     # Empty node with _ should not trigger whitespace validation
-    assert not any('invalid-word-with-space' in e for e in errors)
+    assert_no_errors_of_type(errors, 'invalid-word-with-space')
