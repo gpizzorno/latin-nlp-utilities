@@ -17,7 +17,7 @@ from nlp_utilities.constants import (
 )
 
 
-def load_language_data(  # noqa: C901
+def load_language_data(  # noqa: C901, PLR0912
     _type: str,
     language: str | None,
     additional_path: str | Path | None = None,
@@ -69,7 +69,7 @@ def load_language_data(  # noqa: C901
             xtra_data = json.load(file)
             for name, values in xtra_data.items():
                 if language is not None:
-                    data[section_key][language][name] = values
+                    data[name] = values
                 else:
                     data[section_key][name] = values
 
@@ -78,10 +78,17 @@ def load_language_data(  # noqa: C901
             msg = 'DALME data can only be loaded for features'
             raise ValueError(msg)
 
+        if language is not None and language != 'la':
+            msg = 'DALME data can only be loaded for Latin (la) features'
+            raise ValueError(msg)
+
         with DALME_FEATURES.open('r', encoding='utf-8') as file:
             xtra_features = json.load(file)
             for name, values in xtra_features.items():
-                data[section_key]['la'][name] = values
+                if language is not None:
+                    data[name] = values
+                else:
+                    data[section_key]['la'][name] = values
 
     return data
 
