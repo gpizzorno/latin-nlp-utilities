@@ -46,80 +46,75 @@ class WordProcessingMixin:
         tokens: list[UDSpan] = []
         index = 0
 
-        # Track multi-word token ranges
-        mwt_ranges: dict[int, tuple[int, int]] = {}  # word_id -> (start, end) in characters
+        # First pass: collect MWT info and build character array/tokens in order
+        mwt_ranges: dict[int, tuple[int, int]] = {}  # word_id -> (start_char, end_char)
+        word_spans: dict[int, UDSpan] = {}  # word_id -> span for non-MWT words
+
+        # Process tokens in order to build character array
         for token in sentence:
             if isinstance(token['id'], tuple):
                 # Check if this is an empty node (ID with '.')
                 if len(token['id']) == 3 and token['id'][1] == '.':  # noqa: PLR2004
                     # This is an empty node (e.g., "2.1")
-                    # After collapsing empty nodes into enhancements, these should not occur
                     msg = f'Sentence {sent_id}: The collapsed CoNLL-U file still contains empty nodes: {token["id"]}'
                     raise UDError(msg)
 
                 # This is a multi-word token range (e.g., "1-2")
-                start_id, end_id = token['id']
-                # Remove Unicode whitespace from form
+                start_id, _separator, end_id = token['id']
                 form = ''.join(c for c in token['form'] if unicodedata.category(c) != 'Zs')
                 if not form:
                     msg = f'Sentence {sent_id}: Empty FORM after removing whitespace in multi-word token {token["id"]}'
                     raise UDError(msg)
 
-                # Record the span for this MWT
+                # Add MWT characters
                 mwt_start = index
                 characters.extend(form)
                 mwt_end = index + len(form)
-                index = mwt_end
-
-                # Save token span
                 tokens.append(UDSpan(mwt_start, mwt_end))
 
-                # Store range for words within this MWT
+                # Store span for all words in this MWT
                 for word_id in range(start_id, end_id + 1):
                     mwt_ranges[word_id] = (mwt_start, mwt_end)
 
-        # Now process words
-        index = 0  # Reset for word processing
-        current_mwt_span: UDSpan | None = None
+                index = mwt_end
+            else:
+                # Regular word (not MWT range line)
+                word_id = token['id']
 
+                # Skip if this word is part of an MWT
+                if word_id not in mwt_ranges:
+                    form = ''.join(c for c in token['form'] if unicodedata.category(c) != 'Zs')
+                    if not form:
+                        msg = f'Sentence {sent_id}: Empty FORM after removing whitespace in word {token["id"]}'
+                        raise UDError(msg)
+
+                    # Add regular word characters
+                    word_start = index
+                    characters.extend(form)
+                    word_end = index + len(form)
+                    span = UDSpan(word_start, word_end)
+                    tokens.append(span)
+                    word_spans[word_id] = span
+                    index = word_end
+
+        # Second pass: create UDWord objects for all word tokens
         for token in sentence:
             if isinstance(token['id'], tuple):
-                # Skip MWT range lines (already processed above)
+                # Skip MWT range lines
                 continue
 
             word_id = token['id']
 
-            # Remove Unicode whitespace from form
-            form = ''.join(c for c in token['form'] if unicodedata.category(c) != 'Zs')
-            if not form:
-                msg = f'Sentence {sent_id}: Empty FORM after removing whitespace in word {token["id"]}'
-                raise UDError(msg)
-
-            # Check if this word is part of a multi-word token
+            # Check if this word is part of an MWT
             if word_id in mwt_ranges:
-                # Part of MWT - use the MWT's span
-                mwt_start, mwt_end = mwt_ranges[word_id]
-                span = UDSpan(mwt_start, mwt_end)
+                # Use the MWT's span
+                start_char, end_char = mwt_ranges[word_id]
+                span = UDSpan(start_char, end_char)
                 is_multiword = True
-
-                # For character counting, we need to track position
-                # But for MWT, all words share the same span
-                if current_mwt_span is None or current_mwt_span.start != mwt_start:
-                    current_mwt_span = span
             else:
-                # Regular word - create its own span
-                word_start = index
-                word_end = index + len(form)
-                span = UDSpan(word_start, word_end)
+                # Use the pre-calculated span
+                span = word_spans[word_id]
                 is_multiword = False
-
-                # Only add to characters and tokens if not part of MWT
-                # (MWT characters were already added)
-                if word_id not in mwt_ranges:
-                    tokens.append(span)
-
-                index = word_end
-                current_mwt_span = None
 
             words.append(UDWord(span=span, token=token, is_multiword=is_multiword))
 
