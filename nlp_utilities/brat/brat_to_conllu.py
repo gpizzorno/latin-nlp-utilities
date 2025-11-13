@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import conllu
-from typying import Any
 
 from nlp_utilities.converters.features import feature_dict_to_string
 from nlp_utilities.normalizers import normalize_features, normalize_xpos
