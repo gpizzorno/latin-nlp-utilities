@@ -209,7 +209,7 @@ VALIDITY_BY_POS = {
 }
 
 # RegEx patterns
-MULTIWORD_TOKEN = r'^[1-9][0-9]*-[1-9][0-9]*$'
+MULTIWORD_TOKEN = r'^([1-9][0-9]*)(-)([1-9][0-9]*)$'
 EMPTY_NODE = r'^[0-9]+\.[1-9][0-9]*$'
 EMPTY_NODE_ID = r'^([0-9]+)\.([0-9]+)$'
 BASIC_HEAD_MATCHER = r'^(0|[1-9][0-9]*)$'
