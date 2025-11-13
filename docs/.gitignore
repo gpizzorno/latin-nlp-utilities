@@ -1,0 +1,8 @@
+# Sphinx build output
+_build/
+_static/
+_templates/
+
+# Auto-generated files
+source/api_reference/*.rst
+!source/api_reference/index.rst
