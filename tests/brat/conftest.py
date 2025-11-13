@@ -10,6 +10,16 @@ from typing import Any
 import pytest
 
 from nlp_utilities.loaders import load_language_data
+from tests.test_data.load_data import (
+    BRAT_METADATA,
+    MULTI_CONLLU,
+    SIMPLE_ANN,
+    SIMPLE_ANN_WITH_ROOT,
+    SIMPLE_CONLLU,
+    SIMPLE_TXT,
+    SIMPLE_TXT_WITH_ROOT,
+    base_path,
+)
 
 
 @pytest.fixture
@@ -58,11 +68,7 @@ def sample_annotations() -> list[dict[str, Any]]:
 def simple_ann_file(temp_dir: Path) -> Path:
     """Create a simple .ann file with test data."""
     ann_path = temp_dir / 'test.ann'
-    content = """T1\tNOUN 0 5\tWord
-T2\tVERB 6 10\ttest
-R1\tnsubj Arg1:T2 Arg2:T1
-"""
-    ann_path.write_text(content, encoding='utf-8')
+    ann_path.write_text(SIMPLE_ANN, encoding='utf-8')
     return ann_path
 
 
@@ -70,30 +76,20 @@ R1\tnsubj Arg1:T2 Arg2:T1
 def simple_txt_file(temp_dir: Path) -> Path:
     """Create a simple .txt file with test data."""
     txt_path = temp_dir / 'test.txt'
-    content = 'Word test'
-    txt_path.write_text(content, encoding='utf-8')
+    txt_path.write_text(SIMPLE_TXT, encoding='utf-8')
     return txt_path
 
 
 @pytest.fixture
 def metadata_dict() -> dict[str, Any]:
     """Sample metadata dictionary."""
-    return {
-        'conllu_filename': '/path/to/file.conllu',
-        'sents_per_doc': 10,
-        'output_root': True,
-    }
+    return BRAT_METADATA  # type: ignore [no-any-return]
 
 
 @pytest.fixture
 def simple_conllu_content() -> str:
     """Return simple CoNLL-U formatted content for testing."""
-    return """# sent_id = 1
-# text = Word test
-1	Word	word	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	2	nsubj	_	_
-2	test	test	VERB	v3spia---	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
-
-"""
+    return SIMPLE_CONLLU
 
 
 @pytest.fixture
@@ -103,53 +99,18 @@ def feature_set() -> dict[str, Any]:
 
 
 @pytest.fixture
+def reference_conllu_file() -> Path:
+    """Provide a reference CoNLL-U file for testing."""
+    return base_path / 'brat' / 'simple.conllu'
+
+
+@pytest.fixture
 def brat_input_dir(temp_dir: Path) -> Path:
-    """Create a directory with sample BRAT files for testing brat_to_conllu."""
+    """Create a directory with sample BRAT files."""
     brat_dir = temp_dir / 'brat_input'
     brat_dir.mkdir()
-
-    # Create a simple annotation file with ROOT marker
-    ann_content = """T0\tROOT 0 0\tROOT
-T1\tNOUN 0 4\tWord
-T2\tVERB 5 9\ttest
-R1\tnsubj Arg1:T2 Arg2:T1
-"""
-    (brat_dir / 'test.ann').write_text(ann_content, encoding='utf-8')
-    (brat_dir / 'test.txt').write_text('Word test', encoding='utf-8')
-
-    return brat_dir
-
-
-@pytest.fixture
-def reference_conllu_file(temp_dir: Path) -> Path:
-    """Create a reference CoNLL-U file for testing brat_to_conllu."""
-    conllu_path = temp_dir / 'reference.conllu'
-    content = """# sent_id = 1
-# text = Word test
-1	Word	word	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	0	root	_	_
-2	test	test	VERB	v3spia---	Mood=Ind|Number=Sing|Person=3|Tense=Pres|VerbForm=Fin|Voice=Act	0	root	_	_
-
-"""
-    conllu_path.write_text(content, encoding='utf-8')
-    return conllu_path
-
-
-@pytest.fixture
-def brat_with_root(temp_dir: Path) -> Path:
-    """Create BRAT directory with ROOT annotations."""
-    brat_dir = temp_dir / 'brat_with_root'
-    brat_dir.mkdir()
-
-    # Create annotation with ROOT
-    ann_content = """T0\tROOT 0 0\tROOT
-T1\tNOUN 0 4\tWord
-T2\tVERB 5 9\ttest
-R1\tnsubj Arg1:T2 Arg2:T1
-R2\troot Arg1:T0 Arg2:T2
-"""
-    (brat_dir / 'test.ann').write_text(ann_content, encoding='utf-8')
-    (brat_dir / 'test.txt').write_text('Word test', encoding='utf-8')
-
+    (brat_dir / 'test.ann').write_text(SIMPLE_ANN_WITH_ROOT, encoding='utf-8')
+    (brat_dir / 'test.txt').write_text(SIMPLE_TXT_WITH_ROOT, encoding='utf-8')
     return brat_dir
 
 
@@ -157,16 +118,5 @@ R2\troot Arg1:T0 Arg2:T2
 def multi_sentence_conllu(temp_dir: Path) -> Path:
     """Create a multi-sentence CoNLL-U file."""
     conllu_path = temp_dir / 'multi.conllu'
-    content = """# sent_id = 1
-# text = Word test
-1	Word	word	NOUN	n-s---mn-	_	2	nsubj	_	_
-2	test	test	VERB	v3spia---	_	0	root	_	_
-
-# sent_id = 2
-# text = Another sentence
-1	Another	another	DET	d--------	_	2	det	_	_
-2	sentence	sentence	NOUN	n-s---fn-	_	0	root	_	_
-
-"""
-    conllu_path.write_text(content, encoding='utf-8')
+    conllu_path.write_text(MULTI_CONLLU, encoding='utf-8')
     return conllu_path
