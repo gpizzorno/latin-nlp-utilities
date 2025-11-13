@@ -1,6 +1,5 @@
 # MacOS
 .DS_Store
-test_data/
 .notes/
 .vscode/
 models/
