@@ -1,0 +1,5 @@
+{
+    "conllu_filename": "tests/test_data/brat/brat_test.conllu",
+    "sents_per_doc": 10,
+    "output_root": true
+}

@@ -1,0 +1,571 @@
+# text = Una scala .
+# sent_id = 8F70004A-C891-4513-930A-E0A64E162D8B
+1	Una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	2	nummod	2:nummod	start_char=0|end_char=3
+2	scala	scalae	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=4|end_char=9
+3	.	.	PUNCT	u--------	_	2	punct	2:punct	start_char=10|end_char=11
+
+# text = Item una gaveda .
+# sent_id = 363AA14C-2692-4257-A16A-B873388DC508
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=12|end_char=16
+2	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=17|end_char=20
+3	gaveda	gaveda	NOUN	n--------	Number=Sing	0	root	_	start_char=21|end_char=27
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=28|end_char=29
+
+# text = Item unum alium smaragdum et aliud saphirum cum virgis aureis .
+# sent_id = 089AD9DF-38D8-468D-A5E0-01F47EF9CDDC
+1	Item	item	ADV	d--------	_	4	advmod	4:advmod	start_char=30|end_char=34
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	4	nummod	4:nummod	start_char=35|end_char=39
+3	alium	alius	DET	p-s---ma-	Case=Acc|Gender=Masc|Number=Sing|PronType=Ind	4	det	4:det	start_char=40|end_char=45
+4	smaragdum	smaragdus	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=46|end_char=55
+5	et	et	CCONJ	c--------	_	6	cc	6:cc	start_char=56|end_char=58
+6	aliud	alius	PRON	p-s---nn-	Case=Nom|Gender=Neut|Number=Sing|PronType=Ind	4	conj	4:conj	start_char=59|end_char=64
+7	saphirum	sapphirus	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	6	nmod	6:nmod	start_char=65|end_char=73
+8	cum	cum	SCONJ	c--------	_	9	mark	9:mark	start_char=74|end_char=77
+9	virgis	virga	NOUN	n-p---mb-	Case=Abl|Gender=Masc|Number=Plur	4	acl	4:acl	start_char=78|end_char=84
+10	aureis	aureus	ADJ	a-p---mbp	Case=Abl|Degree=Pos|Gender=Masc|Number=Plur	9	amod	9:amod	start_char=85|end_char=91
+11	.	.	PUNCT	u--------	_	4	punct	4:punct	start_char=92|end_char=93
+
+# text = Item aliam virgam auream sine lapide .
+# sent_id = A418B9B3-6DC9-4EE8-BF6A-FBC150CBA9CE
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=94|end_char=98
+2	aliam	alius	DET	p-s---fa-	Case=Acc|Gender=Fem|Number=Sing|PronType=Ind	3	det	3:det	start_char=99|end_char=104
+3	virgam	virga	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=105|end_char=111
+4	auream	aureus	ADJ	a-s---fap	Case=Acc|Degree=Pos|Gender=Fem|Number=Sing	3	amod	3:amod	start_char=112|end_char=118
+5	sine	sine	ADP	r--------	AdpType=Prep	6	case	6:case	start_char=119|end_char=123
+6	lapide	lapis	NOUN	n-s---mb-	Case=Abl|Gender=Masc|Number=Sing	3	nmod	3:nmod	start_char=124|end_char=130
+7	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=131|end_char=132
+
+# text = Item quasdam zonas argenteas quarum una erat de seda viridi et alia de sendar .
+# sent_id = 6B3255AE-DF29-4A73-B485-0A68100409F1
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=133|end_char=137
+2	quasdam	quidam	DET	p--------	_	3	det	3:det	start_char=138|end_char=145
+3	zonas	zona	NOUN	n-p---fa-	Case=Acc|Gender=Fem|Number=Plur	0	root	_	start_char=146|end_char=151
+4	argenteas	argenteus	ADJ	a-p---fap	Case=Acc|Degree=Pos|Gender=Fem|Number=Plur	3	amod	3:amod	start_char=152|end_char=161
+5	quarum	qui	DET	p-p---fg-	Case=Gen|Gender=Masc|Number=Plur|PronType=Ind	6	det	6:det	start_char=162|end_char=168
+6	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	9	obl	9:obl	start_char=169|end_char=172
+7	erat	sum	AUX	v3siia---	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	9	cop	9:cop	start_char=173|end_char=177
+8	de	de	ADP	r--------	AdpType=Prep	9	case	9:case	start_char=178|end_char=180
+9	seda	seda	NOUN	n-s---fb-	Case=Abl|Gender=Fem|Number=Sing	3	acl	3:acl	start_char=181|end_char=185
+10	viridi	viridis	ADJ	a-s---mbp	Case=Abl|Degree=Pos|Gender=Masc|Number=Sing	9	amod	9:amod	start_char=186|end_char=192
+11	et	et	CCONJ	c--------	_	12	cc	12:cc	start_char=193|end_char=195
+12	alia	alius	PRON	p-s---fb-	Case=Abl|Gender=Fem|Number=Sing|PronType=Ind	9	conj	9:conj	start_char=196|end_char=200
+13	de	de	ADP	r--------	AdpType=Prep	14	case	14:case	start_char=201|end_char=203
+14	sendar	cendalum	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	12	nmod	12:nmod	start_char=204|end_char=210
+15	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=211|end_char=212
+
+# text = Item una garllanda cum grossis margaritis que habebat vi cap de margaritis .
+# sent_id = 27B418D0-C4C6-4A60-A6BD-98789D65683C
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=213|end_char=217
+2	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=218|end_char=221
+3	garllanda	garlanda	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=222|end_char=231
+4	cum	cum	SCONJ	c--------	_	6	case	6:case	start_char=232|end_char=235
+5	grossis	grossus	ADJ	a-p---mb-	Case=Abl|Gender=Masc|Number=Plur	6	amod	6:amod	start_char=236|end_char=243
+6	margaritis	margarita	NOUN	n-p---fd-	Case=Dat|Gender=Fem|Number=Plur	3	acl	3:acl	start_char=244|end_char=254
+7	que	qui	CCONJ	c--------	_	8	cc	8:cc	start_char=255|end_char=258
+8	habebat	habeo	VERB	v3siia---	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	3	acl	3:acl	start_char=259|end_char=266
+9	vi	sex	NUM	m-s---mn-	Case=Nom|Number=Sing	10	nummod	10:nummod	start_char=267|end_char=269
+10	cap	cap	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	8	obl	8:obl	start_char=270|end_char=273
+11	de	de	ADP	r--------	AdpType=Prep	12	case	12:case	start_char=274|end_char=276
+12	margaritis	margarita	NOUN	n-p---fd-	Case=Dat|Gender=Fem|Number=Plur	10	nmod	10:nmod	start_char=277|end_char=287
+13	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=288|end_char=289
+
+# text = Item aliam gallanda de margaritis .
+# sent_id = 4047DECF-9433-4A46-9ACE-99A758BB075D
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=290|end_char=294
+2	aliam	alius	DET	p-s---fa-	Case=Acc|Gender=Fem|Number=Sing|PronType=Ind	3	det	3:det	start_char=295|end_char=300
+3	gallanda	garlanda	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=301|end_char=309
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=310|end_char=312
+5	margaritis	margarita	NOUN	n-p---fd-	Case=Dat|Gender=Fem|Number=Plur	3	nmod	3:nmod	start_char=313|end_char=323
+6	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=324|end_char=325
+
+# text = Item duos pectines de ebore et duo specula de ebore .
+# sent_id = 4F23FA99-8EF5-4B81-AB88-EA0E5EE938C6
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=326|end_char=330
+2	duos	duo	NUM	m-p---mn-	Case=Acc|Gender=Masc|Number=Plur	3	nummod	3:nummod	start_char=331|end_char=335
+3	pectines	pecten	NOUN	n-p---mn-	Case=Nom|Gender=Masc|Number=Plur	0	root	_	start_char=336|end_char=344
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=345|end_char=347
+5	ebore	ebur	NOUN	n--------	Case=Loc|Number=Sing	3	nmod	3:nmod	start_char=348|end_char=353
+6	et	et	CCONJ	c--------	_	8	cc	8:cc	start_char=354|end_char=356
+7	duo	duo	NUM	m-p---nn-	Case=Nom|Gender=Neut|Number=Plur	8	nummod	8:nummod	start_char=357|end_char=360
+8	specula	speculum	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	conj	3:conj	start_char=361|end_char=368
+9	de	de	ADP	r--------	AdpType=Prep	10	case	10:case	start_char=369|end_char=371
+10	ebore	ebur	NOUN	n--------	Number=Sing	8	nmod	8:nmod	start_char=372|end_char=377
+11	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=378|end_char=379
+
+# text = Item quasdam zonas argenteas quarum una erat de seda viridi et alia de sendar .
+# sent_id = 8C5C9AA9-FCD8-4A05-8CF0-69E44B80677E
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=380|end_char=384
+2	quasdam	quidam	DET	p--------	_	3	det	3:det	start_char=385|end_char=392
+3	zonas	zona	NOUN	n-p---fa-	Case=Acc|Gender=Fem|Number=Plur	0	root	_	start_char=393|end_char=398
+4	argenteas	argenteus	ADJ	a-p---fap	Case=Acc|Degree=Pos|Gender=Fem|Number=Plur	3	amod	3:amod	start_char=399|end_char=408
+5	quarum	qui	DET	p-p---fg-	Case=Gen|Gender=Masc|Number=Plur|PronType=Ind	6	det	6:det	start_char=409|end_char=415
+6	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	9	obl	9:obl	start_char=416|end_char=419
+7	erat	sum	AUX	v3siia---	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	9	cop	9:cop	start_char=420|end_char=424
+8	de	de	ADP	r--------	AdpType=Prep	9	case	9:case	start_char=425|end_char=427
+9	seda	seda	NOUN	n-s---fb-	Case=Abl|Gender=Fem|Number=Sing	3	acl	3:acl	start_char=428|end_char=432
+10	viridi	viridis	ADJ	a-s---mbp	Case=Abl|Degree=Pos|Gender=Masc|Number=Sing	9	amod	9:amod	start_char=433|end_char=439
+11	et	et	CCONJ	c--------	_	12	cc	12:cc	start_char=440|end_char=442
+12	alia	alius	PRON	p-s---fb-	Case=Abl|Gender=Fem|Number=Sing|PronType=Ind	9	conj	9:conj	start_char=443|end_char=447
+13	de	de	ADP	r--------	AdpType=Prep	14	case	14:case	start_char=448|end_char=450
+14	sendar	cendalum	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	12	nmod	12:nmod	start_char=451|end_char=457
+15	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=458|end_char=459
+
+# text = Item quinque banqui .
+# sent_id = D4E4FF25-3D95-4353-92E4-63EE0BDEFCA2
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=460|end_char=464
+2	quinque	quinque	NUM	m--------	NumType=Card	3	nummod	3:nummod	start_char=465|end_char=472
+3	banqui	bancus	NOUN	n--------	_	0	root	_	start_char=473|end_char=479
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=480|end_char=481
+
+# text = Item unum brocum .
+# sent_id = 98613850-8212-468C-9FF2-D915C2CEB31F
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=482|end_char=486
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=487|end_char=491
+3	brocum	brochus	NOUN	n--------	Case=Loc|Number=Sing	0	root	_	start_char=492|end_char=498
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=499|end_char=500
+
+# text = Item unum brocum .
+# sent_id = D2247CA3-BD88-47E0-B40E-5DC7B65BA2FB
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=501|end_char=505
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=506|end_char=510
+3	brocum	brochus	NOUN	n--------	Case=Loc|Number=Sing	0	root	_	start_char=511|end_char=517
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=518|end_char=519
+
+# text = Item unam barram de ferro .
+# sent_id = F730424E-DE85-48EB-ABB6-46DD1793F1A2
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=520|end_char=524
+2	unam	unus	NUM	m-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=525|end_char=529
+3	barram	barra	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=530|end_char=536
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=537|end_char=539
+5	ferro	ferrum	NOUN	n-s---nb-	Case=Abl|Gender=Neut|Number=Sing	3	nmod	3:nmod	start_char=540|end_char=545
+6	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=546|end_char=547
+
+# text = Item duas jarras .
+# sent_id = 5A056BBB-231F-4227-BCD5-033952286D78
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=548|end_char=552
+2	duas	duo	NUM	m-p---fa-	Case=Acc|Gender=Fem|Number=Plur	3	nummod	3:nummod	start_char=553|end_char=557
+3	jarras	jarra	NOUN	n-p---fa-	Case=Acc|Function=Unit|Gender=Fem|Number=Plur	0	root	_	start_char=558|end_char=564
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=565|end_char=566
+
+# text = Item una systra cum scutellis terreis et ollis .
+# sent_id = CBBE3FA9-EFF9-4AD7-95AD-9BB48F0EF2E3
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=567|end_char=571
+2	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=572|end_char=575
+3	systra	sistra	NOUN	n--------	_	0	root	_	start_char=576|end_char=582
+4	cum	cum	SCONJ	c--------	_	5	mark	5:mark	start_char=583|end_char=586
+5	scutellis	scutella	NOUN	n-p---mb-	Case=Abl|Gender=Masc|Number=Plur	3	acl	3:acl	start_char=587|end_char=596
+6	terreis	terra	NOUN	n-p---mb-	Case=Abl|Gender=Masc|Number=Plur	5	nmod	5:nmod	start_char=597|end_char=604
+7	et	et	CCONJ	c--------	_	8	cc	8:cc	start_char=605|end_char=607
+8	ollis	olla	NOUN	n-p---fb-	Case=Abl|Gender=Fem|Number=Plur	5	conj	5:conj	start_char=608|end_char=613
+9	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=614|end_char=615
+
+# text = Item unum lectum tabularum .
+# sent_id = C545062D-5E75-4937-A81D-283F42770674
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=616|end_char=620
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=621|end_char=625
+3	lectum	lectum	NOUN	n-s---ma-	Case=Acc|Gender=Masc|Number=Sing	0	root	_	start_char=626|end_char=632
+4	tabularum	tabula	NOUN	n-p---fg-	Case=Gen|Gender=Fem|Number=Plur	3	nmod	3:nmod	start_char=633|end_char=642
+5	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=643|end_char=644
+
+# text = Item unum copertorium modicis valoris .
+# sent_id = 11A0B359-D728-43C9-BDE5-D44732F02CD3
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=645|end_char=649
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=650|end_char=654
+3	copertorium	copertorium	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=655|end_char=666
+4	modicis	modicus	ADJ	a-p---mnp	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	5	amod	5:amod	start_char=667|end_char=674
+5	valoris	valor	NOUN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	3	acl	3:acl	start_char=675|end_char=682
+6	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=683|end_char=684
+
+# text = Item unum pulvinar modici valoris .
+# sent_id = 18633EF2-9EF4-41F1-A578-4438ED046C88
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=685|end_char=689
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=690|end_char=694
+3	pulvinar	pulvinar	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=695|end_char=703
+4	modici	modicus	ADJ	a-p---mnp	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	5	amod	5:amod	start_char=704|end_char=710
+5	valoris	valor	NOUN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	3	acl	3:acl	start_char=711|end_char=718
+6	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=719|end_char=720
+
+# text = Item duos bancos .
+# sent_id = EB05E6F1-09FB-457D-AAB9-9715A9A31E72
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=721|end_char=725
+2	duos	duo	NUM	m-p---mn-	Case=Acc|Gender=Masc|Number=Plur	3	nummod	3:nummod	start_char=726|end_char=730
+3	bancos	bancus	NOUN	n--------	_	0	root	_	start_char=731|end_char=737
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=738|end_char=739
+
+# text = Item unam capcietam .
+# sent_id = 12728399-E2D3-450E-9FC7-C475604CCC37
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=740|end_char=744
+2	unam	unus	NUM	m-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=745|end_char=749
+3	capcietam	capcieta	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=750|end_char=759
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=760|end_char=761
+
+# text = Item sex barrilas .
+# sent_id = 0E033B4E-AEB2-4375-ABAF-66DC01953DE0
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=762|end_char=766
+2	sex	sex	NUM	m--------	NumType=Card	3	nummod	3:nummod	start_char=767|end_char=770
+3	barrilas	barrale	NOUN	n-p---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=771|end_char=779
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=780|end_char=781
+
+# text = Item unam jarram cum sardellis salsis .
+# sent_id = FB249B0C-A9CC-48F5-87C3-A1BA1A8D6C58
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=782|end_char=786
+2	unam	unus	NUM	m-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=787|end_char=791
+3	jarram	jarra	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=792|end_char=798
+4	cum	cum	SCONJ	c--------	_	5	mark	5:mark	start_char=799|end_char=802
+5	sardellis	sardellus	NOUN	n-p---mb-	Case=Abl|Gender=Masc|Number=Plur	3	acl	3:acl	start_char=803|end_char=812
+6	salsis	salsus	ADJ	a-p---nb-	Case=Abl|Number=Plur	5	amod	5:amod	start_char=813|end_char=819
+7	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=820|end_char=821
+
+# text = Item duas tinas .
+# sent_id = E35B9BC3-F0E6-4805-87FF-87AD3B593D72
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=822|end_char=826
+2	duas	duo	NUM	m-p---fa-	Case=Acc|Gender=Fem|Number=Plur	3	nummod	3:nummod	start_char=827|end_char=831
+3	tinas	tina	NOUN	n-p---mn-	Case=Nom|Gender=Masc|Number=Sing	0	root	_	start_char=832|end_char=837
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=838|end_char=839
+
+# text = Item unum coffinum cum sex scutellis de fusta .
+# sent_id = F437E86E-B3F5-438A-A50B-6569F4FFCB90
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=840|end_char=844
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=845|end_char=849
+3	coffinum	coffinus	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=850|end_char=858
+4	cum	cum	SCONJ	c--------	_	6	case	6:case	start_char=859|end_char=862
+5	sex	sex	NUM	m--------	NumType=Card	6	nummod	6:nummod	start_char=863|end_char=866
+6	scutellis	scutella	NOUN	n-p---nb-	Case=Abl|Gender=Neut|Number=Plur	3	acl	3:acl	start_char=867|end_char=876
+7	de	de	ADP	r--------	AdpType=Prep	8	case	8:case	start_char=877|end_char=879
+8	fusta	fusta	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	6	nmod	6:nmod	start_char=880|end_char=885
+9	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=886|end_char=887
+
+# text = Item unam capciam .
+# sent_id = A5244D90-51FD-4FE4-9079-3D35DCF93BC8
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=888|end_char=892
+2	unam	unus	NUM	m-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=893|end_char=897
+3	capciam	capcia	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=898|end_char=905
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=906|end_char=907
+
+# text = Item unam cassam de fusta cum qua ponderatur farina .
+# sent_id = A3042463-FD60-485A-95FE-343FD771C648
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=908|end_char=912
+2	unam	unus	NUM	m-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=913|end_char=917
+3	cassam	cassa	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=918|end_char=924
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=925|end_char=927
+5	fusta	fusta	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nmod	3:nmod	start_char=928|end_char=933
+6	cum	cum	SCONJ	c--------	_	8	mark	8:mark	start_char=934|end_char=937
+7	qua	qui	PRON	p-s---fb-	Case=Abl|Gender=Fem|Number=Sing|PronType=Rel	8	det	8:det	start_char=938|end_char=941
+8	ponderatur	ponderare	NOUN	n--------	Number=Sing	3	acl	3:acl	start_char=942|end_char=952
+9	farina	farina	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	8	nmod	8:nmod	start_char=953|end_char=959
+10	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=960|end_char=961
+
+# text = Item duas tabula ad portandum panem .
+# sent_id = EBE906F8-825A-4DE2-97FA-9165266AFE9F
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=962|end_char=966
+2	duas	duo	NUM	m-p---fa-	Case=Acc|Gender=Fem|Number=Plur	3	nummod	3:nummod	start_char=967|end_char=971
+3	tabula	tabula	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=972|end_char=978
+4	ad	ad	ADP	r--------	AdpType=Prep	5	mark	5:mark	start_char=979|end_char=981
+5	portandum	porta	VERB	v-s-gpnn-	Aspect=Perf|Case=Nom|Degree=Pos|Gender=Neut|Number=Sing|VerbForm=Ger|Voice=Pass	3	acl	3:acl	start_char=982|end_char=991
+6	panem	panis	NOUN	n-s---ma-	Case=Acc|Gender=Masc|Number=Sing	5	obj	5:obj	start_char=992|end_char=997
+7	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=998|end_char=999
+
+# text = Item unam culcitram laneam .
+# sent_id = 8C13A751-B17E-4B0C-B19A-01C9A5C7B39F
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1000|end_char=1004
+2	unam	unus	NUM	m-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=1005|end_char=1009
+3	culcitram	culcitra	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=1010|end_char=1019
+4	laneam	lanea	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	nmod	3:nmod	start_char=1020|end_char=1026
+5	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=1027|end_char=1028
+
+# text = Item tunicam mulieris de pebrello .
+# sent_id = 641246ED-C9B3-48EF-8FD5-BCC15B0BF69E
+1	Item	item	ADV	d--------	_	2	advmod	2:advmod	start_char=1029|end_char=1033
+2	tunicam	tunica	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=1034|end_char=1041
+3	mulieris	mulier	ADJ	a-s---fg-	Case=Gen|Gender=Fem|Number=Sing	2	amod	2:amod	start_char=1042|end_char=1050
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=1051|end_char=1053
+5	pebrello	pebrellus	NOUN	n-s---mb-	Case=Abl|Gender=Masc|Number=Sing	2	nmod	2:nmod	start_char=1054|end_char=1062
+6	.	.	PUNCT	u--------	_	2	punct	2:punct	start_char=1063|end_char=1064
+
+# text = Item tunicam hominis de blavo .
+# sent_id = A3FB314B-3FE8-4638-A46A-8EB91F2E30FF
+1	Item	item	ADV	d--------	_	2	advmod	2:advmod	start_char=1065|end_char=1069
+2	tunicam	tunica	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=1070|end_char=1077
+3	hominis	homo	NOUN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	2	nmod	2:nmod	start_char=1078|end_char=1085
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=1086|end_char=1088
+5	blavo	blavus	NOUN	n--------	_	2	nmod	2:nmod	start_char=1089|end_char=1094
+6	.	.	PUNCT	u--------	_	2	punct	2:punct	start_char=1095|end_char=1096
+
+# text = Item duas botas parvas capacitatis quelibet trium milhayrolarum vel circa .
+# sent_id = 5A834E32-FBED-42A1-8A33-F75720785D55
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1097|end_char=1101
+2	duas	duo	NUM	m-p---fa-	Case=Acc|Gender=Fem|Number=Plur	3	nummod	3:nummod	start_char=1102|end_char=1106
+3	botas	bota	NOUN	n-p---fa-	Case=Acc|Gender=Fem|Number=Plur	0	root	_	start_char=1107|end_char=1112
+4	parvas	parvus	ADJ	a-p---fap	Case=Acc|Degree=Pos|Gender=Fem|Number=Plur	3	amod	3:amod	start_char=1113|end_char=1119
+5	capacitatis	capacitas	NOUN	n-s---fg-	Case=Gen|Gender=Fem|Number=Sing	3	acl	3:acl	start_char=1120|end_char=1131
+6	quelibet	quilibet	PRON	p--------	_	5	det	5:det	start_char=1132|end_char=1140
+7	trium	tres	NUM	m-p---ng-	Case=Gen|Gender=Neut|Number=Plur|NumType=Card	8	nummod	8:nummod	start_char=1141|end_char=1146
+8	milhayrolarum	meillerola	NOUN	n-p---fg-	Case=Gen|Function=Unit|Gender=Fem|Number=Plur	5	acl	5:acl	start_char=1147|end_char=1160
+9	vel	vel	CCONJ	c--------	_	10	cc	10:cc	start_char=1161|end_char=1164
+10	circa	circa	ADP	r--------	AdpType=Prep	7	conj	7:conj	start_char=1165|end_char=1170
+11	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=1171|end_char=1172
+
+# text = Item quandam tinam cum tribus plechis magnam cum torculari suo .
+# sent_id = 32DAD16B-4B12-409F-80CE-4A2F0CD60A5C
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1173|end_char=1177
+2	quandam	quidam	DET	p-s---fa-	Case=Acc|Gender=Fem|Number=Sing	3	det	3:det	start_char=1178|end_char=1185
+3	tinam	tina	NOUN	n-s---ma-	Case=Acc|Gender=Masc|Number=Sing	0	root	_	start_char=1186|end_char=1191
+4	cum	cum	SCONJ	c--------	_	6	mark	6:mark	start_char=1192|end_char=1195
+5	tribus	tres	NUM	m-p---nb-	Case=Dat|Gender=Neut|Number=Plur|NumType=Card	6	nummod	6:nummod	start_char=1196|end_char=1202
+6	plechis	plecha	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	3	acl	3:acl	start_char=1203|end_char=1210
+7	magnam	magnus	ADJ	a-s---fap	Case=Acc|Degree=Pos|Gender=Fem|Number=Sing	6	amod	6:amod	start_char=1211|end_char=1217
+8	cum	cum	SCONJ	c--------	_	9	mark	9:mark	start_char=1218|end_char=1221
+9	torculari	torcular	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	acl	3:acl	start_char=1222|end_char=1231
+10	suo	suus	DET	p-s---nb-	Case=Abl|Gender=Neut|Number=Sing|Person[psor]=3|Poss=Yes|PronType=Prs|Reflex=Yes	9	det	9:det	start_char=1232|end_char=1235
+11	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=1236|end_char=1237
+
+# text = Item gardacossinum de mesclato cum penna agnorum .
+# sent_id = A744D843-45BE-429C-A2C9-CF5D624925F5
+1	Item	item	ADV	d--------	_	2	advmod	2:advmod	start_char=1238|end_char=1242
+2	gardacossinum	gardacorssium	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=1243|end_char=1256
+3	de	de	ADP	r--------	AdpType=Prep	4	case	4:case	start_char=1257|end_char=1259
+4	mesclato	mesclatus	NOUN	n--------	_	2	nmod	2:nmod	start_char=1260|end_char=1268
+5	cum	cum	SCONJ	c--------	_	6	mark	6:mark	start_char=1269|end_char=1272
+6	penna	penna	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	2	acl	2:acl	start_char=1273|end_char=1278
+7	agnorum	agnus	NOUN	n-p---mg-	Case=Gen|Gender=Masc|Number=Plur	6	nmod	6:nmod	start_char=1279|end_char=1286
+8	.	.	PUNCT	u--------	_	2	punct	2:punct	start_char=1287|end_char=1288
+
+# text = Item gardacossium clamidem et tunicam de preceto rubeo cum penna varia in clamide et scurolorum in gardacossio .
+# sent_id = D69F367F-D864-43B6-96B7-1AB766A75947
+1	Item	item	ADV	d--------	_	2	advmod	2:advmod	start_char=1289|end_char=1293
+2	gardacossium	gardacorssium	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=1294|end_char=1306
+3	clamidem	clamis	NOUN	n-s---ma-	Case=Acc|Gender=Masc|Number=Sing	2	conj	2:conj	start_char=1307|end_char=1315
+4	et	et	CCONJ	c--------	_	5	cc	5:cc	start_char=1316|end_char=1318
+5	tunicam	tunica	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	2	conj	2:conj	start_char=1319|end_char=1326
+6	de	de	ADP	r--------	AdpType=Prep	7	case	7:case	start_char=1327|end_char=1329
+7	preceto	precetum	NOUN	n-s---mb-	Case=Abl|Gender=Masc|Number=Sing	2	nmod	2:nmod	start_char=1330|end_char=1337
+8	rubeo	rubeus	ADJ	a-s---nb-	Case=Abl|Gender=Neut|Number=Sing	7	amod	7:amod	start_char=1338|end_char=1343
+9	cum	cum	SCONJ	c--------	_	10	mark	10:mark	start_char=1344|end_char=1347
+10	penna	penna	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	2	acl	2:acl	start_char=1348|end_char=1353
+11	varia	varius	ADJ	a-p---nnp	Case=Nom|Degree=Pos|Gender=Neut|Number=Plur	10	amod	10:amod	start_char=1354|end_char=1359
+12	in	in	ADP	r--------	AdpType=Prep	13	case	13:case	start_char=1360|end_char=1362
+13	clamide	clamis	NOUN	n-s------	_	10	conj	10:conj	start_char=1363|end_char=1370
+14	et	et	CCONJ	c--------	_	15	cc	15:cc	start_char=1371|end_char=1373
+15	scurolorum	scurolus	NOUN	n-p---ng-	Case=Gen|Gender=Neut|Number=Plur	13	conj	13:conj	start_char=1374|end_char=1384
+16	in	in	ADP	r--------	AdpType=Prep	17	case	17:case	start_char=1385|end_char=1387
+17	gardacossio	gardacorssium	NOUN	n-s---fb-	Case=Abl|Gender=Fem|Number=Sing	13	acl	13:acl	start_char=1388|end_char=1399
+18	.	.	PUNCT	u--------	_	2	punct	2:punct	start_char=1400|end_char=1401
+
+# text = Item mantellum de mesclato rubeo cum penna varia .
+# sent_id = 43FD33B0-EDDA-4E9A-A1AE-BB864A96517E
+1	Item	item	ADV	d--------	_	2	advmod	2:advmod	start_char=1402|end_char=1406
+2	mantellum	mantellum	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=1407|end_char=1416
+3	de	de	ADP	r--------	AdpType=Prep	4	case	4:case	start_char=1417|end_char=1419
+4	mesclato	mesclatus	NOUN	n--------	_	2	nmod	2:nmod	start_char=1420|end_char=1428
+5	rubeo	rubeus	ADJ	a-s---nb-	Case=Abl|Gender=Neut|Number=Sing	4	amod	4:amod	start_char=1429|end_char=1434
+6	cum	cum	SCONJ	c--------	_	7	mark	7:mark	start_char=1435|end_char=1438
+7	penna	penna	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	2	acl	2:acl	start_char=1439|end_char=1444
+8	varia	varius	ADJ	a-p---nnp	Case=Nom|Degree=Pos|Gender=Neut|Number=Plur	7	amod	7:amod	start_char=1445|end_char=1450
+9	.	.	PUNCT	u--------	_	2	punct	2:punct	start_char=1451|end_char=1452
+
+# text = Item aliud copertorium de sirico cum flordilis .
+# sent_id = 1FA1A9E1-FF1B-4A3E-8751-7F6F55F622BC
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1453|end_char=1457
+2	aliud	alius	DET	p-s---na-	Case=Acc|Gender=Neut|Number=Sing|PronType=Ind	3	det	3:det	start_char=1458|end_char=1463
+3	copertorium	copertorium	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=1464|end_char=1475
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=1476|end_char=1478
+5	sirico	sericus	NOUN	n--------	_	3	nmod	3:nmod	start_char=1479|end_char=1485
+6	cum	cum	SCONJ	c--------	_	7	mark	7:mark	start_char=1486|end_char=1489
+7	flordilis	flordelisium	NOUN	n-p---md-	Case=Dat|Gender=Masc|Number=Plur	3	acl	3:acl	start_char=1490|end_char=1499
+8	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=1500|end_char=1501
+
+# text = Item cossetum unum et tunica mulieris cum penna agnorum in cosseto .
+# sent_id = B3B4E96C-74A2-4540-B641-7A98F6B408DC
+1	Item	item	ADV	d--------	_	2	advmod	2:advmod	start_char=1502|end_char=1506
+2	cossetum	cossetum	NOUN	n-s---na-	Case=Acc|Gender=Neut|Number=Sing	0	root	_	start_char=1507|end_char=1515
+3	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	2	nummod	2:nummod	start_char=1516|end_char=1520
+4	et	et	CCONJ	c--------	_	5	cc	5:cc	start_char=1521|end_char=1523
+5	tunica	tunica	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	2	conj	2:conj	start_char=1524|end_char=1530
+6	mulieris	mulier	ADJ	a-s---fg-	Case=Gen|Gender=Fem|Number=Sing	5	amod	5:amod	start_char=1531|end_char=1539
+7	cum	cum	SCONJ	c--------	_	8	mark	8:mark	start_char=1540|end_char=1543
+8	penna	penna	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	2	acl	2:acl	start_char=1544|end_char=1549
+9	agnorum	agnus	NOUN	n-p---mg-	Case=Gen|Gender=Masc|Number=Plur	8	nmod	8:nmod	start_char=1550|end_char=1557
+10	in	in	ADP	r--------	AdpType=Prep	11	case	11:case	start_char=1558|end_char=1560
+11	cosseto	cossetum	NOUN	n--------	_	8	acl	8:acl	start_char=1561|end_char=1568
+12	.	.	PUNCT	u--------	_	2	punct	2:punct	start_char=1569|end_char=1570
+
+# text = Item unum gardacossium lumbardum cum clamide de panno rubeo et penna paucis valoris .
+# sent_id = B5596E13-D269-4C11-905D-7C4BE017931F
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1571|end_char=1575
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=1576|end_char=1580
+3	gardacossium	gardacorssium	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=1581|end_char=1593
+4	lumbardum	lombardus	ADJ	a-s---nap	Case=Acc|Degree=Pos|Gender=Neut|Number=Sing	3	amod	3:amod	start_char=1594|end_char=1603
+5	cum	cum	SCONJ	c--------	_	6	mark	6:mark	start_char=1604|end_char=1607
+6	clamide	clamis	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	3	acl	3:acl	start_char=1608|end_char=1615
+7	de	de	ADP	r--------	AdpType=Prep	8	case	8:case	start_char=1616|end_char=1618
+8	panno	pannus	NOUN	n-s---mb-	Case=Abl|Gender=Masc|Number=Sing	6	conj	6:conj	start_char=1619|end_char=1624
+9	rubeo	rubeus	ADJ	a-s---nb-	Case=Abl|Gender=Neut|Number=Sing	8	amod	8:amod	start_char=1625|end_char=1630
+10	et	et	CCONJ	c--------	_	11	cc	11:cc	start_char=1631|end_char=1633
+11	penna	penna	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	9	conj	9:conj	start_char=1634|end_char=1639
+12	paucis	paucus	ADJ	a-p---mbp	Case=Abl|Degree=Pos|Gender=Masc|Number=Plur	13	amod	13:amod	start_char=1640|end_char=1646
+13	valoris	valor	NOUN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	11	acl	11:acl	start_char=1647|end_char=1654
+14	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=1655|end_char=1656
+
+# text = Item quoddam aliud ospicium situm in dicta carreria Sancti Augustini iuxta ospicium Jacobi lo Gran et iuxta ospicium Guillelmi Cayrellerii et iuxta ospicium Raymondi Moguerii et carreriam publicam Sancti Augustini .
+# sent_id = 8CA6745F-E134-4DED-B3D8-7C8144F66642
+1	Item	item	ADV	d--------	_	4	advmod	4:advmod	start_char=1657|end_char=1661
+2	quoddam	quidam	DET	p-s---nn-	Case=Nom|Gender=Neut|Number=Sing	4	det	4:det	start_char=1662|end_char=1669
+3	aliud	alius	DET	p-s---na-	Case=Acc|Gender=Neut|Number=Sing|PronType=Ind	4	det	4:det	start_char=1670|end_char=1675
+4	ospicium	hospicium	NOUN	n-s---nn-	Case=Nom|Function=Location|Gender=Neut|Number=Sing	0	root	_	start_char=1676|end_char=1684
+5	situm	situs	VERB	v-srppnn-	Aspect=Perf|Case=Nom|Degree=Pos|Gender=Neut|Number=Sing|Tense=Past|VerbForm=Part|Voice=Pass	4	acl	4:acl	start_char=1685|end_char=1690
+6	in	in	ADP	r--------	AdpType=Prep	8	case	8:case	start_char=1691|end_char=1693
+7	dicta	dictus	ADJ	a--------	_	8	amod	8:amod	start_char=1694|end_char=1699
+8	carreria	carreria	NOUN	n-s---fn-	Case=Nom|Function=Location|Gender=Fem|Number=Sing	5	obl	5:obl	start_char=1700|end_char=1708
+9	Sancti	Sanctus	PROPN	n-p---mn-	Case=Nom|Gender=Masc|Number=Plur	8	flat	8:flat	start_char=1709|end_char=1715
+10	Augustini	Augustinus	PROPN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	8	flat	8:flat	start_char=1716|end_char=1725
+11	iuxta	iuxta	ADP	r--------	_	12	case	12:case	start_char=1726|end_char=1731
+12	ospicium	hospicium	NOUN	n-s---nn-	Case=Nom|Function=Location|Gender=Neut|Number=Sing	5	obl	5:obl	start_char=1732|end_char=1740
+13	Jacobi	Jacobus	PROPN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	12	nmod	12:nmod	start_char=1741|end_char=1747
+14	lo	lo	PROPN	n-p---mn-	Case=Nom|Gender=Masc|Number=Sing	13	flat	13:flat	start_char=1748|end_char=1750
+15	Gran	Gran	PROPN	n-p---mn-	Case=Nom|Gender=Masc|Number=Sing	13	flat	13:flat	start_char=1751|end_char=1755
+16	et	et	CCONJ	c--------	_	18	cc	18:cc	start_char=1756|end_char=1758
+17	iuxta	iuxta	ADP	r--------	_	18	case	18:case	start_char=1759|end_char=1764
+18	ospicium	hospicium	NOUN	n-s---nn-	Case=Nom|Function=Location|Gender=Neut|Number=Sing	12	conj	12:conj	start_char=1765|end_char=1773
+19	Guillelmi	Guillelmus	PROPN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	18	nmod	18:nmod	start_char=1774|end_char=1783
+20	Cayrellerii	Cayrellerius	PROPN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	19	flat	19:flat	start_char=1784|end_char=1795
+21	et	et	CCONJ	c--------	_	23	cc	23:cc	start_char=1796|end_char=1798
+22	iuxta	iuxta	ADP	r--------	_	23	case	23:case	start_char=1799|end_char=1804
+23	ospicium	hospicium	NOUN	n-s---nn-	Case=Nom|Function=Location|Gender=Neut|Number=Sing	12	conj	12:conj	start_char=1805|end_char=1813
+24	Raymondi	Raymondus	PROPN	n-s---mg-	Case=Nom|Gender=Masc|Number=Sing	23	nmod	23:nmod	start_char=1814|end_char=1822
+25	Moguerii	Moguerio	PROPN	n--------	Case=Nom|Gender=Masc|Number=Sing	24	flat	24:flat	start_char=1823|end_char=1831
+26	et	et	CCONJ	c--------	_	28	cc	28:cc	start_char=1832|end_char=1834
+27	carreriam	carreria	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	28	nmod	28:nmod	start_char=1835|end_char=1844
+28	publicam	publicus	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	23	conj	23:conj	start_char=1845|end_char=1853
+29	Sancti	Sanctus	PROPN	n-p---mn-	Case=Nom|Gender=Masc|Number=Plur	28	flat	28:flat	start_char=1854|end_char=1860
+30	Augustini	Augustinus	PROPN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	28	flat	28:flat	start_char=1861|end_char=1870
+31	.	.	PUNCT	u--------	_	4	punct	4:punct	start_char=1871|end_char=1872
+
+# text = Item unum capellum .
+# sent_id = D9E178D1-08C7-4ACD-9CD3-39F393239D38
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1873|end_char=1877
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=1878|end_char=1882
+3	capellum	capellum	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=1883|end_char=1891
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=1892|end_char=1893
+
+# text = Item sex mappe .
+# sent_id = E8492740-7455-47CB-AC03-AC79DE36E854
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1894|end_char=1898
+2	sex	sex	NUM	m--------	NumType=Card	3	nummod	3:nummod	start_char=1899|end_char=1902
+3	mappe	mappa	NOUN	n--------	Case=Loc|Number=Sing	0	root	_	start_char=1903|end_char=1908
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=1909|end_char=1910
+
+# text = Item unus lectus tabularum cum bassachia culcitra pulvinari de Alexandria cum pluma duabus flassiatis et uno copertorio de bort .
+# sent_id = 78D46E94-F5A7-47A7-9319-96CA9420987C
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=1911|end_char=1915
+2	unus	unus	NUM	m-s---mn-	Case=Nom|Gender=Masc|Number=Sing	3	nummod	3:nummod	start_char=1916|end_char=1920
+3	lectus	lectus	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	0	root	_	start_char=1921|end_char=1927
+4	tabularum	tabula	NOUN	n-p---fg-	Case=Gen|Gender=Fem|Number=Plur	3	nmod	3:nmod	start_char=1928|end_char=1937
+5	cum	cum	SCONJ	c--------	_	6	mark	6:mark	start_char=1938|end_char=1941
+6	bassachia	bassacha	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	acl	3:acl	start_char=1942|end_char=1951
+7	culcitra	culcitra	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	6	conj	6:conj	start_char=1952|end_char=1960
+8	pulvinari	pulvinar	NOUN	n-s---nb-	Case=Abl|Gender=Neut|Number=Sing	6	conj	6:conj	start_char=1961|end_char=1970
+9	de	de	ADP	r--------	AdpType=Prep	10	case	10:case	start_char=1971|end_char=1973
+10	Alexandria	Alexandorium	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	8	nmod	8:nmod	start_char=1974|end_char=1984
+11	cum	cum	SCONJ	c--------	_	12	mark	12:mark	start_char=1985|end_char=1988
+12	pluma	pluma	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Plur	3	acl	3:acl	start_char=1989|end_char=1994
+13	duabus	duo	NUM	m-p---fb-	Case=Abl|Gender=Fem|Number=Plur	14	nummod	14:nummod	start_char=1995|end_char=2001
+14	flassiatis	flaciata	NOUN	n-p---fb-	Case=Abl|Gender=Fem|Number=Plur	12	conj	12:conj	start_char=2002|end_char=2012
+15	et	et	CCONJ	c--------	_	17	cc	17:cc	start_char=2013|end_char=2015
+16	uno	unus	NUM	m-s---nb-	Case=Abl|Gender=Neut|Number=Sing	17	nummod	17:nummod	start_char=2016|end_char=2019
+17	copertorio	copertorium	NOUN	n-s---nb-	Case=Abl|Gender=Neut|Number=Sing	12	conj	12:conj	start_char=2020|end_char=2030
+18	de	de	ADP	r--------	AdpType=Prep	19	case	19:case	start_char=2031|end_char=2033
+19	bort	bort	NOUN	n--------	_	17	nmod	17:nmod	start_char=2034|end_char=2038
+20	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2039|end_char=2040
+
+# text = Item unum cappellum de lana .
+# sent_id = 754B3BE9-1D72-48AE-AF86-31732334702C
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=2041|end_char=2045
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=2046|end_char=2050
+3	cappellum	capellum	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=2051|end_char=2060
+4	de	de	ADP	r--------	AdpType=Prep	5	case	5:case	start_char=2061|end_char=2063
+5	lana	lana	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nmod	3:nmod	start_char=2064|end_char=2068
+6	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2069|end_char=2070
+
+# text = Item una sartago .
+# sent_id = DCB24D5A-1B20-4686-98A5-3519268F7CF0
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=2071|end_char=2075
+2	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=2076|end_char=2079
+3	sartago	sartago	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=2080|end_char=2087
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2088|end_char=2089
+
+# text = Item unum scrineum pauci valoris cum cissoriis fuste et terre et aliis minutis utensilibus focanee pauci valoris .
+# sent_id = 1FE65040-8277-41E7-AB25-51BC56D3B72F
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=2090|end_char=2094
+2	unum	unus	NUM	m-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	nummod	3:nummod	start_char=2095|end_char=2099
+3	scrineum	scrineum	NOUN	n-s---nn-	Case=Nom|Gender=Neut|Number=Sing	0	root	_	start_char=2100|end_char=2108
+4	pauci	paucus	ADJ	a-p---mnp	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	5	amod	5:amod	start_char=2109|end_char=2114
+5	valoris	valor	NOUN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	3	acl	3:acl	start_char=2115|end_char=2122
+6	cum	cum	SCONJ	c--------	_	7	mark	7:mark	start_char=2123|end_char=2126
+7	cissoriis	cissorium	NOUN	n-p---fb-	Case=Abl|Gender=Fem|Number=Plur	3	acl	3:acl	start_char=2127|end_char=2136
+8	fuste	fusta	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	7	nmod	7:nmod	start_char=2137|end_char=2142
+9	et	et	CCONJ	c--------	_	10	cc	10:cc	start_char=2143|end_char=2145
+10	terre	terra	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	7	conj	7:conj	start_char=2146|end_char=2151
+11	et	et	CCONJ	c--------	_	13	cc	13:cc	start_char=2152|end_char=2154
+12	aliis	alius	DET	p-p---fb-	Case=Abl|Gender=Masc|Number=Plur|PronType=Ind	13	det	13:det	start_char=2155|end_char=2160
+13	minutis	minutus	NOUN	n--------	_	7	conj	7:conj	start_char=2161|end_char=2168
+14	utensilibus	utensilis	NOUN	n-p---mb-	Case=Dat|Gender=Masc|Number=Plur	13	acl	13:acl	start_char=2169|end_char=2180
+15	focanee	focanea	PROPN	n--------	Number=Sing	14	flat	14:flat	start_char=2181|end_char=2188
+16	pauci	paucus	ADJ	a-p---mnp	Case=Nom|Degree=Pos|Gender=Masc|Number=Plur	17	amod	17:amod	start_char=2189|end_char=2194
+17	valoris	valor	NOUN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	14	acl	14:acl	start_char=2195|end_char=2202
+18	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2203|end_char=2204
+
+# text = Primo quoddam ospicium situm in civitate Massilie in Cultellaria confrontatum cum domo Nycolay Garnerii et cum carreria a tribus partibus .
+# sent_id = 4F6DD117-62C8-45F3-A7E0-E6AB186EC36B
+1	Primo	primo	ADV	d--------	_	3	advmod	3:advmod	start_char=2205|end_char=2210
+2	quoddam	quidam	DET	p-s---nn-	Case=Nom|Gender=Neut|Number=Sing	3	det	3:det	start_char=2211|end_char=2218
+3	ospicium	hospicium	NOUN	n-s---nn-	Case=Nom|Function=Location|Gender=Neut|Number=Sing	0	root	_	start_char=2219|end_char=2227
+4	situm	situs	VERB	v-srppnn-	Aspect=Perf|Case=Nom|Degree=Pos|Gender=Neut|Number=Sing|Tense=Past|VerbForm=Part|Voice=Pass	3	acl	3:acl	start_char=2228|end_char=2233
+5	in	in	ADP	r--------	AdpType=Prep	6	case	6:case	start_char=2234|end_char=2236
+6	civitate	civitas	NOUN	n-s---fb-	Case=Abl|Gender=Fem|Number=Sing	4	obl	4:obl	start_char=2237|end_char=2245
+7	Massilie	Massalia	PROPN	n--------	Case=Nom|Number=Sing	6	flat	6:flat	start_char=2246|end_char=2254
+8	in	in	ADP	r--------	AdpType=Prep	9	case	9:case	start_char=2255|end_char=2257
+9	Cultellaria	Cultellarium	PROPN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	4	obl	4:obl	start_char=2258|end_char=2269
+10	confrontatum	confrontare	VERB	v-srppnn-	Aspect=Perf|Case=Nom|Degree=Pos|Gender=Neut|Number=Sing|Tense=Past|VerbForm=Part|Voice=Pass	3	acl	3:acl	start_char=2270|end_char=2282
+11	cum	cum	ADP	r--------	AdpType=Prep	12	case	12:case	start_char=2283|end_char=2286
+12	domo	domus	NOUN	n-s---fb-	Case=Abl|Function=Location|Gender=Fem|Number=Sing	10	obj	10:obj	start_char=2287|end_char=2291
+13	Nycolay	Nycola	PROPN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	12	nmod	12:nmod	start_char=2292|end_char=2299
+14	Garnerii	Garnerius	PROPN	n-s---mg-	Case=Gen|Gender=Masc|Number=Sing	13	flat	13:flat	start_char=2300|end_char=2308
+15	et	et	CCONJ	c--------	_	17	cc	17:cc	start_char=2309|end_char=2311
+16	cum	cum	ADP	r--------	AdpType=Prep	17	case	17:case	start_char=2312|end_char=2315
+17	carreria	carreria	NOUN	n-s---fn-	Case=Nom|Function=Location|Gender=Fem|Number=Sing	12	conj	12:conj	start_char=2316|end_char=2324
+18	a	a	ADP	r--------	AdpType=Prep	20	case	20:case	start_char=2325|end_char=2326
+19	tribus	tres	NUM	m-p---nb-	Case=Dat|Gender=Neut|Number=Plur|NumType=Card	20	nummod	20:nummod	start_char=2327|end_char=2333
+20	partibus	pars	NOUN	n-p---fb-	Case=Abl|Gender=Fem|Number=Plur	17	acl	17:acl	start_char=2334|end_char=2342
+21	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2343|end_char=2344
+
+# text = Item in operatorio sive cellario .
+# sent_id = 2CE45BE7-1F7B-4FC1-B4BF-F76CF978035B
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=2345|end_char=2349
+2	in	in	ADP	r--------	AdpType=Prep	3	case	3:case	start_char=2350|end_char=2352
+3	operatorio	operatorium	NOUN	n-s---nb-	Case=Abl|Function=Location|Gender=Neut|Number=Sing	0	root	_	start_char=2353|end_char=2363
+4	sive	sive	CCONJ	c--------	_	5	cc	5:cc	start_char=2364|end_char=2368
+5	cellario	cellarium	NOUN	n-s---mb-	Case=Abl|Function=Location|Gender=Masc|Number=Sing	3	conj	3:conj	start_char=2369|end_char=2377
+6	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2378|end_char=2379
+
+# text = Item una jarra .
+# sent_id = C400D4A0-72DC-488F-93BA-9E2CCD11EF59
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=2380|end_char=2384
+2	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=2385|end_char=2388
+3	jarra	jarra	NOUN	n-s---fn-	Case=Nom|Function=Unit|Gender=Fem|Number=Sing	0	root	_	start_char=2389|end_char=2394
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2395|end_char=2396
+
+# text = Item una alia parva bota .
+# sent_id = F1CD1E59-582C-411A-B640-C855E43177C3
+1	Item	item	ADV	d--------	_	5	advmod	5:advmod	start_char=2397|end_char=2401
+2	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	5	nummod	5:nummod	start_char=2402|end_char=2405
+3	alia	alius	DET	p-s---fa-	Case=Acc|Gender=Fem|Number=Sing|PronType=Ind	5	det	5:det	start_char=2406|end_char=2410
+4	parva	parvus	ADJ	a-p---nnp	Case=Nom|Degree=Pos|Gender=Neut|Number=Plur	5	amod	5:amod	start_char=2411|end_char=2416
+5	bota	bota	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=2417|end_char=2421
+6	.	.	PUNCT	u--------	_	5	punct	5:punct	start_char=2422|end_char=2423
+
+# text = Item una scala .
+# sent_id = D7AA47E0-9E63-4F98-B9E2-773A14C096B8
+1	Item	item	ADV	d--------	_	3	advmod	3:advmod	start_char=2424|end_char=2428
+2	una	unus	NUM	m-s---fn-	Case=Nom|Gender=Fem|Number=Sing	3	nummod	3:nummod	start_char=2429|end_char=2432
+3	scala	scalae	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	0	root	_	start_char=2433|end_char=2438
+4	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=2439|end_char=2440

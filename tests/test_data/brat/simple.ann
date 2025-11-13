@@ -1,0 +1,15 @@
+T1	PROPN 0 6	Gallia
+T2	AUX 7 10	est
+T3	ADJ 11 16	omnis
+T4	VERB 17 23	divisa
+T5	ADP 24 26	in
+T6	NOUN 27 33	partes
+T7	NUM 34 38	tres
+T8	PUNCT 38 39	.
+R1	nsubj_colon_pass Arg1:T4 Arg2:T1
+R2	aux_colon_pass Arg1:T4 Arg2:T2
+R3	amod Arg1:T1 Arg2:T3
+R4	case Arg1:T6 Arg2:T5
+R5	obl Arg1:T4 Arg2:T6
+R6	nummod Arg1:T6 Arg2:T7
+R7	punct Arg1:T4 Arg2:T8

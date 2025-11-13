@@ -1,0 +1,10 @@
+ROOT Item unum brocum .
+ROOT Item unum brocum .
+ROOT Item unam barram de ferro .
+ROOT Item duas jarras .
+ROOT Item una systra cum scutellis terreis et ollis .
+ROOT Item unum lectum tabularum .
+ROOT Item unum copertorium modicis valoris .
+ROOT Item unum pulvinar modici valoris .
+ROOT Item duos bancos .
+ROOT Item unam capcietam .

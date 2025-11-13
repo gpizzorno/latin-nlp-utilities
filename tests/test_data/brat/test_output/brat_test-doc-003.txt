@@ -1,0 +1,10 @@
+ROOT Item sex barrilas .
+ROOT Item unam jarram cum sardellis salsis .
+ROOT Item duas tinas .
+ROOT Item unum coffinum cum sex scutellis de fusta .
+ROOT Item unam capciam .
+ROOT Item unam cassam de fusta cum qua ponderatur farina .
+ROOT Item duas tabula ad portandum panem .
+ROOT Item unam culcitram laneam .
+ROOT Item tunicam mulieris de pebrello .
+ROOT Item tunicam hominis de blavo .

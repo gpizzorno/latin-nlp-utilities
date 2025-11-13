@@ -1,0 +1,5 @@
+{
+    "conllu_filename": "simple.conllu",
+    "sents_per_doc": 1,
+    "output_root": false
+}

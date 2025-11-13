@@ -1,0 +1,53 @@
+{
+    "text": "nec ab alio:",
+    "tokens": [
+        {
+            "id": 1,
+            "form": "nec",
+            "lemma": "nec",
+            "upostag": "CCONJ",
+            "xpostag": "O4",
+            "feats": "_",
+            "head": 3,
+            "deprel": "cc",
+            "deps": "3:cc",
+            "misc": "_"
+        },
+        {
+            "id": 2,
+            "form": "ab",
+            "lemma": "ab",
+            "upostag": "ADP",
+            "xpostag": "S4|vgr2",
+            "feats": "AdpType=Prep",
+            "head": 3,
+            "deprel": "case",
+            "deps": "3:case",
+            "misc": "_"
+        },
+        {
+            "id": 3,
+            "form": "alio",
+            "lemma": "alius",
+            "upostag": "NOUN",
+            "xpostag": "F1|grn1|casF|gen3",
+            "feats": "Case=Abl|Gender=Neut|Number=Sing",
+            "head": 0,
+            "deprel": "root",
+            "deps": "_",
+            "misc": "SpaceAfter=No"
+        },
+        {
+            "id": 4,
+            "form": ":",
+            "lemma": ":",
+            "upostag": "PUNCT",
+            "xpostag": "Punc",
+            "feats": "_",
+            "head": 3,
+            "deprel": "punct",
+            "deps": "2:punct",
+            "misc": "_"
+        }
+    ]
+}

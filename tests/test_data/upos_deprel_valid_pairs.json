@@ -1,0 +1,496 @@
+{
+    "description": "Valid UPOS-DEPREL combinations for testing compatibility validation",
+    "version": "1.0",
+    "note": "These combinations should pass validation at level 3+",
+    "pairs": [
+        {
+            "upostag": "DET",
+            "deprel": "det",
+            "example_form": "the",
+            "example_lemma": "the",
+            "note": "Standard determiner"
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "det",
+            "example_form": "this",
+            "example_lemma": "this",
+            "note": "Pronominal determiner"
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "aux",
+            "example_form": "has",
+            "example_lemma": "have",
+            "note": "Auxiliary verb"
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "punct",
+            "example_form": ",",
+            "example_lemma": ",",
+            "note": "Punctuation"
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "root",
+            "example_form": ".",
+            "example_lemma": ".",
+            "note": "Sentence-final punctuation as root (rare but valid)"
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "nummod",
+            "example_form": "three",
+            "example_lemma": "three",
+            "note": "Numeric modifier"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "nummod",
+            "example_form": "dozen",
+            "example_lemma": "dozen",
+            "note": "Noun used as nummod"
+        },
+        {
+            "upostag": "SYM",
+            "deprel": "nummod",
+            "example_form": "%",
+            "example_lemma": "%",
+            "note": "Symbol as nummod"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "advmod",
+            "example_form": "quickly",
+            "example_lemma": "quickly",
+            "note": "Standard adverbial modifier"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "advmod",
+            "example_form": "fast",
+            "example_lemma": "fast",
+            "note": "Adjective as advmod"
+        },
+        {
+            "upostag": "CCONJ",
+            "deprel": "advmod",
+            "example_form": "and",
+            "example_lemma": "and",
+            "note": "Conjunction as advmod"
+        },
+        {
+            "upostag": "DET",
+            "deprel": "advmod",
+            "example_form": "all",
+            "example_lemma": "all",
+            "note": "Determiner as advmod"
+        },
+        {
+            "upostag": "PART",
+            "deprel": "advmod",
+            "example_form": "not",
+            "example_lemma": "not",
+            "note": "Particle as advmod"
+        },
+        {
+            "upostag": "SYM",
+            "deprel": "advmod",
+            "example_form": "+",
+            "example_lemma": "+",
+            "note": "Symbol as advmod"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "advmod",
+            "example_form": "home",
+            "example_lemma": "home",
+            "note": "Noun as advmod with fixed child (requires children validation)",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "advmod",
+            "example_form": "Monday",
+            "example_lemma": "Monday",
+            "note": "Proper noun as advmod with goeswith child (requires children validation)",
+            "requires_goeswith_child": true
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "expl",
+            "example_form": "it",
+            "example_lemma": "it",
+            "note": "Pronoun as expletive"
+        },
+        {
+            "upostag": "DET",
+            "deprel": "expl",
+            "example_form": "there",
+            "example_lemma": "there",
+            "note": "Determiner as expletive"
+        },
+        {
+            "upostag": "PART",
+            "deprel": "expl",
+            "example_form": "there",
+            "example_lemma": "there",
+            "note": "Particle as expletive"
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "cop",
+            "example_form": "is",
+            "example_lemma": "be",
+            "note": "Standard copula"
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "cop",
+            "example_form": "that",
+            "example_lemma": "that",
+            "note": "Pronoun as copula"
+        },
+        {
+            "upostag": "DET",
+            "deprel": "cop",
+            "example_form": "that",
+            "example_lemma": "that",
+            "note": "Determiner as copula"
+        },
+        {
+            "upostag": "SYM",
+            "deprel": "cop",
+            "example_form": "=",
+            "example_lemma": "=",
+            "note": "Symbol as copula"
+        },
+        {
+            "upostag": "ADP",
+            "deprel": "case",
+            "example_form": "in",
+            "example_lemma": "in",
+            "note": "Standard case marker"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "case",
+            "example_form": "ago",
+            "example_lemma": "ago",
+            "note": "Adverb as case marker"
+        },
+        {
+            "upostag": "SCONJ",
+            "deprel": "case",
+            "example_form": "than",
+            "example_lemma": "than",
+            "note": "Subordinating conjunction as case"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "case",
+            "example_form": "according",
+            "example_lemma": "accord",
+            "note": "Verb as case marker"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "case",
+            "example_form": "behalf",
+            "example_lemma": "behalf",
+            "note": "Noun as case with fixed child (requires children validation)",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "case",
+            "example_form": "Al",
+            "example_lemma": "Al",
+            "note": "Proper noun as case with fixed child (e.g., 'Al Jazeera' style)",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "case",
+            "example_form": "due",
+            "example_lemma": "due",
+            "note": "Adjective as case with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "case",
+            "example_form": "each",
+            "example_lemma": "each",
+            "note": "Pronoun as case with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "DET",
+            "deprel": "case",
+            "example_form": "all",
+            "example_lemma": "all",
+            "note": "Determiner as case with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "case",
+            "example_form": "one",
+            "example_lemma": "one",
+            "note": "Numeral as case with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "case",
+            "example_form": "being",
+            "example_lemma": "be",
+            "note": "Auxiliary as case with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "SCONJ",
+            "deprel": "mark",
+            "example_form": "that",
+            "example_lemma": "that",
+            "note": "Standard subordinating marker"
+        },
+        {
+            "upostag": "ADP",
+            "deprel": "mark",
+            "example_form": "for",
+            "example_lemma": "for",
+            "note": "Adposition as marker"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "mark",
+            "example_form": "when",
+            "example_lemma": "when",
+            "note": "Adverb as marker"
+        },
+        {
+            "upostag": "PART",
+            "deprel": "mark",
+            "example_form": "to",
+            "example_lemma": "to",
+            "note": "Particle as marker"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "mark",
+            "example_form": "order",
+            "example_lemma": "order",
+            "note": "Noun as mark with fixed child (e.g., 'in order to')",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "mark",
+            "example_form": "Case",
+            "example_lemma": "Case",
+            "note": "Proper noun as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "mark",
+            "example_form": "such",
+            "example_lemma": "such",
+            "note": "Adjective as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "mark",
+            "example_form": "that",
+            "example_lemma": "that",
+            "note": "Pronoun as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "DET",
+            "deprel": "mark",
+            "example_form": "that",
+            "example_lemma": "that",
+            "note": "Determiner as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "mark",
+            "example_form": "one",
+            "example_lemma": "one",
+            "note": "Numeral as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "mark",
+            "example_form": "depending",
+            "example_lemma": "depend",
+            "note": "Verb as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "mark",
+            "example_form": "being",
+            "example_lemma": "be",
+            "note": "Auxiliary as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "INTJ",
+            "deprel": "mark",
+            "example_form": "oh",
+            "example_lemma": "oh",
+            "note": "Interjection as mark with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "CCONJ",
+            "deprel": "cc",
+            "example_form": "and",
+            "example_lemma": "and",
+            "note": "Standard coordinating conjunction"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "cc",
+            "example_form": "as",
+            "example_lemma": "as",
+            "note": "Adverb as coordinating conjunction"
+        },
+        {
+            "upostag": "PART",
+            "deprel": "cc",
+            "example_form": "not",
+            "example_lemma": "not",
+            "note": "Particle as cc"
+        },
+        {
+            "upostag": "ADP",
+            "deprel": "cc",
+            "example_form": "versus",
+            "example_lemma": "versus",
+            "note": "Adposition as cc"
+        },
+        {
+            "upostag": "SCONJ",
+            "deprel": "cc",
+            "example_form": "or",
+            "example_lemma": "or",
+            "note": "Subordinating conjunction as cc"
+        },
+        {
+            "upostag": "SYM",
+            "deprel": "cc",
+            "example_form": "&",
+            "example_lemma": "&",
+            "note": "Symbol as cc"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "cc",
+            "example_form": "versus",
+            "example_lemma": "versus",
+            "note": "Noun as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "cc",
+            "example_form": "Plus",
+            "example_lemma": "Plus",
+            "note": "Proper noun as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "cc",
+            "example_form": "plus",
+            "example_lemma": "plus",
+            "note": "Adjective as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "cc",
+            "example_form": "either",
+            "example_lemma": "either",
+            "note": "Pronoun as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "DET",
+            "deprel": "cc",
+            "example_form": "either",
+            "example_lemma": "either",
+            "note": "Determiner as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "cc",
+            "example_form": "1",
+            "example_lemma": "1",
+            "note": "Number as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "cc",
+            "example_form": "let",
+            "example_lemma": "let",
+            "note": "Verb as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "cc",
+            "example_form": "be",
+            "example_lemma": "be",
+            "note": "Auxiliary as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "INTJ",
+            "deprel": "cc",
+            "example_form": "well",
+            "example_lemma": "well",
+            "note": "Interjection as cc with fixed child",
+            "requires_fixed_child": true
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "nsubj",
+            "example_form": "cat",
+            "example_lemma": "cat",
+            "note": "Common usage - any UPOS can have most deprels"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "root",
+            "example_form": "runs",
+            "example_lemma": "run",
+            "note": "Common root verb"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "amod",
+            "example_form": "big",
+            "example_lemma": "big",
+            "note": "Adjectival modifier"
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "nsubj",
+            "example_form": "she",
+            "example_lemma": "she",
+            "note": "Pronominal subject"
+        }
+    ]
+}

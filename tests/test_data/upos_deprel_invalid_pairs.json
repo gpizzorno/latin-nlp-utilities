@@ -1,0 +1,672 @@
+{
+    "description": "Invalid UPOS-DEPREL combinations that should trigger validation errors at level 3+",
+    "version": "1.0",
+    "note": "These combinations should fail validation with specific error IDs",
+    "pairs": [
+        {
+            "upostag": "NOUN",
+            "deprel": "det",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "det",
+            "example_form": "runs",
+            "example_lemma": "run",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "det",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "ADP",
+            "deprel": "det",
+            "example_form": "in",
+            "example_lemma": "in",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "det",
+            "example_form": "quickly",
+            "example_lemma": "quickly",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "det",
+            "example_form": "is",
+            "example_lemma": "be",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "CCONJ",
+            "deprel": "det",
+            "example_form": "and",
+            "example_lemma": "and",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "INTJ",
+            "deprel": "det",
+            "example_form": "oh",
+            "example_lemma": "oh",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "det",
+            "example_form": "three",
+            "example_lemma": "three",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "PART",
+            "deprel": "det",
+            "example_form": "not",
+            "example_lemma": "not",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "det",
+            "example_form": "John",
+            "example_lemma": "John",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "SCONJ",
+            "deprel": "det",
+            "example_form": "that",
+            "example_lemma": "that",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "SYM",
+            "deprel": "det",
+            "example_form": "$",
+            "example_lemma": "$",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "X",
+            "deprel": "det",
+            "example_form": "blah",
+            "example_lemma": "blah",
+            "error_id": "rel-upos-det",
+            "error_message_fragment": "should be 'DET' or 'PRON'",
+            "note": "det must be DET or PRON"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "aux",
+            "example_form": "run",
+            "example_lemma": "run",
+            "error_id": "rel-upos-aux",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "aux must be AUX"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "aux",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-aux",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "aux must be AUX"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "aux",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-aux",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "aux must be AUX"
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "aux",
+            "example_form": "she",
+            "example_lemma": "she",
+            "error_id": "rel-upos-aux",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "aux must be AUX"
+        },
+        {
+            "upostag": "DET",
+            "deprel": "aux",
+            "example_form": "the",
+            "example_lemma": "the",
+            "error_id": "rel-upos-aux",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "aux must be AUX"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "punct",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-punct",
+            "error_message_fragment": "must be 'PUNCT'",
+            "note": "punct must be PUNCT (strict)"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "punct",
+            "example_form": "run",
+            "example_lemma": "run",
+            "error_id": "rel-upos-punct",
+            "error_message_fragment": "must be 'PUNCT'",
+            "note": "punct must be PUNCT (strict)"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "punct",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-punct",
+            "error_message_fragment": "must be 'PUNCT'",
+            "note": "punct must be PUNCT (strict)"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "punct",
+            "example_form": "quickly",
+            "example_lemma": "quickly",
+            "error_id": "rel-upos-punct",
+            "error_message_fragment": "must be 'PUNCT'",
+            "note": "punct must be PUNCT (strict)"
+        },
+        {
+            "upostag": "SYM",
+            "deprel": "punct",
+            "example_form": "$",
+            "example_lemma": "$",
+            "error_id": "rel-upos-punct",
+            "error_message_fragment": "must be 'PUNCT'",
+            "note": "punct must be PUNCT (strict)"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "nummod",
+            "example_form": "run",
+            "example_lemma": "run",
+            "error_id": "rel-upos-nummod",
+            "error_message_fragment": "should be 'NUM'",
+            "note": "nummod should be NUM, NOUN, or SYM"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "nummod",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-nummod",
+            "error_message_fragment": "should be 'NUM'",
+            "note": "nummod should be NUM, NOUN, or SYM"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "nummod",
+            "example_form": "quickly",
+            "example_lemma": "quickly",
+            "error_id": "rel-upos-nummod",
+            "error_message_fragment": "should be 'NUM'",
+            "note": "nummod should be NUM, NOUN, or SYM"
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "nummod",
+            "example_form": "be",
+            "example_lemma": "be",
+            "error_id": "rel-upos-nummod",
+            "error_message_fragment": "should be 'NUM'",
+            "note": "nummod should be NUM, NOUN, or SYM"
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "nummod",
+            "example_form": "she",
+            "example_lemma": "she",
+            "error_id": "rel-upos-nummod",
+            "error_message_fragment": "should be 'NUM'",
+            "note": "nummod should be NUM, NOUN, or SYM"
+        },
+        {
+            "upostag": "DET",
+            "deprel": "nummod",
+            "example_form": "the",
+            "example_lemma": "the",
+            "error_id": "rel-upos-nummod",
+            "error_message_fragment": "should be 'NUM'",
+            "note": "nummod should be NUM, NOUN, or SYM"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "advmod",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-advmod",
+            "error_message_fragment": "should be 'ADV'",
+            "note": "advmod should be ADV (without fixed/goeswith child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "advmod",
+            "example_form": "John",
+            "example_lemma": "John",
+            "error_id": "rel-upos-advmod",
+            "error_message_fragment": "should be 'ADV'",
+            "note": "advmod should be ADV (without fixed/goeswith child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "expl",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-expl",
+            "error_message_fragment": "should normally be 'PRON'",
+            "note": "expl should be PRON, DET, or PART"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "expl",
+            "example_form": "run",
+            "example_lemma": "run",
+            "error_id": "rel-upos-expl",
+            "error_message_fragment": "should normally be 'PRON'",
+            "note": "expl should be PRON, DET, or PART"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "expl",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-expl",
+            "error_message_fragment": "should normally be 'PRON'",
+            "note": "expl should be PRON, DET, or PART"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "expl",
+            "example_form": "quickly",
+            "example_lemma": "quickly",
+            "error_id": "rel-upos-expl",
+            "error_message_fragment": "should normally be 'PRON'",
+            "note": "expl should be PRON, DET, or PART"
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "expl",
+            "example_form": "be",
+            "example_lemma": "be",
+            "error_id": "rel-upos-expl",
+            "error_message_fragment": "should normally be 'PRON'",
+            "note": "expl should be PRON, DET, or PART"
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "cop",
+            "example_form": "run",
+            "example_lemma": "run",
+            "error_id": "rel-upos-cop",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "cop should be AUX, PRON, DET, or SYM"
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "cop",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-cop",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "cop should be AUX, PRON, DET, or SYM"
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "cop",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-cop",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "cop should be AUX, PRON, DET, or SYM"
+        },
+        {
+            "upostag": "ADV",
+            "deprel": "cop",
+            "example_form": "quickly",
+            "example_lemma": "quickly",
+            "error_id": "rel-upos-cop",
+            "error_message_fragment": "should be 'AUX'",
+            "note": "cop should be AUX, PRON, DET, or SYM"
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "case",
+            "example_form": "John",
+            "example_lemma": "John",
+            "error_id": "rel-upos-case",
+            "error_message_fragment": "should not be",
+            "note": "case should not be PROPN (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "case",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-case",
+            "error_message_fragment": "should not be",
+            "note": "case should not be ADJ (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "case",
+            "example_form": "she",
+            "example_lemma": "she",
+            "error_id": "rel-upos-case",
+            "error_message_fragment": "should not be",
+            "note": "case should not be PRON (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "DET",
+            "deprel": "case",
+            "example_form": "the",
+            "example_lemma": "the",
+            "error_id": "rel-upos-case",
+            "error_message_fragment": "should not be",
+            "note": "case should not be DET (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "case",
+            "example_form": "three",
+            "example_lemma": "three",
+            "error_id": "rel-upos-case",
+            "error_message_fragment": "should not be",
+            "note": "case should not be NUM (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "case",
+            "example_form": "be",
+            "example_lemma": "be",
+            "error_id": "rel-upos-case",
+            "error_message_fragment": "should not be",
+            "note": "case should not be AUX (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "mark",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be NOUN (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "mark",
+            "example_form": "John",
+            "example_lemma": "John",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be PROPN (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "mark",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be ADJ (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "mark",
+            "example_form": "she",
+            "example_lemma": "she",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be PRON (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "DET",
+            "deprel": "mark",
+            "example_form": "the",
+            "example_lemma": "the",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be DET (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "mark",
+            "example_form": "three",
+            "example_lemma": "three",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be NUM (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "mark",
+            "example_form": "run",
+            "example_lemma": "run",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be VERB (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "mark",
+            "example_form": "be",
+            "example_lemma": "be",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be AUX (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "INTJ",
+            "deprel": "mark",
+            "example_form": "oh",
+            "example_lemma": "oh",
+            "error_id": "rel-upos-mark",
+            "error_message_fragment": "should not be",
+            "note": "mark should not be INTJ (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "NOUN",
+            "deprel": "cc",
+            "example_form": "book",
+            "example_lemma": "book",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be NOUN (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "PROPN",
+            "deprel": "cc",
+            "example_form": "John",
+            "example_lemma": "John",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be PROPN (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "ADJ",
+            "deprel": "cc",
+            "example_form": "big",
+            "example_lemma": "big",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be ADJ (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "PRON",
+            "deprel": "cc",
+            "example_form": "she",
+            "example_lemma": "she",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be PRON (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "DET",
+            "deprel": "cc",
+            "example_form": "the",
+            "example_lemma": "the",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be DET (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "NUM",
+            "deprel": "cc",
+            "example_form": "three",
+            "example_lemma": "three",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be NUM (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "VERB",
+            "deprel": "cc",
+            "example_form": "run",
+            "example_lemma": "run",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be VERB (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "AUX",
+            "deprel": "cc",
+            "example_form": "be",
+            "example_lemma": "be",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be AUX (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "INTJ",
+            "deprel": "cc",
+            "example_form": "oh",
+            "example_lemma": "oh",
+            "error_id": "rel-upos-cc",
+            "error_message_fragment": "should not be",
+            "note": "cc should not be INTJ (without fixed child)",
+            "requires_no_fixed_child": true
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "nsubj",
+            "example_form": ",",
+            "example_lemma": ",",
+            "error_id": "upos-rel-punct",
+            "error_message_fragment": "must be 'punct'",
+            "note": "PUNCT must have punct or root deprel"
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "obj",
+            "example_form": ".",
+            "example_lemma": ".",
+            "error_id": "upos-rel-punct",
+            "error_message_fragment": "must be 'punct'",
+            "note": "PUNCT must have punct or root deprel"
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "obl",
+            "example_form": "!",
+            "example_lemma": "!",
+            "error_id": "upos-rel-punct",
+            "error_message_fragment": "must be 'punct'",
+            "note": "PUNCT must have punct or root deprel"
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "advmod",
+            "example_form": "?",
+            "example_lemma": "?",
+            "error_id": "upos-rel-punct",
+            "error_message_fragment": "must be 'punct'",
+            "note": "PUNCT must have punct or root deprel"
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "det",
+            "example_form": ",",
+            "example_lemma": ",",
+            "error_id": "upos-rel-punct",
+            "error_message_fragment": "must be 'punct'",
+            "note": "PUNCT must have punct or root deprel"
+        },
+        {
+            "upostag": "PUNCT",
+            "deprel": "aux",
+            "example_form": ".",
+            "example_lemma": ".",
+            "error_id": "upos-rel-punct",
+            "error_message_fragment": "must be 'punct'",
+            "note": "PUNCT must have punct or root deprel"
+        }
+    ]
+}
