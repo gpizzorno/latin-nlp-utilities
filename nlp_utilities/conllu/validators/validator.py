@@ -113,7 +113,7 @@ class ConlluValidator(
             )['auxiliaries']
             self.tokens_w_space = load_whitespace_exceptions(add_whitespace_exceptions)
 
-    def validate_file(self, filepath: str | Path) -> list[str]:
+    def validate_file(self, filepath: str | Path) -> ErrorReporter:
         """Validate a CoNLL-U file.
 
         Args:
@@ -131,7 +131,7 @@ class ConlluValidator(
 
         return self.validate_string(content)
 
-    def validate_string(self, content: str) -> list[str]:
+    def validate_string(self, content: str) -> ErrorReporter:
         """Validate CoNLL-U content from a string.
 
         Args:
@@ -153,7 +153,7 @@ class ConlluValidator(
                 testlevel=1,
                 testid='parse-error',
             )
-            return self.reporter.format_errors()
+            return self.reporter
 
         # Validate each sentence
         for i, sentence in enumerate(sentences, 1):
@@ -161,7 +161,7 @@ class ConlluValidator(
             self.reporter.sentence_id = sentence.metadata.get('sent_id')
             self._validate_sentence(sentence)
 
-        return self.reporter.format_errors()
+        return self.reporter
 
     def _validate_sentence(self, sentence: conllu.TokenList) -> None:
         """Validate a single sentence.
