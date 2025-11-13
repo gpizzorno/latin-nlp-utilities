@@ -2,17 +2,12 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import conllu
 import regex as re
 
 from nlp_utilities.constants import BASIC_HEAD_MATCHER, ENHANCED_HEAD_MATCHER
 
 from .validation_mixin import BaseValidationMixin
-
-if TYPE_CHECKING:
-    pass
 
 
 class EnhancedDepsValidationMixin(BaseValidationMixin):
