@@ -70,8 +70,8 @@ def parse_annotation_line(line: str) -> dict[str, Any] | None:
         # Relation annotation: R3	punct Arg1:T3 Arg2:T4
         annotation_parts = parts[1].split()
         deprel = annotation_parts[0]
-        head = annotation_parts[1].split(':')[1]
-        dep = annotation_parts[2].split(':')[1]
+        head = int(annotation_parts[1].split(':')[1][1:])  # Extract number from "T3"
+        dep = int(annotation_parts[2].split(':')[1][1:])  # Extract number from "T4"
         return {'type': 'R', 'id': ann_id, 'deprel': deprel, 'head': head, 'dep': dep}
 
     return None
@@ -90,7 +90,7 @@ def format_annotation(ann: dict[str, Any]) -> str:
     if ann['type'] == 'T':
         return f'{ann["type"]}{ann["id"]}\t{ann["upos"]} {ann["start"]} {ann["end"]}\t{ann["form"]}'
     if ann['type'] == 'R':
-        return f'{ann["type"]}{ann["id"]}\t{ann["deprel"]} Arg1:{ann["head"]} Arg2:{ann["dep"]}'
+        return f'{ann["type"]}{ann["id"]}\t{ann["deprel"]} Arg1:T{ann["head"]} Arg2:T{ann["dep"]}'
     return ''
 
 
@@ -177,7 +177,8 @@ def write_text(filepath: str | Path, doctext: list[str]) -> None:
 
     """
     with open(filepath, 'w', encoding='utf-8') as file:
-        file.write(' '.join(doctext))
+        file.write('\n'.join(doctext))
+        file.write('\n')  # Ensure the last line ends with a newline
 
 
 def write_auxiliary_files(output_directory: str, metadata: dict[str, Any]) -> None:
