@@ -1,6 +1,10 @@
 factory_boy==3.3.3
 hypothesis==6.135.1
 mypy==1.18.2
-pytest==8.4.0
+myst-parser>=2.0.0
 pytest-cov==6.1.1
 pytest-mock==3.14.1
+pytest==8.4.0
+sphinx-autodoc-typehints>=1.25.0
+sphinx-rtd-theme>=2.0.0
+sphinx>=7.2.0
