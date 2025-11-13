@@ -218,6 +218,10 @@ class UDEvaluator(WordProcessingMixin, TreeValidationMixin):
             # Track aligned words for aligned_accuracy calculation
             total_aligned_words += len(alignment.matched_words)
 
+            # Build ID-to-word mappings for dependency evaluation
+            gold_id_to_word = {word.token['id']: word for word in gold_words if isinstance(word.token['id'], int)}
+            system_id_to_word = {word.token['id']: word for word in system_words if isinstance(word.token['id'], int)}
+
             # Evaluate aligned words
             for aligned_word in alignment.matched_words:
                 gold_token = aligned_word.gold_word.token
@@ -268,9 +272,28 @@ class UDEvaluator(WordProcessingMixin, TreeValidationMixin):
                 if self.eval_deprels:
                     uas_gold += 1
                     uas_system += 1
-                    if gold_token['head'] == system_token['head']:
+
+                    # Get parent words (None if root)
+                    gold_parent = gold_id_to_word.get(gold_token['head']) if gold_token['head'] != 0 else None
+                    system_parent = system_id_to_word.get(system_token['head']) if system_token['head'] != 0 else None
+
+                    # Check if parents align (both root or system parent maps to gold parent)
+                    parents_align = False
+                    if gold_parent is None and system_parent is None:
+                        # Both are root
+                        parents_align = True
+                    elif system_parent is not None:
+                        # Check if system parent aligns to gold parent in the alignment map
+                        aligned_gold_parent = alignment.matched_words_map.get(system_parent)
+                        if aligned_gold_parent == gold_parent:
+                            parents_align = True
+
+                    if parents_align:
                         uas_correct += 1
-                        if gold_token['deprel'] == system_token['deprel']:
+                        # For LAS, normalize deprels by removing subtypes (like old code does)
+                        gold_deprel_base = gold_token['deprel'].split(':')[0]
+                        system_deprel_base = system_token['deprel'].split(':')[0]
+                        if gold_deprel_base == system_deprel_base:
                             las_correct += 1
 
                     # Always increment LAS totals for all aligned words
@@ -282,28 +305,37 @@ class UDEvaluator(WordProcessingMixin, TreeValidationMixin):
                     gold_deprel_normalized = remove_deprel_subtype(gold_token['deprel'])
                     system_deprel_normalized = remove_deprel_subtype(system_token['deprel'])
 
+                    # Count gold and system separately (they may have different deprels)
                     if gold_deprel_normalized in CONTENT_DEPRELS:
                         clas_gold += 1
+                    if system_deprel_normalized in CONTENT_DEPRELS:
                         clas_system += 1
-                        if (
-                            gold_token['head'] == system_token['head']
-                            and gold_deprel_normalized == system_deprel_normalized
-                        ):
-                            clas_correct += 1
+
+                    # Only increment correct if BOTH are content deprels and match
+                    if (
+                        gold_deprel_normalized in CONTENT_DEPRELS
+                        and parents_align
+                        and gold_deprel_normalized == system_deprel_normalized
+                    ):
+                        clas_correct += 1
 
                     # MLAS: Morphology-aware LAS for content words
                     # Matches HEAD + DEPREL + UPOS + Universal FEATS + functional children
+                    # Count gold and system separately
                     if gold_deprel_normalized in CONTENT_DEPRELS:
                         mlas_gold += 1
+                    if system_deprel_normalized in CONTENT_DEPRELS:
                         mlas_system += 1
 
+                    # Only check for correctness if gold is a content deprel
+                    if gold_deprel_normalized in CONTENT_DEPRELS:
                         # Filter features to universal set
                         gold_universal_feats = filter_universal_features(gold_token['feats'])
                         system_universal_feats = filter_universal_features(system_token['feats'])
 
                         # Check basic properties match
                         if (
-                            gold_token['head'] == system_token['head']
+                            parents_align
                             and gold_deprel_normalized == system_deprel_normalized
                             and gold_token['upos'] == system_token['upos']
                             and gold_universal_feats == system_universal_feats
@@ -357,17 +389,21 @@ class UDEvaluator(WordProcessingMixin, TreeValidationMixin):
 
                     # BLEX: Bilexical LAS for content words with lemma matching
                     # Matches HEAD + DEPREL + LEMMA (with special handling for '_')
+                    # Count gold and system separately
                     if gold_deprel_normalized in CONTENT_DEPRELS:
                         blex_gold += 1
+                    if system_deprel_normalized in CONTENT_DEPRELS:
                         blex_system += 1
 
+                    # Only check for correctness if gold is a content deprel
+                    if gold_deprel_normalized in CONTENT_DEPRELS:
                         # Determine lemma to use for comparison
                         # If gold lemma is '_', use '_' for both (skip lemma check)
                         gold_lemma = gold_token['lemma'] if gold_token['lemma'] != '_' else '_'
                         system_lemma = system_token['lemma'] if gold_token['lemma'] != '_' else '_'
 
                         if (
-                            gold_token['head'] == system_token['head']
+                            parents_align
                             and gold_deprel_normalized == system_deprel_normalized
                             and gold_lemma == system_lemma
                         ):
