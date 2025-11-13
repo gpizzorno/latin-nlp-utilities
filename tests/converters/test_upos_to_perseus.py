@@ -1,3 +1,5 @@
+"""Tests for UPOS to Perseus converter function."""
+
 import pytest
 
 from nlp_utilities.converters.upos import upos_to_perseus

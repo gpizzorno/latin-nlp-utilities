@@ -1,3 +1,5 @@
+"""Tests for DALME to UPOS converter function."""
+
 import pytest
 
 from nlp_utilities.converters.upos import dalme_to_upos
