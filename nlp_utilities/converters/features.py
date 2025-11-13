@@ -11,8 +11,8 @@ def feature_string_to_dict(feat_string: str | None) -> dict[str, str]:
     if not feat_string or feat_string == '_':
         return {}
 
-    f_pairs = [i.split('=') for i in feat_string.split('|')]
-    return {i[0]: i[1] for i in f_pairs}
+    f_pairs = [i.strip().split('=') for i in feat_string.strip().split('|')]
+    return {i[0].strip(): i[1].strip() for i in f_pairs}
 
 
 def feature_dict_to_string(feat_dict: dict[str, Any] | None) -> str:
