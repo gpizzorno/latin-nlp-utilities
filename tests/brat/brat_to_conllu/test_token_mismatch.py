@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import copy
 from pathlib import Path
 from typing import Any
 
 import pytest
 
 from nlp_utilities.brat.brat_to_conllu import brat_to_conllu
+from tests.test_data.load_data import SIMPLE_ANN, SIMPLE_TXT
 
 
 def test_token_count_mismatch(
@@ -44,11 +46,9 @@ def test_token_form_mismatch(
     # Create BRAT with different token
     brat_dir = temp_dir / 'brat_form_mismatch'
     brat_dir.mkdir()
-    ann_content = """T1\tNOUN 0 5\tWrong
-T2\tVERB 6 10\ttest
-"""
+    ann_content = copy.deepcopy(SIMPLE_ANN).replace('Gallia', 'Numidia')
     (brat_dir / 'test.ann').write_text(ann_content, encoding='utf-8')
-    (brat_dir / 'test.txt').write_text('Wrong test', encoding='utf-8')
+    (brat_dir / 'test.txt').write_text(SIMPLE_TXT, encoding='utf-8')
 
     with pytest.raises(ValueError, match='Token mismatch'):
         brat_to_conllu(

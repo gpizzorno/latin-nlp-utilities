@@ -76,21 +76,16 @@ def test_load_with_additional_path() -> None:
     """Test loading data with additional path."""
     # Create a temporary file with additional data
     # Note: When language is specified, additional data is added directly
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as file:
         additional_data = {
             'CustomFeature': {
                 'type': 'custom',
                 'values': ['Val1', 'Val2'],
             },
         }
-        json.dump(additional_data, f)
-        temp_path = f.name
-
+        json.dump(additional_data, file)
+        temp_path = file.name
     try:
-        # This will fail because the code tries to access data['features']['la']
-        # after language filtering, but data is already the 'la' dict
-        # This is a bug in the original code - let's test the workaround
-        # by loading without language first
         data = load_language_data('feats', language=None, additional_path=temp_path)
         # The additional data should be in the features section
         assert 'features' in data
@@ -100,13 +95,11 @@ def test_load_with_additional_path() -> None:
 
 def test_load_with_additional_path_string() -> None:
     """Test loading data with additional path as string."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as file:
         additional_data = {'TestFeature': {'type': 'test'}}
-        json.dump(additional_data, f)
-        temp_path = f.name
-
+        json.dump(additional_data, file)
+        temp_path = file.name
     try:
-        # Pass as string instead of Path, without language to avoid KeyError
         data = load_language_data('feats', language=None, additional_path=temp_path)
         assert 'features' in data
     finally:
@@ -115,13 +108,11 @@ def test_load_with_additional_path_string() -> None:
 
 def test_load_with_additional_path_pathlib() -> None:
     """Test loading data with additional path as Path object."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as file:
         additional_data = {'PathFeature': {'type': 'path'}}
-        json.dump(additional_data, f)
-        temp_path = Path(f.name)
-
+        json.dump(additional_data, file)
+        temp_path = Path(file.name)
     try:
-        # Pass as Path object, without language to avoid KeyError
         data = load_language_data('feats', language=None, additional_path=temp_path)
         assert 'features' in data
     finally:
@@ -136,7 +127,6 @@ def test_additional_path_not_found_raises_error() -> None:
 
 def test_load_dalme_features() -> None:
     """Test loading DALME-specific features."""
-    # DALME loading has the same issue with language filtering
     # Test without language specification
     data = load_language_data('feats', language=None, load_dalme=True)
     # DALME features should be loaded into the features section

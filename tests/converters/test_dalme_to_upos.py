@@ -2,24 +2,13 @@
 
 import pytest
 
+from nlp_utilities.constants import DALME_TAGS
 from nlp_utilities.converters.upos import dalme_to_upos
 
 
 @pytest.mark.parametrize(
     ('dalme_tag', 'expected_upos'),
-    [
-        ('adjective', 'ADJ'),
-        ('adposition', 'ADP'),
-        ('adverb', 'ADV'),
-        ('coordinating conjunction', 'CCONJ'),
-        ('gerund', 'VERB'),
-        ('noun', 'NOUN'),
-        ('numeral', 'NUM'),
-        ('particle', 'PART'),
-        ('pronoun', 'PRON'),
-        ('proper noun', 'PROPN'),
-        ('verb', 'VERB'),
-    ],
+    [(k, v) for k, v in DALME_TAGS.items()],
 )
 def test_dalme_to_upos_known_tags(dalme_tag: str, expected_upos: str) -> None:
     assert dalme_to_upos(dalme_tag) == expected_upos

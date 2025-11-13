@@ -2,12 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 from nlp_utilities.conllu.evaluators import UDEvaluator
-
-if TYPE_CHECKING:
-    pass
 
 
 def test_evaluator_default_initialization() -> None:

@@ -236,5 +236,3 @@ def test_invalid_cop_with_advmod(tmp_path: Path) -> None:
     validator = ConlluValidator(level=3)
     errors = validator.validate_string(text)
     assert_error_count(errors, 1, 'leaf-aux-cop')
-    # print(errors.errors)
-    # assert_error_count(errors, 0)

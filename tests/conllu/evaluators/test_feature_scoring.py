@@ -2,14 +2,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import conllu
 
 from nlp_utilities.conllu.evaluators import UDEvaluator
-
-if TYPE_CHECKING:
-    pass
 
 
 def test_feats_match_with_identical_features() -> None:

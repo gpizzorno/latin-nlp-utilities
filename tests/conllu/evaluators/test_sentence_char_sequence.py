@@ -2,16 +2,11 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import conllu
 import pytest
 
 from nlp_utilities.conllu.evaluators import UDEvaluator
 from nlp_utilities.conllu.evaluators.base import UDError
-
-if TYPE_CHECKING:
-    pass
 
 
 def test_evaluate_sentences_identical() -> None:
