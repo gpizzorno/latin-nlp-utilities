@@ -54,7 +54,7 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
             metadata = json.load(file)
 
         ref_conllu = metadata.get('conllu_filename')
-        sents_per_doc = metadata.get('sents_per_doc')
+        sents_per_doc = metadata.get('sents_per_doc')  # noqa: F841
         output_root = metadata.get('output_root')
         meta_error = 'none found in metadata file.'
 
@@ -62,7 +62,8 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
         meta_error = 'no metadata file found in input directory.'
 
     assert ref_conllu is not None, f'No ref_conllu value passed and {meta_error}'
-    assert sents_per_doc is not None, f'No sents_per_doc value passed and {meta_error}'
+    # Note: sents_per_doc can be None (means all sentences in one document)
+    # assert sents_per_doc is not None, f'No sents_per_doc value passed and {meta_error}'
     assert output_root is not None, f'No output_root value passed and {meta_error}'
 
     # check if reference CoNLL-U file exists
@@ -75,7 +76,9 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
     if not output_path.is_dir():
         output_path.mkdir(parents=True, exist_ok=True)
 
-    output_path = Path(output_directory) / f'{Path(ref_conllu).name}-from_brat.conllu'
+    # Remove .conllu extension if present to avoid example.conllu-from_brat.conllu
+    ref_name = Path(ref_conllu).stem if Path(ref_conllu).suffix == '.conllu' else Path(ref_conllu).name
+    output_path = Path(output_directory) / f'{ref_name}-from_brat.conllu'
 
     # load reference CoNLL-U data
     with open(ref_conllu, encoding='utf-8') as file:
@@ -105,6 +108,9 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
                     entity['deprel'] = deprel
                     processed.append(dep_id)
                     break
+
+    # identify ROOT entities
+    root_entity_ids = {entity['id'] for entity in entities if entity['upos'] == 'ROOT'}
 
     # split into sentences
     annotated_sentences = []
@@ -160,7 +166,10 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
                 token['feats'] = feature_dict_to_string(normalize_features(entity_upos, token['feats'], feature_set))
                 token['upos'] = entity_upos
 
-            entity_head = concordance.get(entity.get('head'), '_')  # type: ignore [arg-type]
+            # resolve entity head - check if it's a ROOT entity or regular token
+            raw_entity_head = entity.get('head')
+            entity_head = 0 if raw_entity_head in root_entity_ids else concordance.get(raw_entity_head, '_')  # type: ignore [arg-type]
+
             entity_deprel = safe_type_to_type(entity.get('deprel', '_'))  # type: ignore [arg-type]
 
             token['head'] = entity_head
@@ -169,14 +178,21 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
             # extended dep rels
             deps = entity.get('deps')
             if deps and isinstance(deps, list):
-                new_deps = [(concordance.get(i[0], 0), i[1]) for i in deps]
+                # For extended deps, also check if heads are ROOT entities
+                new_deps = []
+                for deprel, head_id in deps:
+                    if head_id in root_entity_ids:
+                        new_deps.append((deprel, 0))
+                    else:
+                        new_deps.append((deprel, concordance.get(head_id, 0)))
+
                 if entity_head and entity_deprel:
-                    new_deps.append((concordance.get(entity_head, 0), entity_deprel))
+                    new_deps.append((entity_deprel, entity_head))
 
                 if new_deps:
                     token['deps'] = new_deps
             elif entity_head and entity_deprel:
-                token['deps'] = [(entity_deprel, concordance.get(entity_head, 0))]
+                token['deps'] = [(entity_deprel, entity_head)]
 
         # fix full stop dependencies if present
         sent_root = None
@@ -187,7 +203,7 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
 
             if token['upos'] == 'PUNCT' and sent_root:
                 token['head'] = sent_root
-                token['deps'] = ['punct', sent_root]
+                token['deps'] = [('punct', sent_root)]
                 sent_root = None
 
     with open(output_path, 'w', encoding='utf-8') as file:
@@ -233,7 +249,7 @@ def _get_annotations(annotation_files: list[str]) -> tuple[list[dict[str, Any]],
     next_free['R'] = get_next_id_number([a for sublist in annotations for a in sublist], 'R')
 
     # remap IDs
-    reserved: dict[str, list[int]] = {}
+    reserved: dict[str, list[int]] = {'T': [], 'R': []}
 
     for file_anns in annotations:
         id_map: dict[str, dict[int, int]] = {}
