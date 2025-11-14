@@ -23,9 +23,15 @@ class ErrorEntry:
 
     def __str__(self) -> str:
         """Format the error as a string."""
-        line = f'Line {self.line_no}' if self.line_no else ''
-        sentence = f'Sentence {self.alt_id}' if self.alt_id else ''
-        return f'{line} {sentence}: [L{self.testlevel} {self.error_type} {self.testid}] {self.msg}'
+        line = f'Line {self.line_no}' if self.line_no else None
+        sentence = f'Sentence {self.alt_id}' if self.alt_id else None
+        output = line if line else ''
+        if sentence:
+            output += f' {sentence}: ' if output else f'{sentence}: '
+        else:
+            output += ': ' if output else ''
+        output += f'[L{self.testlevel} {self.error_type} {self.testid}] {self.msg}'
+        return output
 
 
 class ErrorReporter:
@@ -101,7 +107,7 @@ class ErrorReporter:
                 if output_log:
                     output_log.append('')
                 current_key = key
-                output_log.append(f'{current_key}:')
+                output_log.append(f'Sentence {current_key}:')
 
             output_log.append(str(entry))
 
