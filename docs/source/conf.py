@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parents[2].resolve()))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Latin NLP Utilities'
-copyright = '2025, Gabe Pizzorno'
+copyright = '%Y, Gabe Pizzorno'
 author = 'Gabe Pizzorno'
 release = '1.0.0'
 version = '1.0.0'
@@ -30,9 +30,12 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
     'sphinx.ext.githubpages',
+    'sphinxcontrib.mermaid',
     'sphinx_autodoc_typehints',
     'myst_parser',
 ]
+
+source_suffix = ['.rst', '.md']
 
 # Autodoc settings
 autodoc_default_options = {
@@ -68,6 +71,7 @@ autosummary_imported_members = False
 
 # MyST settings (Markdown support)
 myst_enable_extensions = [
+    'attrs_inline',
     'colon_fence',
     'deflist',
     'dollarmath',
@@ -76,9 +80,12 @@ myst_enable_extensions = [
     'html_image',
     'replacements',
     'smartquotes',
+    'strikethrough',
     'substitution',
     'tasklist',
 ]
+myst_heading_anchors = 3
+
 
 # Intersphinx settings (cross-reference external docs)
 intersphinx_mapping = {
@@ -98,7 +105,6 @@ html_static_path = ['_static']
 html_theme_options = {
     'analytics_id': '',
     'logo_only': False,
-    'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     'style_nav_header_background': '#2980B9',
@@ -120,15 +126,13 @@ html_context = {
 
 html_title = f'{project} v{version}'
 html_short_title = 'Latin NLP Utils'
-html_favicon = None  # Add favicon path if you have one
-html_logo = None  # Add logo path if you have one
+html_favicon = None
+html_logo = None
 
 # If true, links to the reST sources are added to the pages.
-html_show_sourcelink = True
-
+html_show_sourcelink = False
 # If true, "Created using Sphinx" is shown in the HTML footer.
-html_show_sphinx = True
-
+html_show_sphinx = False
 # If true, "(C) Copyright ..." is shown in the HTML footer.
 html_show_copyright = True
 
