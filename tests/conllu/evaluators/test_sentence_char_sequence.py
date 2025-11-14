@@ -5,13 +5,13 @@ from __future__ import annotations
 import conllu
 import pytest
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 from nlp_utilities.conllu.evaluators.base import UDError
 
 
 def test_evaluate_sentences_identical() -> None:
     """Test _evaluate_sentences with identical gold and system."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -32,7 +32,7 @@ def test_evaluate_sentences_identical() -> None:
 
 def test_evaluate_sentences_completely_different() -> None:
     """Test _evaluate_sentences with completely different sentences."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -55,7 +55,7 @@ def test_evaluate_sentences_completely_different() -> None:
 
 def test_evaluate_sentences_partial_match() -> None:
     """Test _evaluate_sentences with partial matches."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # Same words, different POS tags
     gold_text = """# sent_id = 1
@@ -83,7 +83,7 @@ def test_evaluate_sentences_partial_match() -> None:
 
 def test_character_mismatch_detection() -> None:
     """Test character mismatch detection raises UDError."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -106,7 +106,7 @@ def test_character_mismatch_detection() -> None:
 
 def test_character_mismatch_error_message() -> None:
     """Test character mismatch error message formatting."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = test1
 # text = The cat
@@ -133,7 +133,7 @@ def test_character_mismatch_error_message() -> None:
 
 def test_character_mismatch_with_context_display() -> None:
     """Test character mismatch shows context (20 chars)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The quick brown fox

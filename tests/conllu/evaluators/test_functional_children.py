@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 def test_functional_children_population() -> None:
     """Test functional_children are populated for MLAS metric."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = The big cat
 1\tThe\tthe\tDET\t_\t_\t3\tdet\t_\t_
@@ -28,7 +28,7 @@ def test_functional_children_population() -> None:
 
 def test_functional_children_with_multiple_children() -> None:
     """Test functional_children with multiple children."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = The big cat
 1\tThe\tthe\tDET\t_\t_\t3\tdet\t_\t_
@@ -47,7 +47,7 @@ def test_functional_children_with_multiple_children() -> None:
 
 def test_functional_children_filtering_by_functional_deprels() -> None:
     """Test functional_children filtering by FUNCTIONAL_DEPRELS."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = in the house
 1\tin\tin\tADP\t_\t_\t3\tcase\t_\t_
@@ -68,7 +68,7 @@ def test_functional_children_filtering_by_functional_deprels() -> None:
 
 def test_functional_children_with_empty_list() -> None:
     """Test functional_children with no functional children."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word
 1\tword\tword\tNOUN\t_\t_\t0\troot\t_\t_
@@ -84,7 +84,7 @@ def test_functional_children_with_empty_list() -> None:
 
 def test_functional_children_normalization() -> None:
     """Test functional_children with deprel subtype normalization."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = the house
 1\tthe\tthe\tDET\t_\t_\t2\tdet:def\t_\t_

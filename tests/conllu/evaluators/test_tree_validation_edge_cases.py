@@ -6,12 +6,12 @@ import conllu
 import pytest
 
 from nlp_utilities.conllu.evaluators.base import UDError
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 def test_validation_with_empty_sentence() -> None:
     """Test validation with empty sentence (no words)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Empty sentence
     sentence = conllu.TokenList([])
 
@@ -21,7 +21,7 @@ def test_validation_with_empty_sentence() -> None:
 
 def test_validation_with_single_word_sentence() -> None:
     """Test validation with single-word sentence."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word
 1\tword\tword\tNOUN\t_\t_\t0\troot\t_\t_
@@ -35,7 +35,7 @@ def test_validation_with_single_word_sentence() -> None:
 
 def test_validation_with_multi_word_tokens() -> None:
     """Test validation with multi-word tokens."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = cannot go
 1-2\tcannot\t_\t_\t_\t_\t_\t_\t_\t_
@@ -52,7 +52,7 @@ def test_validation_with_multi_word_tokens() -> None:
 
 def test_validation_only_checks_words_not_mwt_ranges() -> None:
     """Test that validation only checks word tokens, not MWT ranges."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # MWT range with tuple ID should be ignored
     text = """# sent_id = test1
 # text = del mundo
@@ -70,7 +70,7 @@ def test_validation_only_checks_words_not_mwt_ranges() -> None:
 
 def test_error_messages_include_sentence_id() -> None:
     """Test error messages include sentence ID."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = my_sentence_123
 # text = word1 word2
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t_\t_
@@ -85,7 +85,7 @@ def test_error_messages_include_sentence_id() -> None:
 
 def test_error_messages_include_word_form() -> None:
     """Test error messages include word form."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word1 badword
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t_\t_
@@ -100,7 +100,7 @@ def test_error_messages_include_word_form() -> None:
 
 def test_error_messages_include_specific_head_values() -> None:
     """Test error messages include specific HEAD values."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word1 word2
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t_\t_
@@ -115,7 +115,7 @@ def test_error_messages_include_specific_head_values() -> None:
 
 def test_error_messages_include_word_id() -> None:
     """Test error messages include word ID."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word1 word2
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t_\t_

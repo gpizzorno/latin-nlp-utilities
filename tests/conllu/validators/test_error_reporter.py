@@ -405,9 +405,9 @@ def test_format_errors_sorts_by_sentence_order(error_reporter: ErrorReporter) ->
 
     # Should be sorted by order: sent-b (1), sent-c (2), sent-a (3)
     sentence_headers = [line for line in result if line.endswith(':')]
-    assert sentence_headers[0] == 'sent-b:'
-    assert sentence_headers[1] == 'sent-c:'
-    assert sentence_headers[2] == 'sent-a:'
+    assert sentence_headers[0] == 'Sentence sent-b:'
+    assert sentence_headers[1] == 'Sentence sent-c:'
+    assert sentence_headers[2] == 'Sentence sent-a:'
 
 
 def test_format_errors_sorts_by_line_no_within_sentence(error_reporter: ErrorReporter) -> None:
@@ -459,7 +459,7 @@ def test_format_errors_groups_by_sentence_id(error_reporter: ErrorReporter) -> N
     # Should have one sentence header followed by both errors
     sentence_headers = [line for line in result if line.endswith(':')]
     assert len(sentence_headers) == 1
-    assert sentence_headers[0] == 'sent-1:'
+    assert sentence_headers[0] == 'Sentence sent-1:'
 
 
 def test_format_errors_blank_line_between_sentences(error_reporter: ErrorReporter) -> None:

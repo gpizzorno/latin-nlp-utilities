@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_token_counting_span_based() -> None:
     """Test token counting is span-based."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -27,7 +27,7 @@ def test_token_counting_span_based() -> None:
 
 def test_token_matching_logic() -> None:
     """Test token matching requires exact span match."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -44,7 +44,7 @@ def test_token_matching_logic() -> None:
 
 def test_token_scoring_with_multiword_tokens() -> None:
     """Test token scoring with multi-word tokens."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = cannot
@@ -63,7 +63,7 @@ def test_token_scoring_with_multiword_tokens() -> None:
 
 def test_token_scoring_with_mismatched_spans() -> None:
     """Test token scoring when spans don't match."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # This would require different tokenization, which causes character mismatch
     # So we test that the span matching logic works when characters do match
@@ -87,7 +87,7 @@ def test_token_scoring_with_mismatched_spans() -> None:
 
 def test_sentence_counting() -> None:
     """Test sentence counting."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -109,7 +109,7 @@ def test_sentence_counting() -> None:
 
 def test_sentence_matching_character_equality() -> None:
     """Test sentence matching is based on character equality."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # Same text, different annotations
     gold_text = """# sent_id = 1
@@ -135,7 +135,7 @@ def test_sentence_matching_character_equality() -> None:
 
 def test_word_alignment_and_counting() -> None:
     """Test word alignment and counting."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -153,7 +153,7 @@ def test_word_alignment_and_counting() -> None:
 
 def test_word_scoring_perfect_alignment() -> None:
     """Test word scoring with perfect alignment."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -171,7 +171,7 @@ def test_word_scoring_perfect_alignment() -> None:
 
 def test_word_scoring_partial_alignment() -> None:
     """Test word scoring with partial alignment (MWT differences)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # Gold has MWT, system doesn't (but same characters would cause mismatch)
     # Instead, test identical text with aligned words

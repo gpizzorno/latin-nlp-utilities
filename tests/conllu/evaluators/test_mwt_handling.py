@@ -5,12 +5,12 @@ from __future__ import annotations
 import conllu
 
 from nlp_utilities.conllu.evaluators.base import UDSpan
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 def test_mwt_span_assignment() -> None:
     """Test MWT span is correctly assigned to constituent words."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = del mundo
 1-2\tdel\t_\t_\t_\t_\t_\t_\t_\t_
@@ -33,7 +33,7 @@ def test_mwt_span_assignment() -> None:
 
 def test_mwt_range_detection() -> None:
     """Test MWT range detection with tuple IDs."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = cannot
 1-2\tcannot\t_\t_\t_\t_\t_\t_\t_\t_
@@ -54,7 +54,7 @@ def test_mwt_range_detection() -> None:
 
 def test_mwt_flag_setting() -> None:
     """Test is_multiword flag is correctly set on UDWord objects."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word1 del word2
 1\tword1\tword1\tNOUN\t_\t_\t0\troot\t_\t_
@@ -77,7 +77,7 @@ def test_mwt_flag_setting() -> None:
 
 def test_character_index_tracking_with_mwts() -> None:
     """Test character index tracking with multi-word tokens."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = pre cannot post
 1\tpre\tpre\tNOUN\t_\t_\t0\troot\t_\t_
@@ -101,7 +101,7 @@ def test_character_index_tracking_with_mwts() -> None:
 
 def test_token_span_creation_for_mwts() -> None:
     """Test token span creation for multi-word tokens."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = cannot
 1-2\tcannot\t_\t_\t_\t_\t_\t_\t_\t_

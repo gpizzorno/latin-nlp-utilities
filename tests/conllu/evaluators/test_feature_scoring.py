@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_feats_match_with_identical_features() -> None:
     """Test _feats_match with identical features."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = puella
@@ -28,7 +28,7 @@ def test_feats_match_with_identical_features() -> None:
 
 def test_feats_match_with_different_features() -> None:
     """Test _feats_match with different features."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = puella
@@ -50,7 +50,7 @@ def test_feats_match_with_different_features() -> None:
 
 def test_feats_match_with_universal_feature_filtering() -> None:
     """Test _feats_match filters to universal features only."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # Include language-specific feature (Foreign)
     gold_text = """# sent_id = 1
@@ -75,7 +75,7 @@ def test_feats_match_with_universal_feature_filtering() -> None:
 
 def test_feats_match_with_language_specific_ignored() -> None:
     """Test _feats_match ignores language-specific features."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = puella
@@ -99,7 +99,7 @@ def test_feats_match_with_language_specific_ignored() -> None:
 
 def test_feats_match_with_none_empty_features() -> None:
     """Test _feats_match with None/empty features."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat

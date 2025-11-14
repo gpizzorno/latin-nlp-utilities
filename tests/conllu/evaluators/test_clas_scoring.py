@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_clas_calculation() -> None:
     """Test CLAS (content-word LAS) calculation."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # All content words
     text = """# sent_id = 1
@@ -28,7 +28,7 @@ def test_clas_calculation() -> None:
 
 def test_clas_filtering_by_content_deprels() -> None:
     """Test CLAS filters by CONTENT_DEPRELS."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # Mix of content and functional relations
     text = """# sent_id = 1
@@ -47,7 +47,7 @@ def test_clas_filtering_by_content_deprels() -> None:
 
 def test_clas_deprel_normalization() -> None:
     """Test CLAS normalizes deprels (removes subtypes)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = house
@@ -71,7 +71,7 @@ def test_clas_deprel_normalization() -> None:
 
 def test_clas_with_correct_predictions() -> None:
     """Test CLAS with correct predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = cat runs
@@ -87,7 +87,7 @@ def test_clas_with_correct_predictions() -> None:
 
 def test_clas_with_incorrect_predictions() -> None:
     """Test CLAS with incorrect predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = cat runs

@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_enhanced_alignment_score_basic() -> None:
     """Test _enhanced_alignment_score basic functionality."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = cat runs
@@ -26,7 +26,7 @@ def test_enhanced_alignment_score_basic() -> None:
 
 def test_elas_enhanced_labeled_attachment_score() -> None:
     """Test ELAS (enhanced labeled attachment score)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = cat runs
@@ -52,7 +52,7 @@ def test_elas_enhanced_labeled_attachment_score() -> None:
 
 def test_eulas_enhanced_unlabeled_attachment_score() -> None:
     """Test EULAS (enhanced unlabeled attachment score) - ignores subtypes."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = house
@@ -79,7 +79,7 @@ def test_eulas_enhanced_unlabeled_attachment_score() -> None:
 
 def test_enhanced_deps_parent_matching() -> None:
     """Test enhanced deps parent matching through alignment."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = cat runs
@@ -96,7 +96,7 @@ def test_enhanced_deps_parent_matching() -> None:
 
 def test_enhanced_deps_path_matching() -> None:
     """Test enhanced deps path matching."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = book
@@ -120,7 +120,7 @@ def test_enhanced_deps_path_matching() -> None:
 
 def test_enhanced_deps_with_root() -> None:
     """Test enhanced deps with root (parent=0)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = runs
@@ -136,7 +136,7 @@ def test_enhanced_deps_with_root() -> None:
 
 def test_enhanced_deps_alignment_mapping() -> None:
     """Test enhanced deps use alignment mapping for parents."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # This is tested implicitly - system parents are mapped through matched_words_map
     text = """# sent_id = 1
@@ -155,7 +155,7 @@ def test_enhanced_deps_alignment_mapping() -> None:
 
 def test_enhanced_deps_counting_across_sentences() -> None:
     """Test enhanced deps are counted across all sentences."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = cat runs

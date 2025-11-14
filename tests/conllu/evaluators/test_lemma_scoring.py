@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_lemma_matching_for_aligned_words() -> None:
     """Test lemma matching for aligned words."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = runs
@@ -31,7 +31,7 @@ def test_lemma_matching_for_aligned_words() -> None:
 
 def test_lemma_scoring_with_underscore_handling() -> None:
     """Test lemma scoring with underscore handling (gold='_' means always match)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = runs
@@ -55,7 +55,7 @@ def test_lemma_scoring_with_underscore_handling() -> None:
 
 def test_lemma_scoring_with_correct_predictions() -> None:
     """Test lemma scoring with correct predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat runs
@@ -72,7 +72,7 @@ def test_lemma_scoring_with_correct_predictions() -> None:
 
 def test_lemma_scoring_with_incorrect_predictions() -> None:
     """Test lemma scoring with incorrect predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat runs

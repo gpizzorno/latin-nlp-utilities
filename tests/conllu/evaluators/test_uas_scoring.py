@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_uas_calculation() -> None:
     """Test UAS (unlabeled attachment score) calculation."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -25,7 +25,7 @@ def test_uas_calculation() -> None:
 
 def test_uas_with_correct_head_predictions() -> None:
     """Test UAS with correct HEAD predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat runs
@@ -46,7 +46,7 @@ def test_uas_with_correct_head_predictions() -> None:
 
 def test_uas_with_incorrect_head_predictions() -> None:
     """Test UAS with incorrect HEAD predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat runs
@@ -75,7 +75,7 @@ def test_uas_with_incorrect_head_predictions() -> None:
 
 def test_uas_skipped_when_eval_deprels_false() -> None:
     """Test UAS is skipped when eval_deprels=False."""
-    evaluator = UDEvaluator(eval_deprels=False)
+    evaluator = ConlluEvaluator(eval_deprels=False)
 
     text = """# sent_id = 1
 # text = The cat

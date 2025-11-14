@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_mlas_calculation() -> None:
     """Test MLAS (morphology-aware LAS) calculation."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = puella cantat
@@ -27,7 +27,7 @@ def test_mlas_calculation() -> None:
 
 def test_mlas_requires_head_deprel_upos_feats_match() -> None:
     """Test MLAS requires HEAD + DEPREL + UPOS + FEATS to match."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = puella cantat
@@ -53,7 +53,7 @@ def test_mlas_requires_head_deprel_upos_feats_match() -> None:
 
 def test_mlas_requires_functional_children_match() -> None:
     """Test MLAS requires functional children to match."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat runs
@@ -82,7 +82,7 @@ def test_mlas_requires_functional_children_match() -> None:
 
 def test_mlas_with_correct_functional_children() -> None:
     """Test MLAS with correct functional children."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -99,7 +99,7 @@ def test_mlas_with_correct_functional_children() -> None:
 
 def test_mlas_with_incorrect_functional_children() -> None:
     """Test MLAS with incorrect functional children."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -125,7 +125,7 @@ def test_mlas_with_incorrect_functional_children() -> None:
 
 def test_mlas_functional_children_mapping_through_alignment() -> None:
     """Test MLAS functional children are mapped through word alignment."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # This is tested implicitly in the above tests - the functional children
     # from gold are mapped to their aligned system word IDs for comparison
@@ -144,7 +144,7 @@ def test_mlas_functional_children_mapping_through_alignment() -> None:
 
 def test_mlas_with_empty_functional_children() -> None:
     """Test MLAS with empty functional children."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     # Content words with no functional children
     text = """# sent_id = 1

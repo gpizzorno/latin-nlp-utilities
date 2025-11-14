@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_evaluation_with_latin_test_data() -> None:
@@ -12,7 +12,7 @@ def test_evaluation_with_latin_test_data() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Basic sanity checks on Latin data
@@ -33,7 +33,7 @@ def test_evaluation_with_multiword_tokens() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Should not raise errors with MWTs
     scores = evaluator.evaluate_files(gold_path, system_path)
 
@@ -47,7 +47,7 @@ def test_evaluation_with_enhanced_dependencies() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # ELAS and EULAS should have values
@@ -63,7 +63,7 @@ def test_evaluation_with_content_vs_functional_relations() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # CLAS should have fewer words than LAS (only content words)
@@ -75,7 +75,7 @@ def test_evaluation_with_functional_children() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # MLAS should be more strict than CLAS
@@ -87,7 +87,7 @@ def test_evaluation_with_complex_morphology() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # UFeats should have total counts
@@ -104,7 +104,7 @@ def test_evaluation_with_various_pos_tags() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # UPOS precision and recall should be equal (same number of words)

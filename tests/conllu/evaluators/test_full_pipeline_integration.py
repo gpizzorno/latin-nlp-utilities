@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_full_pipeline_with_test_data() -> None:
@@ -13,7 +13,7 @@ def test_full_pipeline_with_test_data() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Verify all expected metrics are present
@@ -52,7 +52,7 @@ def test_results_match_baseline() -> None:
     system_path = Path('tests/test_data/system.conllu')
     baseline_path = Path('tests/test_data/evaluation_baseline.json')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Load baseline
@@ -83,7 +83,7 @@ def test_precision_recall_f1_ranges() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     for metric_name, score in scores.items():
@@ -97,7 +97,7 @@ def test_aligned_accuracy_calculation() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Morphological metrics should have aligned_accuracy

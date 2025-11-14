@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_alltags_matching() -> None:
     """Test AllTags (UPOS + XPOS + Universal FEATS) matching."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = puella
@@ -24,7 +24,7 @@ def test_alltags_matching() -> None:
 
 def test_alltags_all_components_correct() -> None:
     """Test AllTags with all components correct."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -44,7 +44,7 @@ def test_alltags_all_components_correct() -> None:
 
 def test_alltags_some_components_incorrect() -> None:
     """Test AllTags with some components incorrect."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -70,7 +70,7 @@ def test_alltags_some_components_incorrect() -> None:
 
 def test_alltags_universal_feature_filtering() -> None:
     """Test AllTags uses universal feature filtering."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat

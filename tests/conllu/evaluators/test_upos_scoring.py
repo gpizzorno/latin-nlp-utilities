@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_upos_matching_for_aligned_words() -> None:
     """Test UPOS matching for aligned words."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -34,7 +34,7 @@ def test_upos_matching_for_aligned_words() -> None:
 
 def test_upos_scoring_with_correct_predictions() -> None:
     """Test UPOS scoring with correct predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -50,7 +50,7 @@ def test_upos_scoring_with_correct_predictions() -> None:
 
 def test_upos_scoring_with_incorrect_predictions() -> None:
     """Test UPOS scoring with incorrect predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -76,7 +76,7 @@ def test_upos_scoring_with_incorrect_predictions() -> None:
 
 def test_upos_scoring_precision_recall_f1() -> None:
     """Test UPOS scoring precision, recall, and F1 calculation."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat runs

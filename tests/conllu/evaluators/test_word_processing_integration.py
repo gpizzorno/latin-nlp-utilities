@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 def test_eval_deprels_false_skips_enhanced_processing() -> None:
     """Test that eval_deprels=False skips enhanced deps and functional children."""
-    evaluator = UDEvaluator(eval_deprels=False)
+    evaluator = ConlluEvaluator(eval_deprels=False)
     text = """# sent_id = test1
 # text = The cat
 1\tThe\tthe\tDET\t_\t_\t2\tdet\t2:det\t_
@@ -28,7 +28,7 @@ def test_eval_deprels_false_skips_enhanced_processing() -> None:
 
 def test_complex_sentence_with_mwt_and_deps() -> None:
     """Test complex sentence with MWTs and enhanced dependencies."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = cannot go home
 1-2\tcannot\t_\t_\t_\t_\t_\t_\t_\t_
@@ -56,7 +56,7 @@ def test_complex_sentence_with_mwt_and_deps() -> None:
 
 def test_sentence_with_multiple_mwts() -> None:
     """Test sentence with multiple multi-word tokens."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = del al mundo
 1-2\tdel\t_\t_\t_\t_\t_\t_\t_\t_

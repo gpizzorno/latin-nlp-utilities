@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_scores_dictionary_creation() -> None:
     """Test scores dictionary is created with all metrics."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -26,7 +26,7 @@ def test_scores_dictionary_creation() -> None:
 
 def test_all_metrics_present_in_scores() -> None:
     """Test all expected metrics are present in scores."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -61,7 +61,7 @@ def test_all_metrics_present_in_scores() -> None:
 
 def test_scores_with_eval_deprels_false() -> None:
     """Test scores with eval_deprels=False have None values for dependency metrics."""
-    evaluator = UDEvaluator(eval_deprels=False)
+    evaluator = ConlluEvaluator(eval_deprels=False)
 
     text = """# sent_id = 1
 # text = The cat
@@ -88,7 +88,7 @@ def test_scores_with_eval_deprels_false() -> None:
 
 def test_aligned_total_tracking_across_sentences() -> None:
     """Test aligned_total is tracked across all sentences."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat

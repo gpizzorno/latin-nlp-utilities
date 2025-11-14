@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 from nlp_utilities.conllu.evaluators.base import UDError
 
 if TYPE_CHECKING:
@@ -31,7 +31,7 @@ def test_evaluate_files_with_path_objects(tmp_path_factory: TempPathFactory) -> 
     gold_file.write_text(gold_content)
     system_file.write_text(system_content)
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_file, system_file)
 
     assert isinstance(scores, dict)
@@ -57,7 +57,7 @@ def test_evaluate_files_with_string_paths(tmp_path_factory: TempPathFactory) -> 
     gold_file.write_text(gold_content)
     system_file.write_text(system_content)
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(str(gold_file), str(system_file))
 
     assert isinstance(scores, dict)
@@ -65,7 +65,7 @@ def test_evaluate_files_with_string_paths(tmp_path_factory: TempPathFactory) -> 
 
 def test_evaluate_files_with_nonexistent_file() -> None:
     """Test evaluate_files with non-existent file."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     with pytest.raises(FileNotFoundError):
         evaluator.evaluate_files('/nonexistent/gold.conllu', '/nonexistent/system.conllu')
@@ -81,7 +81,7 @@ def test_evaluate_files_with_empty_file(tmp_path_factory: TempPathFactory) -> No
     gold_file.write_text('')
     system_file.write_text('')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_file, system_file)
 
     # Empty files should have 0 sentences
@@ -108,7 +108,7 @@ def test_evaluate_files_with_utf8_encoding(tmp_path_factory: TempPathFactory) ->
     gold_file.write_text(gold_content, encoding='utf-8')
     system_file.write_text(system_content, encoding='utf-8')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_file, system_file)
 
     # Perfect match should have F1=1.0
@@ -141,7 +141,7 @@ def test_evaluate_files_with_mismatched_sentence_counts(tmp_path_factory: TempPa
     gold_file.write_text(gold_content)
     system_file.write_text(system_content)
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     with pytest.raises(UDError, match=r'sentence.*mismatch'):
         evaluator.evaluate_files(gold_file, system_file)

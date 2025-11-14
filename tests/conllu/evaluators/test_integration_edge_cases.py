@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_evaluation_with_empty_enhanced_deps() -> None:
@@ -12,7 +12,7 @@ def test_evaluation_with_empty_enhanced_deps() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Should not raise errors
     scores = evaluator.evaluate_files(gold_path, system_path)
 
@@ -24,7 +24,7 @@ def test_evaluation_with_single_word_sentences() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Should handle single-word sentences correctly
     scores = evaluator.evaluate_files(gold_path, system_path)
 
@@ -36,7 +36,7 @@ def test_evaluation_with_special_characters() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Latin text may have special characters
     scores = evaluator.evaluate_files(gold_path, system_path)
 
@@ -49,7 +49,7 @@ def test_evaluation_with_unicode_characters() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Character-based metrics should handle Unicode correctly
@@ -61,7 +61,7 @@ def test_evaluation_with_punctuation() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Punctuation is included in word counts
@@ -73,7 +73,7 @@ def test_evaluation_preserves_file_encoding() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Should not raise encoding errors
     scores = evaluator.evaluate_files(gold_path, system_path)
 
@@ -85,7 +85,7 @@ def test_evaluation_with_long_sentences() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Should handle long sentences without performance issues
@@ -97,7 +97,7 @@ def test_eval_deprels_false_with_real_data() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator(eval_deprels=False)
+    evaluator = ConlluEvaluator(eval_deprels=False)
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # Morphological metrics should have values
@@ -115,7 +115,7 @@ def test_metric_relationships() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     # LAS correct implies UAS correct
@@ -137,7 +137,7 @@ def test_score_consistency() -> None:
     gold_path = Path('tests/test_data/gold.conllu')
     system_path = Path('tests/test_data/system.conllu')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     scores = evaluator.evaluate_files(gold_path, system_path)
 
     for metric_name, score in scores.items():

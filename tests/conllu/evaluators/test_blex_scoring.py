@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_blex_calculation() -> None:
     """Test BLEX (bilexical LAS) calculation."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = cat runs
@@ -26,7 +26,7 @@ def test_blex_calculation() -> None:
 
 def test_blex_requires_head_deprel_lemma_match() -> None:
     """Test BLEX requires HEAD + DEPREL + LEMMA to match."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = cat runs
@@ -52,7 +52,7 @@ def test_blex_requires_head_deprel_lemma_match() -> None:
 
 def test_blex_with_correct_lemmas() -> None:
     """Test BLEX with correct lemmas."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cats run
@@ -70,7 +70,7 @@ def test_blex_with_correct_lemmas() -> None:
 
 def test_blex_with_incorrect_lemmas() -> None:
     """Test BLEX with incorrect lemmas."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = cats run
@@ -95,7 +95,7 @@ def test_blex_with_incorrect_lemmas() -> None:
 
 def test_blex_lemma_underscore_handling() -> None:
     """Test BLEX handles underscore in gold lemma (always match)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = cat runs

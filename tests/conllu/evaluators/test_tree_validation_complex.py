@@ -6,12 +6,12 @@ import conllu
 import pytest
 
 from nlp_utilities.conllu.evaluators.base import UDError
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 def test_validation_with_complex_valid_tree() -> None:
     """Test validation with a complex but valid tree structure."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = The big cat sleeps on the mat
 1\tThe\tthe\tDET\t_\t_\t3\tdet\t_\t_
@@ -31,7 +31,7 @@ def test_validation_with_complex_valid_tree() -> None:
 
 def test_validation_with_deep_tree() -> None:
     """Test validation with a deeply nested tree structure."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Create a chain: root -> word1 -> word2 -> word3 -> word4
     text = """# sent_id = test1
 # text = word0 word1 word2 word3 word4
@@ -50,7 +50,7 @@ def test_validation_with_deep_tree() -> None:
 
 def test_validation_with_multiple_children_per_node() -> None:
     """Test validation with nodes having multiple children."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = root child1 child2 child3
 1\troot\troot\tVERB\t_\t_\t0\troot\t_\t_
@@ -67,7 +67,7 @@ def test_validation_with_multiple_children_per_node() -> None:
 
 def test_validation_with_projective_tree() -> None:
     """Test validation with a projective (non-crossing) tree."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = The cat sat on mat
 1\tThe\tthe\tDET\t_\t_\t2\tdet\t_\t_
@@ -85,7 +85,7 @@ def test_validation_with_projective_tree() -> None:
 
 def test_validation_with_nonprojective_tree() -> None:
     """Test validation with a non-projective (crossing) tree."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Non-projective: word2 depends on word4, crossing over word3
     text = """# sent_id = test1
 # text = word1 word2 word3 word4
@@ -103,7 +103,7 @@ def test_validation_with_nonprojective_tree() -> None:
 
 def test_validation_with_self_loop() -> None:
     """Test that self-loop passes basic validation (conllu library doesn't detect it)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Word 2 points to itself (self-loop)
     text = """# sent_id = test1
 # text = word1 word2
@@ -120,7 +120,7 @@ def test_validation_with_self_loop() -> None:
 
 def test_validation_with_three_way_cycle() -> None:
     """Test detection of three-way cycle (detected as missing root)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Cycle: word1 -> word2 -> word3 -> word1 (no root)
     text = """# sent_id = test1
 # text = word1 word2 word3

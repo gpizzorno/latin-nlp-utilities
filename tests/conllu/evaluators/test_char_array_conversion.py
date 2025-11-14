@@ -5,12 +5,12 @@ from __future__ import annotations
 import conllu
 
 from nlp_utilities.conllu.evaluators.base import UDSpan
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 def test_convert_to_words_with_simple_sentence() -> None:
     """Test _convert_to_words with a simple sentence."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = The cat
 1\tThe\tthe\tDET\t_\t_\t2\tdet\t_\t_
@@ -37,7 +37,7 @@ def test_convert_to_words_with_simple_sentence() -> None:
 
 def test_convert_to_words_with_multi_word_tokens() -> None:
     """Test _convert_to_words with multi-word tokens."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = cannot go
 1-2\tcannot\t_\t_\t_\t_\t_\t_\t_\t_
@@ -72,7 +72,7 @@ def test_convert_to_words_with_multi_word_tokens() -> None:
 
 def test_convert_to_words_whitespace_removal() -> None:
     """Test _convert_to_words removes Unicode whitespace from forms."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     # Create sentence with Unicode whitespace (U+00A0 non-breaking space)
     text = """# sent_id = test1
 # text = word1 word2
@@ -91,7 +91,7 @@ def test_convert_to_words_whitespace_removal() -> None:
 
 def test_convert_to_words_character_position_tracking() -> None:
     """Test _convert_to_words correctly tracks character positions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = A longer sentence
 1\tA\ta\tDET\t_\t_\t3\tdet\t_\t_
@@ -114,7 +114,7 @@ def test_convert_to_words_character_position_tracking() -> None:
 
 def test_convert_to_words_token_span_creation() -> None:
     """Test _convert_to_words creates correct token spans."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word1 word2
 1\tword1\tword1\tNOUN\t_\t_\t0\troot\t_\t_
@@ -133,7 +133,7 @@ def test_convert_to_words_token_span_creation() -> None:
 
 def test_convert_to_words_with_unicode_characters() -> None:
     """Test _convert_to_words handles Unicode characters."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = café naïve
 1\tcafé\tcafé\tNOUN\t_\t_\t0\troot\t_\t_

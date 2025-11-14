@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 def test_process_word_enhanced_deps_basic() -> None:
     """Test _process_word_enhanced_deps basic functionality."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word1 word2
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t0:root\t_
@@ -32,7 +32,7 @@ def test_process_word_enhanced_deps_basic() -> None:
 
 def test_treebank_type_filter_no_gapping() -> None:
     """Test treebank_type filter: no_gapping (enhancement 1)."""
-    evaluator = UDEvaluator(treebank_type='1')
+    evaluator = ConlluEvaluator(treebank_type='1')
     text = """# sent_id = test1
 # text = word1 word2 word3
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t0:root\t_
@@ -53,7 +53,7 @@ def test_treebank_type_filter_no_gapping() -> None:
 
 def test_treebank_type_filter_no_shared_parents_in_coordination() -> None:
     """Test treebank_type filter: no_shared_parents_in_coordination (enhancement 2)."""
-    evaluator = UDEvaluator(treebank_type='2')
+    evaluator = ConlluEvaluator(treebank_type='2')
     text = """# sent_id = test1
 # text = word1 word2 word3
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t0:root\t_
@@ -74,7 +74,7 @@ def test_treebank_type_filter_no_shared_parents_in_coordination() -> None:
 
 def test_treebank_type_filter_no_shared_dependents_in_coordination() -> None:
     """Test treebank_type filter: no_shared_dependents_in_coordination (enhancement 3)."""
-    evaluator = UDEvaluator(treebank_type='3')
+    evaluator = ConlluEvaluator(treebank_type='3')
     text = """# sent_id = test1
 # text = word1 word2 word3
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t0:root\t_
@@ -95,7 +95,7 @@ def test_treebank_type_filter_no_shared_dependents_in_coordination() -> None:
 
 def test_treebank_type_filter_no_control() -> None:
     """Test treebank_type filter: no_control (enhancement 4)."""
-    evaluator = UDEvaluator(treebank_type='4')
+    evaluator = ConlluEvaluator(treebank_type='4')
     text = """# sent_id = test1
 # text = He wants to go
 1\tHe\the\tPRON\t_\t_\t2\tnsubj\t2:nsubj|4:nsubj\t_
@@ -117,7 +117,7 @@ def test_treebank_type_filter_no_control() -> None:
 
 def test_treebank_type_filter_no_external_arguments_of_relative_clauses() -> None:
     """Test treebank_type filter: no_external_arguments_of_relative_clauses (enhancement 5)."""
-    evaluator = UDEvaluator(treebank_type='5')
+    evaluator = ConlluEvaluator(treebank_type='5')
     text = """# sent_id = test1
 # text = book that I read
 1\tbook\tbook\tNOUN\t_\t_\t0\troot\t0:root\t_
@@ -138,7 +138,7 @@ def test_treebank_type_filter_no_external_arguments_of_relative_clauses() -> Non
 
 def test_treebank_type_filter_no_case_info() -> None:
     """Test treebank_type filter: no_case_info (enhancement 6)."""
-    evaluator = UDEvaluator(treebank_type='6')
+    evaluator = ConlluEvaluator(treebank_type='6')
     text = """# sent_id = test1
 # text = in Rome
 1\tin\tin\tADP\t_\t_\t2\tcase\t2:case\t_
@@ -156,7 +156,7 @@ def test_treebank_type_filter_no_case_info() -> None:
 
 def test_treebank_type_combination_of_filters() -> None:
     """Test combination of multiple treebank_type filters."""
-    evaluator = UDEvaluator(treebank_type='12')
+    evaluator = ConlluEvaluator(treebank_type='12')
     text = """# sent_id = test1
 # text = word1 word2 word3
 1\tword1\tword1\tVERB\t_\t_\t0\troot\t0:root\t_
@@ -174,7 +174,7 @@ def test_treebank_type_combination_of_filters() -> None:
 
 def test_enhanced_deps_with_root() -> None:
     """Test enhanced deps processing with root (head=0)."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
     text = """# sent_id = test1
 # text = word
 1\tword\tword\tVERB\t_\t_\t0\troot\t0:root\t_

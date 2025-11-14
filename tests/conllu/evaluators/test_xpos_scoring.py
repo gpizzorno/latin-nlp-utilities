@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_xpos_matching_for_aligned_words() -> None:
     """Test XPOS matching for aligned words."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -33,7 +33,7 @@ def test_xpos_matching_for_aligned_words() -> None:
 
 def test_xpos_scoring_with_correct_predictions() -> None:
     """Test XPOS scoring with correct predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -49,7 +49,7 @@ def test_xpos_scoring_with_correct_predictions() -> None:
 
 def test_xpos_scoring_with_incorrect_predictions() -> None:
     """Test XPOS scoring with incorrect predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat

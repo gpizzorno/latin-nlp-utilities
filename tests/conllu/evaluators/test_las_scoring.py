@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import conllu
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 
 def test_las_calculation() -> None:
     """Test LAS (labeled attachment score) calculation."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat
@@ -25,7 +25,7 @@ def test_las_calculation() -> None:
 
 def test_las_requires_both_head_and_deprel_match() -> None:
     """Test LAS requires both HEAD and DEPREL to match."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat
@@ -52,7 +52,7 @@ def test_las_requires_both_head_and_deprel_match() -> None:
 
 def test_las_with_correct_predictions() -> None:
     """Test LAS with correct predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     text = """# sent_id = 1
 # text = The cat runs
@@ -69,7 +69,7 @@ def test_las_with_correct_predictions() -> None:
 
 def test_las_with_incorrect_predictions() -> None:
     """Test LAS with incorrect predictions."""
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     gold_text = """# sent_id = 1
 # text = The cat runs
@@ -97,7 +97,7 @@ def test_las_with_incorrect_predictions() -> None:
 
 def test_las_skipped_when_eval_deprels_false() -> None:
     """Test LAS is skipped when eval_deprels=False."""
-    evaluator = UDEvaluator(eval_deprels=False)
+    evaluator = ConlluEvaluator(eval_deprels=False)
 
     text = """# sent_id = 1
 # text = The cat

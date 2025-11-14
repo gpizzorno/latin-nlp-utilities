@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from nlp_utilities.conllu.evaluators import UDEvaluator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 from nlp_utilities.conllu.evaluators.base import UDError
 
 # ============================================================================
@@ -43,7 +43,7 @@ def test_error_with_mismatched_sentence_counts(tmp_path: Path) -> None:
     gold_file.write_text(gold_text, encoding='utf-8')
     system_file.write_text(system_text, encoding='utf-8')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     with pytest.raises(UDError, match='Number of sentences mismatch'):
         evaluator.evaluate_files(gold_file, system_file)
@@ -72,7 +72,7 @@ def test_error_with_character_mismatch(tmp_path: Path) -> None:
     gold_file.write_text(gold_text, encoding='utf-8')
     system_file.write_text(system_text, encoding='utf-8')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     with pytest.raises(UDError, match='Text mismatch'):
         evaluator.evaluate_files(gold_file, system_file)
@@ -100,7 +100,7 @@ def test_error_messages_include_sentence_id(tmp_path: Path) -> None:
     gold_file.write_text(gold_text, encoding='utf-8')
     system_file.write_text(system_text, encoding='utf-8')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     with pytest.raises(UDError, match='sentence-001'):
         evaluator.evaluate_files(gold_file, system_file)
@@ -130,7 +130,7 @@ def test_error_message_shows_character_context(tmp_path: Path) -> None:
     gold_file.write_text(gold_text, encoding='utf-8')
     system_file.write_text(system_text, encoding='utf-8')
 
-    evaluator = UDEvaluator()
+    evaluator = ConlluEvaluator()
 
     with pytest.raises(UDError) as exc_info:
         evaluator.evaluate_files(gold_file, system_file)
