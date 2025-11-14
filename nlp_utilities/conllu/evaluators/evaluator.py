@@ -19,7 +19,7 @@ from .tree_validation import TreeValidationMixin
 from .word_processing import WordProcessingMixin
 
 
-class UDEvaluator(WordProcessingMixin, TreeValidationMixin):
+class ConlluEvaluator(WordProcessingMixin, TreeValidationMixin):
     """Evaluator for Universal Dependencies CoNLL-U files."""
 
     def __init__(self, *, eval_deprels: bool = True, treebank_type: str = '0') -> None:

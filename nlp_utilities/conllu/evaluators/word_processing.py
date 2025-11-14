@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 class WordProcessingMixin:
     """Mixin providing word processing methods."""
 
-    # Type hints for attributes from UDEvaluator
+    # Type hints for attributes from ConlluEvaluator
     eval_deprels: bool
     treebank_type: dict[str, bool]
 

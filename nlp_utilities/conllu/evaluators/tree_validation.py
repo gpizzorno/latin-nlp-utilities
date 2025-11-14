@@ -10,7 +10,7 @@ from .base import UDError
 class TreeValidationMixin:
     """Mixin providing tree validation methods."""
 
-    # Type hints for attributes from UDEvaluator
+    # Type hints for attributes from ConlluEvaluator
     eval_deprels: bool
 
     def _validate_tree_structure(self, sentence: conllu.TokenList, sent_id: str = 'unknown') -> None:

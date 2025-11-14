@@ -14,7 +14,7 @@ from nlp_utilities.conllu.evaluators.base import (
     UDSpan,
     UDWord,
 )
-from nlp_utilities.conllu.evaluators.evaluator import UDEvaluator
+from nlp_utilities.conllu.evaluators.evaluator import ConlluEvaluator
 
 
 @pytest.fixture
@@ -220,21 +220,21 @@ def score_with_aligned_total() -> Score:
 
 
 @pytest.fixture
-def evaluator() -> UDEvaluator:
-    """Provide a default UDEvaluator instance."""
-    return UDEvaluator()
+def evaluator() -> ConlluEvaluator:
+    """Provide a default ConlluEvaluator instance."""
+    return ConlluEvaluator()
 
 
 @pytest.fixture
-def evaluator_no_deprels() -> UDEvaluator:
-    """Provide a UDEvaluator with eval_deprels=False."""
-    return UDEvaluator(eval_deprels=False)
+def evaluator_no_deprels() -> ConlluEvaluator:
+    """Provide a ConlluEvaluator with eval_deprels=False."""
+    return ConlluEvaluator(eval_deprels=False)
 
 
 @pytest.fixture
-def evaluator_with_treebank_type() -> UDEvaluator:
-    """Provide a UDEvaluator with treebank_type filters."""
-    return UDEvaluator(treebank_type='12')
+def evaluator_with_treebank_type() -> ConlluEvaluator:
+    """Provide a ConlluEvaluator with treebank_type filters."""
+    return ConlluEvaluator(treebank_type='12')
 
 
 @pytest.fixture

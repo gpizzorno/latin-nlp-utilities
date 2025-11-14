@@ -1,6 +1,6 @@
 """Modular evaluator for CoNLL-U format evaluation."""
 
 from .base import Score
-from .evaluator import UDEvaluator
+from .evaluator import ConlluEvaluator
 
-__all__ = ['Score', 'UDEvaluator']
+__all__ = ['ConlluEvaluator', 'Score']
