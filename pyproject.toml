@@ -9,7 +9,20 @@ description = "A set of convenience tools for Natural Language Processing work w
 readme = "README.md"
 authors = [{ name = "Gabe Pizzorno" }]
 license = { file = "LICENSE" }
-keywords = ["latin", "nlp", "utilities", "conllu", ]
+keywords = [
+  "nlp", 
+  "natural-language-processing", 
+  "latin", 
+  "universal-dependencies", 
+  "text-annotation", 
+  "brat", 
+  "ud",
+  "conllu",
+  "conllu-validation",
+  "conllu-evaluation",
+  "tag-conversion",
+  "tag-normalization",
+]
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
