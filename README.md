@@ -7,6 +7,8 @@
 
 **Latin NLP Utilities** is a set of convenience tools for working with Latin treebanks and annotated corpora. It provides converters, evaluation scripts, validation tools, and utilities for transforming, validating, and comparing Latin linguistic data in [CoNLL-U](https://universaldependencies.org/format.html) and [brat](https://brat.nlplab.org) standoff formats.
 
+[Read the documentation](https://gpizzorno.github.io/latin-nlp-utilities/)
+
 ## Features
 
 - **brat/CoNLL-U Interoperability**: Convert between brat [standoff](https://brat.nlplab.org/standoff.html) and [CoNLL-U](https://universaldependencies.org/format.html)
@@ -15,6 +17,8 @@
 - **Evaluation**: Score system outputs against gold-standard CoNLL-U files, including enhanced dependencies
 - **Extensible**: Easily add new tagset converters or feature mappings
 
+For detailed information about each feature, see the [User Guide](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/index.html).
+
 ## Installation
 
 ### Quick Install
@@ -22,6 +26,8 @@
 ```sh
 pip install latin-nlp-utilities
 ```
+
+For detailed installation instructions, including platform-specific guidance and troubleshooting, see the [Installation Guide](https://gpizzorno.github.io/latin-nlp-utilities/installation.html).
 
 ## Quick Start
 
@@ -148,6 +154,24 @@ print(normalize_features('NOUN', 'Case=Nom|Gender=Fem|Number=Sing|Mood=Ind', fea
 print(normalize_xpos('PROPN', 'a-s---fn-'))
 # Returns 'n-s---fn-'
 ```
+
+For more examples and detailed usage, see the [Quickstart Guide](https://gpizzorno.github.io/latin-nlp-utilities/quickstart.html).
+
+## Documentation
+
+The full documentation includes:
+
+- **[Installation Guide](https://gpizzorno.github.io/latin-nlp-utilities/installation.html)**: Detailed installation instructions and troubleshooting
+- **[Quickstart Guide](https://gpizzorno.github.io/latin-nlp-utilities/quickstart.html)**: Get started quickly with common tasks
+- **[User Guide](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/index.html)**: Comprehensive guides for all features
+  - [brat Conversion](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/brat_conversion.html): CoNLL-U ↔ brat conversion
+  - [Validation](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/validation.html): Validation framework and recipes
+  - [Evaluation](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/evaluation.html): Metrics and evaluation workflows
+  - [Converters](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/converters.html): Tagset conversions
+  - [Normalization](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/normalization.html): Feature normalization
+- **[API Reference](https://gpizzorno.github.io/latin-nlp-utilities/api_reference/index.html)**: Complete API documentation
+- **[Developer Guide](https://gpizzorno.github.io/latin-nlp-utilities/developer_guide/index.html)**: Architecture and testing guides for contributors
+
 
 ## Acknowledgments
 
