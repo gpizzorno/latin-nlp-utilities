@@ -1,11 +1,6 @@
 Brat Conversion
 ===============
 
-.. automodule:: nlp_utilities.brat
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Main Functions
 --------------
 
