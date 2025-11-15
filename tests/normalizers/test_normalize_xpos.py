@@ -12,7 +12,7 @@ def test_normalize_xpos_valid() -> None:
     upos = 'NOUN'
     xpos = 'Nabcde'
     result = normalize_xpos(upos, xpos)
-    assert result == 'n-b---'
+    assert result == 'n-b------'
 
 
 def test_normalize_xpos_missing_upos_raises_error() -> None:
@@ -105,7 +105,7 @@ def test_normalize_xpos_single_char_xpos() -> None:
     xpos = 'N'
     result = normalize_xpos(upos, xpos)
     # Only first char, no positions to iterate
-    assert result == 'n'
+    assert result == 'n--------'
 
 
 def test_normalize_xpos_two_char_xpos() -> None:
@@ -114,7 +114,7 @@ def test_normalize_xpos_two_char_xpos() -> None:
     xpos = 'Na'
     result = normalize_xpos(upos, xpos)
     # First char 'n', then position 2 (index 1): 'a' not in 'v'
-    assert result == 'n-'
+    assert result == 'n--------'
 
 
 def test_normalize_xpos_all_positions_valid() -> None:
@@ -176,7 +176,7 @@ def test_normalize_xpos_position_2_verb() -> None:
     upos = 'VERB'
     xpos = 'Vv'
     result = normalize_xpos(upos, xpos)
-    assert result == 'vv'
+    assert result == 'vv-------'
 
 
 def test_normalize_xpos_position_2_noun() -> None:
@@ -185,7 +185,7 @@ def test_normalize_xpos_position_2_noun() -> None:
     xpos = 'Nn'
     result = normalize_xpos(upos, xpos)
     # Position 2: 'n' in 'v'? -> No
-    assert result == 'n-'
+    assert result == 'n--------'
 
 
 def test_normalize_xpos_position_3_noun() -> None:
@@ -195,7 +195,7 @@ def test_normalize_xpos_position_3_noun() -> None:
     result = normalize_xpos(upos, xpos)
     # Position 2: 'x' not in 'v' -> '-'
     # Position 3: 'n' in 'nvapm' -> 'n'
-    assert result == 'n-n'
+    assert result == 'n-n------'
 
 
 def test_normalize_xpos_position_9_adjective() -> None:
@@ -235,7 +235,7 @@ def test_normalize_xpos_case_sensitive_upos() -> None:
     result = normalize_xpos(upos, xpos)
     # lowercase 'noun' doesn't match UPOS tags, maps to '-'
     # '-' is never in any validity set
-    assert result == '------'
+    assert result == '---------'
 
 
 def test_normalize_xpos_special_characters() -> None:
@@ -247,7 +247,7 @@ def test_normalize_xpos_special_characters() -> None:
     # Position 2: 'n' not in 'v' -> '-'
     # Position 3: 'n' in 'nvapm' -> keep '_'
     # Positions 4-5: 'n' not in 'v' -> '-'
-    assert result == 'n-_--'
+    assert result == 'n-_------'
 
 
 def test_normalize_xpos_numeric_characters() -> None:
@@ -259,7 +259,7 @@ def test_normalize_xpos_numeric_characters() -> None:
     # Position 2: 'n' not in 'v' -> '-'
     # Position 3: 'n' in 'nvapm' -> keep '2'
     # Positions 4-6: 'n' not in 'v' -> '-'
-    assert result == 'n-2---'
+    assert result == 'n-2------'
 
 
 def test_normalize_xpos_all_upos_tags() -> None:
