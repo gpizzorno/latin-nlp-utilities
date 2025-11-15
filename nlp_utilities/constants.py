@@ -7,15 +7,15 @@ from importlib.resources import files
 import regex as re
 
 # Default data file paths
-DEFAULT_FEATURES = files('nlp_utilities').joinpath('data/feats.json')
-DEFAULT_DEPRELS = files('nlp_utilities').joinpath('data/deprels.json')
-DEFAULT_AUX = files('nlp_utilities').joinpath('data/auxiliaries.json')
-BRAT_ANNOTATION_CONF = files('nlp_utilities').joinpath('data/annotation.conf')
-BRAT_TOOLS_CONF = files('nlp_utilities').joinpath('data/tools.conf')
-BRAT_VISUAL_CONF = files('nlp_utilities').joinpath('data/visual.conf')
+DEFAULT_FEATURES = files('nlp_utilities.data').joinpath('feats.json')
+DEFAULT_DEPRELS = files('nlp_utilities.data').joinpath('deprels.json')
+DEFAULT_AUX = files('nlp_utilities.data').joinpath('auxiliaries.json')
+BRAT_ANNOTATION_CONF = files('nlp_utilities.data').joinpath('annotation.conf')
+BRAT_TOOLS_CONF = files('nlp_utilities.data').joinpath('tools.conf')
+BRAT_VISUAL_CONF = files('nlp_utilities.data').joinpath('visual.conf')
 
 # Additional data file paths
-DALME_FEATURES = files('nlp_utilities').joinpath('data/dalme_features.json')
+DALME_FEATURES = files('nlp_utilities.data').joinpath('dalme_features.json')
 
 # Universal PoS tags
 UPOS_TAGS = [

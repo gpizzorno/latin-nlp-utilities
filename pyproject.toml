@@ -62,8 +62,12 @@ docs = [
 [project.urls]
 Homepage = "https://github.com/gpizzorno/latin-nlp-utilities/"
 
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["nlp_utilities"]
+
 [tool.setuptools.package-data]
-"latin_nlp_utilities" = ["data/*.*"]
+"nlp_utilities.data" = ["*.*"]
 
 # https://github.com/charliermarsh/ruff#configuration
 [tool.ruff]
