@@ -8,7 +8,8 @@ version = "1.1.0"
 description = "A set of convenience tools for Natural Language Processing work with Latin treebanks and annotated corpora."
 readme = "README.md"
 authors = [{ name = "Gabe Pizzorno" }]
-license = { file = "LICENSE" }
+license = "MIT"
+license-files = ["LICENSE"]
 keywords = [
   "nlp", 
   "natural-language-processing", 
@@ -24,7 +25,6 @@ keywords = [
   "tag-normalization",
 ]
 classifiers = [
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
@@ -63,8 +63,8 @@ docs = [
 Homepage = "https://github.com/gpizzorno/latin-nlp-utilities/"
 
 [tool.setuptools.packages.find]
-namespaces = true
-where = ["nlp_utilities"]
+where = ["."]
+include = ["nlp_utilities*"]
 
 [tool.setuptools.package-data]
 "nlp_utilities.data" = ["*.*"]
