@@ -8,9 +8,8 @@ Normalization utilities ensure consistency in annotation format:
 
 - **Feature normalization**: Fix capitalization, sort alphabetically, validate format
 - **XPOS normalization**: Standardize language-specific POS tags
-- **Whitespace normalization**: Handle text processing exceptions
 
-These tools are essential for:
+These tools are useful for:
 
 - Cleaning imported or converted annotations
 - Ensuring Universal Dependencies compliance
@@ -23,165 +22,211 @@ Normalizing morphological features:
 
 ```python
 from nlp_utilities.normalizers import normalize_features
+from nlp_utilities.loaders import load_language_data
 
-# Fix capitalization and ordering
-messy = "number=Sing|case=Nom|gender=MASC"
-clean = normalize_features(messy)
-print(clean)  # "Case=Nom|Gender=Masc|Number=Sing"
-```
+# Load feature set for Latin
+feature_set = load_language_data('feats', language='la')
 
-Normalizing XPOS tags:
-
-```python
-from nlp_utilities.normalizers import normalize_xpos
-
-# Standardize case and format
-tag = "v3spia---"
-normalized = normalize_xpos(tag, language='la')
-print(normalized)  # Standardized Perseus tag
+# Normalize features (removes invalid features for the UPOS)
+normalized = normalize_features(
+    'NOUN',
+    'Case=Nom|Gender=Masc|Number=Sing|Mood=Ind',  # Mood is invalid for NOUN
+    feature_set
+)
+print(normalized)
+# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
 ```
 
 ## Feature Normalization
 
-The feature normalizer ensures morphological features meet CoNLL-U specifications.
+The feature normalizer ensures morphological features meet CoNLL-U specifications and are valid for the given UPOS tag.
 
 ### Basic Usage
-
-```python
-from nlp_utilities.normalizers import normalize_features
-
-examples = [
-    "number=Sing|case=Nom",           # Wrong capitalization
-    "Gender=Masc|Case=Nom|Number=Sing", # Wrong order
-    "Case=Nom|Number=Sing|case=Gen",  # Duplicate keys
-    "Case=Nom||Number=Sing",          # Extra separator
-]
-
-for feature_string in examples:
-    normalized = normalize_features(feature_string)
-    print(f"{feature_string:40s} → {normalized}")
-```
-
-### What Gets Normalized
-
-1. **Alphabetical Sorting**
-
-   Features are sorted by name:
-
-   `Number=Sing|Gender=Masc|Case=Nom` → `Case=Nom|Gender=Masc|Number=Sing`
-
-2. **Format Cleaning**
-
-   Removes extra separators and whitespace:
-
-   `Case=Nom | Number=Sing` → `Case=Nom|Number=Sing`
-   `Case=Nom||Number=Sing` → `Case=Nom|Number=Sing`
-   `Case=Nom|` → `Case=Nom`
-
-3. **Duplicate Removal**
-
-   Keeps first occurrence of duplicate features:
-
-   `Case=Nom|Number=Sing|Case=Gen` → `Case=Nom|Number=Sing`
-
-### Advanced Feature Normalization
-
-With validation:
 
 ```python
 from nlp_utilities.normalizers import normalize_features
 from nlp_utilities.loaders import load_language_data
 
-# Load valid feature set for language
-feature_set = load_language_data('la')
+# Load feature set
+feature_set = load_language_data('feats', language='la')
 
-# Normalize with validation
-features = "Case=Nom|Number=Sing|Gender=Masc"
-normalized = normalize_features(
-    features,
-    feature_set=feature_set,
-    strict=True  # Raise error on invalid features
-)
+# Normalize with dictionary input
+features = {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+normalized = normalize_features('NOUN', features, feature_set)
+print(normalized)
+# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+
+# Normalize with string input (CoNLL-U format)
+features = 'Case=Nom|Gender=Masc|Number=Sing'
+normalized = normalize_features('NOUN', features, feature_set)
+print(normalized)
+# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
 ```
 
-Custom feature mappings:
+### What Gets Normalized
+
+The normalizer performs several operations:
+
+1. **Removes invalid features for UPOS**: Features that are not valid for the given part of speech are filtered out.
 
 ```python
-# Map non-standard values to standard
-custom_mappings = {
-    'Case': {
-        'nominative': 'Nom',
-        'genitive': 'Gen',
-        'accusative': 'Acc',
-    }
-}
+# VerbForm is only valid for VERB, not NOUN
+features = {'Case': 'Nom', 'VerbForm': 'Fin'}
+normalized = normalize_features('NOUN', features, feature_set)
+print(normalized)
+# Output: {'Case': 'Nom'}  # VerbForm removed
+```
 
-normalized = normalize_features(
-    "Case=nominative|Number=singular",
-    value_mappings=custom_mappings
-)
-# Result: "Case=Nom|Number=singular"
+2. **Removes invalid feature values**: Feature values that are marked as invalid (0) in the feature set are filtered out.
+
+```python
+# If 'Fem' is marked as invalid for nouns in the feature set
+features = {'Case': 'Nom', 'Gender': 'Fem'}
+normalized = normalize_features('NOUN', features, feature_set)
+# Output: {'Case': 'Nom'}  # Gender=Fem removed if invalid
+```
+
+3. **Filters unknown attributes**: Features not in the feature set are removed.
+
+```python
+features = {'Case': 'Nom', 'UnknownAttr': 'Value'}
+normalized = normalize_features('NOUN', features, feature_set)
+print(normalized)
+# Output: {'Case': 'Nom'}  # UnknownAttr removed
+```
+
+4. **Handles empty/missing features**: Returns empty dict for underscore, empty string, or empty dict.
+
+```python
+# Empty feature marker
+normalized = normalize_features('NOUN', '_', feature_set)
+print(normalized)
+# Output: {}
+
+# Empty string
+normalized = normalize_features('NOUN', '', feature_set)
+print(normalized)
+# Output: {}
+```
+
+5. **Preserves insertion order**: Feature order is preserved (Python 3.7+).
+
+```python
+features = {'Number': 'Sing', 'Case': 'Nom', 'Gender': 'Masc'}
+normalized = normalize_features('NOUN', features, feature_set)
+# Order preserved: Number, Case, Gender
 ```
 
 ## XPOS Normalization
 
-Standardize language-specific POS tags.
+Standardize language-specific POS tags and ensure correct correlation with UPOS.
 
 ### Basic Usage
 
 ```python
 from nlp_utilities.normalizers import normalize_xpos
 
-# Perseus-style tags
-tags = [
-    "V3SPIA---",   # Wrong case
-    "v3spia   ",   # Extra whitespace
-    "v-3-s-p-i-a-", # Wrong separator format
-]
+# Normalize XPOS based on UPOS
+# Corrects first character and validates position-specific characters
+result = normalize_xpos('NOUN', 'a-s---fn-')
+print(result)
+# Output: 'n-s---fn-'  # First char corrected from 'a' to 'n'
 
-for tag in tags:
-    normalized = normalize_xpos(tag, language='la')
-    print(f"{tag:20s} → {normalized}")
-```
-
-### Language-Specific Normalization
-
-Different normalization rules by language/tagset:
-
-```python
-from nlp_utilities.normalizers import normalize_xpos
-
-# Latin (Perseus format)
-latin_tag = normalize_xpos("V3SPIA---", language='la')
-# Expected: "v3spia---" (lowercase, dash-padded)
-
-# Custom tagset
-custom_tag = normalize_xpos(
-    "VERB-3-SING-PRES",
-    language='custom',
-    format_spec='dash-separated'
-)
+# Another example with VERB
+result = normalize_xpos('VERB', 'n3spia---')
+print(result)
+# Output: 'v3spia---'  # First char corrected from 'n' to 'v'
 ```
 
 ### What Gets Normalized
 
-1. **Case standardization**
+The XPOS normalizer performs position-based validation:
 
-   `V3SPIA---` → `v3spia---`  # Lowercase
-   `N-S---FN-` → `n-s---fn-`  # Lowercase
+1. **Corrects the first character**: Sets it to match the Perseus tag for the UPOS.
 
-2. **Whitespace removal**
+```python
+# PROPN should start with 'n' (same as NOUN in Perseus)
+result = normalize_xpos('PROPN', 'a-s---fn-')
+print(result)
+# Output: 'n-s---fn-'  # First char corrected to 'n'
 
-   `v3spia--- ` → `v3spia---`
-   ` n-s---fn-` → `n-s---fn-`
+# Unknown UPOS maps to '-'
+result = normalize_xpos('INTJ', 'i-s---fn-')
+print(result)
+# Output: '---------'  # First char becomes '-'
+```
 
-3. **Format validation**
+2. **Validates each position**: Each position has specific valid characters based on the Perseus XPOS scheme.
 
-   Check length and structure:
-   ```python
-   # Perseus tags should be 9 characters
-   assert len(normalize_xpos("v3spia---", 'la')) == 9
-   ```
+```python
+# Position 2: only valid for 'v' (verbs)
+result = normalize_xpos('NOUN', 'n1s---mn-')
+print(result)
+# Output: 'n-s---mn-'  # Position 2 becomes '-' (not valid for 'n')
+
+# Position 2: valid for verbs
+result = normalize_xpos('VERB', 'v3spia---')
+print(result)
+# Output: 'v3spia---'  # Position 2 kept (valid for 'v')
+```
+
+**Position validity rules**:
+- Position 2: valid for 'v' (verbs only)
+- Position 3: valid for 'n', 'v', 'a', 'p', 'm' (nouns, verbs, adjectives, pronouns, numerals)
+- Position 4: valid for 'v' (verbs only)
+- Position 5: valid for 'v' (verbs only)
+- Position 6: valid for 'v' (verbs only)
+- Position 7: valid for 'n', 'v', 'a', 'p', 'm'
+- Position 8: valid for 'n', 'v', 'a', 'p', 'm'
+- Position 9: valid for 'a' (adjectives only)
+
+3. **Ensures lowercase**: All characters are converted to lowercase.
+
+```python
+result = normalize_xpos('NOUN', 'N-S---MN-')
+print(result)
+# Output: 'n-s---mn-'  # All lowercase
+```
+
+4. **Pads to correct length**: Ensures the result is exactly 9 characters.
+
+```python
+# Short XPOS gets padded
+result = normalize_xpos('NOUN', 'Ns')
+print(result)
+# Output: 'n-s------'  # Padded to 9 characters
+
+# Long XPOS gets truncated after processing
+result = normalize_xpos('VERB', 'V3spia---extra')
+print(result)
+# Output: 'v3spia----'  # Processed and padded
+```
+
+### Examples by Part of Speech
+
+```python
+from nlp_utilities.normalizers import normalize_xpos
+
+# Verb: most positions are valid
+result = normalize_xpos('VERB', 'Vabcdefgh')
+print(result)
+# Output: 'vabcdefg-'  # Positions 2-8 valid, 9 invalid for verbs
+
+# Adjective: positions 3, 7, 8, 9 valid
+result = normalize_xpos('ADJ', 'Aabcdefgh')
+print(result)
+# Output: 'a-b---fgh'  # Only positions 3, 7, 8, 9 kept
+
+# Noun: positions 3, 7, 8 valid
+result = normalize_xpos('NOUN', 'Nabcdefgh')
+print(result)
+# Output: 'n-b---fg-'  # Only positions 3, 7, 8 kept
+
+# Pronoun: same as noun
+result = normalize_xpos('PRON', 'Pabcdefgh')
+print(result)
+# Output: 'p-b---fg-'  # Only positions 3, 7, 8 kept
+```
 
 ## Feature Set Loading
 
@@ -193,359 +238,337 @@ Load language-specific feature sets for validation.
 from nlp_utilities.loaders import load_language_data
 
 # Load Latin feature set
-la_features = load_language_data('la')
+feature_set = load_language_data('feats', language='la')
 
-print(la_features['upos'])      # Valid UPOS tags
-print(la_features['deprels'])   # Valid dependency relations
-print(la_features['features'])  # Valid morphological features
-```
+# Feature set structure:
+# {
+#     'Case': {
+#         'byupos': {
+#             'NOUN': {'Nom': 1, 'Gen': 1, 'Dat': 1, 'Acc': 1, 'Voc': 1, 'Abl': 1},
+#             'ADJ': {'Nom': 1, 'Gen': 1, 'Dat': 1, 'Acc': 1, 'Voc': 1, 'Abl': 1},
+#             'VERB': {'Nom': 0, 'Gen': 0, ...},  # Invalid for verbs
+#         }
+#     },
+#     'Gender': {
+#         'byupos': {
+#             'NOUN': {'Masc': 1, 'Fem': 1, 'Neut': 1},
+#             'ADJ': {'Masc': 1, 'Fem': 1, 'Neut': 1},
+#             ...
+#         }
+#     },
+#     ...
+# }
 
-### Using with Normalization
-
-```python
-from nlp_utilities.loaders import load_language_data
+# Use with normalize_features
 from nlp_utilities.normalizers import normalize_features
 
-feature_set = load_language_data('la')
-
-# Validate during normalization
-try:
-    normalized = normalize_features(
-        "Case=Nom|InvalidFeature=Value",
-        feature_set=feature_set,
-        strict=True
-    )
-except ValueError as e:
-    print(f"Validation error: {e}")
+normalized = normalize_features('NOUN', 'Case=Nom|Gender=Masc', feature_set)
 ```
 
-### Available Languages
+### Understanding the Feature Set Format
 
-Currently supported language codes:
+Each feature in the set has a `byupos` dictionary that maps UPOS tags to valid values:
 
-- `la`: Latin
-- `en`: English (for testing/examples)
+- **Value `1`**: Valid for this UPOS
+- **Value `0`**: Invalid/not allowed for this UPOS
+- **Missing UPOS**: Feature not applicable to this UPOS
+
+```python
+# Example: Case feature
+feature_set['Case']['byupos']['NOUN']
+# {'Nom': 1, 'Gen': 1, 'Dat': 1, 'Acc': 1, 'Voc': 1, 'Abl': 1, 'Loc': 1}
+
+# Case not valid for verbs in most contexts
+feature_set['Case']['byupos']['VERB']
+# {'Nom': 0, 'Gen': 0, ...}  # All marked as invalid
+
+# VerbForm only valid for verbs
+feature_set['VerbForm']['byupos']['VERB']
+# {'Fin': 1, 'Inf': 1, 'Part': 1, 'Ger': 1, 'Gdv': 1, 'Sup': 1}
+
+feature_set['VerbForm']['byupos'].get('NOUN')
+# None or not present - VerbForm doesn't apply to nouns
+```
 
 ### Custom Feature Sets
 
-Define your own feature set:
+Define your own feature set for specialized treebanks or annotation schemes:
 
 ```python
-custom_features = {
-    'upos': ['NOUN', 'VERB', 'ADJ', ...],
-    'features': {
-        'Case': ['Nom', 'Gen', 'Acc', 'Dat', 'Abl'],
-        'Number': ['Sing', 'Plur'],
-        'Gender': ['Masc', 'Fem', 'Neut'],
+# Define a custom feature set
+custom_feature_set = {
+    'Case': {
+        'byupos': {
+            'NOUN': {'Nom': 1, 'Gen': 1, 'Acc': 1},  # Only 3 cases
+            'ADJ': {'Nom': 1, 'Gen': 1, 'Acc': 1},
+        }
     },
-    'deprels': ['nsubj', 'obj', 'obl', ...],
+    'Gender': {
+        'byupos': {
+            'NOUN': {'Masc': 1, 'Fem': 1},  # No neuter
+            'ADJ': {'Masc': 1, 'Fem': 1},
+        }
+    },
+    'Number': {
+        'byupos': {
+            'NOUN': {'Sing': 1, 'Plur': 1},
+            'ADJ': {'Sing': 1, 'Plur': 1},
+            'VERB': {'Sing': 1, 'Plur': 1},
+        }
+    },
 }
 
+# Use custom feature set
+from nlp_utilities.normalizers import normalize_features
+
+# This will remove Dat case (not in custom set)
 normalized = normalize_features(
-    features_string,
-    feature_set=custom_features,
-    strict=True
+    'NOUN',
+    'Case=Nom|Case=Dat|Gender=Masc',
+    custom_feature_set
 )
+print(normalized)
+# Output: {'Case': 'Nom', 'Gender': 'Masc'}
 ```
 
-## Whitespace Exceptions
-
-Handle special tokenization cases.
-
-### Loading Exceptions
+### Loading Other Language Data
 
 ```python
-from nlp_utilities.loaders import load_whitespace_exceptions
+from nlp_utilities.loaders import load_language_data
 
-# Load exceptions for a language
-exceptions = load_whitespace_exceptions('la')
+# Load dependency relations
+deprels = load_language_data('deprels', language='la')
 
-print(exceptions)
-# {'single': ['l', 'D', 'd'], 'before': [...], 'after': [...]}
+# Load auxiliary verbs list
+auxiliaries = load_language_data('auxiliaries', language='la')
+
+# Load whitespace exceptions
+whitespace_exceptions = load_whitespace_exceptions(language='la')
 ```
-
-### Using Exceptions
-
-Apply during tokenization:
-
-```python
-def tokenize_with_exceptions(text, language='la'):
-    """Tokenize respecting whitespace exceptions."""
-    exceptions = load_whitespace_exceptions(language)
-
-    # Single-character tokens
-    for char in exceptions.get('single', []):
-        # Handle 'l', 'D', 'd' as separate tokens
-        text = text.replace(f' {char} ', f' {char}')
-
-    # Tokens that should have space before
-    for token in exceptions.get('before', []):
-        text = text.replace(token, f' {token}')
-
-    # Tokens that should have space after
-    for token in exceptions.get('after', []):
-        text = text.replace(token, f'{token} ')
-
-    return text.split()
-```
-
-Common exceptions for Latin:
-
-Single-letter tokens:
-
-`Marcus M. Tullius` → [`Marcus`, `M`, `.`, `Tullius`]
-
-Abbreviations:
-
-`D.M.` → [`D`, `.`, `M`, `.`]  # Dis Manibus
 
 ## Normalization Workflows
 
-### Batch File Normalization
+### Normalizing a CoNLL-U File
 
-Normalize all features in a CoNLL-U file:
+Process an entire CoNLL-U file to normalize all features and XPOS tags:
 
 ```python
-from nlp_utilities.normalizers import normalize_features
-from nlp_utilities.loaders import load_conllu, load_language_data
+from nlp_utilities.loaders import load_language_data, load_conllu
+from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.converters.features import feature_dict_to_string
 
-def normalize_conllu_file(input_file, output_file, language='la'):
-    """Normalize all features in a file."""
-    # Load data
-    sentences = load_conllu(input_file)
-    feature_set = load_language_data(language)
+# Load feature set
+feature_set = load_language_data('feats', language='la')
 
-    # Normalize each token's features
-    for sentence in sentences:
-        for token in sentence:
-            if token['feats'] != '_':
-                try:
-                    token['feats'] = normalize_features(
-                        token['feats'],
-                        feature_set=feature_set,
-                        strict=False  # Continue on errors
-                    )
-                except Exception as e:
-                    print(f"Warning: Could not normalize {token['feats']}: {e}")
+# Load CoNLL-U file
+sentences = load_conllu('input.conllu')
 
-    # Save normalized
-    save_conllu(sentences, output_file)
+# Normalize all annotations
+for sentence in sentences:
+    for token in sentence:
+        # Skip multiword tokens and empty nodes
+        if '-' in str(token['id']) or '.' in str(token['id']):
+            continue
+        
+        # Normalize features
+        if token['feats'] != '_':
+            normalized_feats = normalize_features(
+                token['upos'],
+                token['feats'],
+                feature_set
+            )
+            # Convert back to string for CoNLL-U
+            if normalized_feats:
+                token['feats'] = feature_dict_to_string(normalized_feats)
+            else:
+                token['feats'] = '_'
+        
+        # Normalize XPOS
+        if token['xpos'] != '_' and token['upos'] != '_':
+            token['xpos'] = normalize_xpos(token['upos'], token['xpos'])
 
-# Process file
-normalize_conllu_file('input.conllu', 'normalized.conllu')
+# Save normalized file
+save_conllu(sentences, 'output_normalized.conllu')
 ```
 
-### Pre-validation Normalization
+### Cleaning Imported Annotations
 
-Normalize before validation to catch format issues:
+Normalize annotations from external sources:
 
 ```python
 from nlp_utilities.normalizers import normalize_features, normalize_xpos
-from nlp_utilities.conllu.validators import Validator
-
-def normalize_and_validate(filename, language='la'):
-    """Normalize then validate a file."""
-    # Load and normalize
-    sentences = load_conllu(filename)
-
-    for sentence in sentences:
-        for token in sentence:
-            # Normalize features
-            if token['feats'] != '_':
-                token['feats'] = normalize_features(token['feats'])
-
-            # Normalize XPOS
-            if token['xpos'] != '_':
-                token['xpos'] = normalize_xpos(token['xpos'], language)
-
-    # Save normalized version
-    temp_file = 'normalized_temp.conllu'
-    save_conllu(sentences, temp_file)
-
-    # Validate
-    validator = Validator(temp_file, language=language)
-    is_valid = validator.validate()
-
-    if not is_valid:
-        validator.report_errors()
-
-    return is_valid
-```
-
-### Post-conversion Normalization
-
-Normalize after format conversion:
-
-```python
-from nlp_utilities.brat import brat_to_conllu
-from nlp_utilities.normalizers import normalize_features
 from nlp_utilities.loaders import load_language_data
 
-def convert_and_normalize(brat_dir, output_file, ref_file):
-    """Convert from Brat and normalize features."""
-    # Load feature set
-    feature_set = load_language_data('la')
+feature_set = load_language_data('feats', language='la')
 
-    # Convert
-    brat_to_conllu(
-        input_directory=brat_dir,
-        output_directory='temp/',
-        ref_conllu=ref_file,
-        feature_set=feature_set
-    )
+def clean_annotation(token, feature_set):
+    """Clean a single token's annotation."""
+    # Normalize XPOS
+    if token['xpos'] != '_' and token['upos'] != '_':
+        try:
+            token['xpos'] = normalize_xpos(token['upos'], token['xpos'])
+        except ValueError as e:
+            print(f"Warning: Could not normalize XPOS for token {token['form']}: {e}")
+            token['xpos'] = '_'
+    
+    # Normalize features
+    if token['feats'] != '_':
+        try:
+            normalized = normalize_features(token['upos'], token['feats'], feature_set)
+            if normalized:
+                from nlp_utilities.converters.features import feature_dict_to_string
+                token['feats'] = feature_dict_to_string(normalized)
+            else:
+                token['feats'] = '_'
+        except ValueError as e:
+            print(f"Warning: Could not normalize features for token {token['form']}: {e}")
+            token['feats'] = '_'
+    
+    return token
 
-    # Load converted file
-    sentences = load_conllu('temp/converted.conllu')
-
-    # Normalize
-    for sentence in sentences:
-        for token in sentence:
-            if token['feats'] != '_':
-                token['feats'] = normalize_features(
-                    token['feats'],
-                    feature_set=feature_set
-                )
-
-    # Save final version
-    save_conllu(sentences, output_file)
+# Apply to all tokens
+for sentence in sentences:
+    for token in sentence:
+        if isinstance(token['id'], int):  # Skip multiword tokens
+            clean_annotation(token, feature_set)
 ```
 
-## Normalization Best Practices
+### Validating After Normalization
 
-1. **Normalize Early**
-
-   Apply normalization as early as possible in your pipeline:
-   ```python
-   # Immediately after import/conversion
-   data = import_data(source)
-   data = normalize_all(data)
-   data = validate(data)
-   ```
-2. **Log Normalization Changes**
-
-   Track what was changed:
-   ```python
-   def normalize_with_logging(features):
-       """Normalize and log changes."""
-       original = features
-       normalized = normalize_features(features)
-
-       if original != normalized:
-           logger.info(f"Normalized: {original} → {normalized}")
-
-       return normalized
-   ```
-3. **Validate After Normalization**
-
-   Ensure normalization produced valid output:
-   ```python
-   from nlp_utilities.conllu.validators import FeatureValidator
-
-   normalized = normalize_features(features)
-   validator = FeatureValidator()
-
-   if not validator.validate_feature_string(normalized):
-       raise ValueError(f"Normalization produced invalid result: {normalized}")
-   ```
-4. **Handle Errors Gracefully**
-
-   Don’t fail on single bad tokens:
-   ```python
-   for token in sentence:
-       try:
-           token['feats'] = normalize_features(token['feats'])
-       except Exception as e:
-           logger.warning(f"Could not normalize token {token['id']}: {e}")
-           # Keep original or use placeholder
-           continue
-   ```
-5. **Document Normalization Rules**
-
-   Keep record of what normalization was applied:
-   ```python
-   # Add to sentence metadata
-   sentence['metadata']['normalization'] = {
-       'features': 'capitalized, sorted, validated',
-       'xpos': 'lowercased, length-checked',
-       'timestamp': datetime.now().isoformat(),
-   }
-   ```
-
-## Common Normalization Issues
-
-### Non-standard Feature Names
-
-**Problem**: Features use non-UD names.
-
-**Solution**: Map to standard names before normalization:
+Always validate after normalizing to ensure correctness:
 
 ```python
-# Define mapping
-FEATURE_NAME_MAP = {
-    'case': 'Case',
-    'num': 'Number',
-    'pers': 'Person',
-    'gen': 'Gender',
-}
+from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.conllu import ConlluValidator
+from nlp_utilities.loaders import load_language_data
 
-def map_and_normalize(features):
-    """Map non-standard names then normalize."""
-    # Replace feature names
-    for old, new in FEATURE_NAME_MAP.items():
-        features = features.replace(f'{old}=', f'{new}=')
+# Normalize
+feature_set = load_language_data('feats', language='la')
+# ... normalization code ...
 
-    # Then normalize
-    return normalize_features(features)
+# Validate
+validator = ConlluValidator(lang='la', level=2)
+reporter = validator.validate_file('output_normalized.conllu')
+
+if reporter.get_error_count() > 0:
+    print(f"Found {reporter.get_error_count()} errors after normalization")
+    for error in reporter.format_errors():
+        print(error)
+else:
+    print("All annotations normalized successfully!")
 ```
 
-### Conflicting Feature Values
+### Batch Normalization
 
-**Problem**: Same feature appears multiple times with different values.
-
-**Solution**: Resolve conflicts before normalization:
+Normalize multiple files in batch:
 
 ```python
-def resolve_conflicts(features):
-    """Resolve duplicate features."""
-    feat_dict = {}
+from pathlib import Path
+from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.loaders import load_language_data
 
-    for pair in features.split('|'):
-        name, value = pair.split('=')
+def normalize_directory(input_dir, output_dir):
+    """Normalize all CoNLL-U files in a directory."""
+    feature_set = load_language_data('feats', language='la')
+    input_path = Path(input_dir)
+    output_path = Path(output_dir)
+    output_path.mkdir(exist_ok=True)
+    
+    for conllu_file in input_path.glob('*.conllu'):
+        print(f"Processing {conllu_file.name}...")
+        sentences = load_conllu(str(conllu_file))
+        
+        # Normalize each sentence
+        for sentence in sentences:
+            for token in sentence:
+                if isinstance(token['id'], int):
+                    # Normalize XPOS
+                    if token['xpos'] != '_' and token['upos'] != '_':
+                        token['xpos'] = normalize_xpos(token['upos'], token['xpos'])
+                    
+                    # Normalize features
+                    if token['feats'] != '_':
+                        normalized = normalize_features(
+                            token['upos'],
+                            token['feats'],
+                            feature_set
+                        )
+                        if normalized:
+                            from nlp_utilities.converters.features import feature_dict_to_string
+                            token['feats'] = feature_dict_to_string(normalized)
+                        else:
+                            token['feats'] = '_'
+        
+        # Save normalized file
+        output_file = output_path / conllu_file.name
+        save_conllu(sentences, str(output_file))
+        print(f"Saved to {output_file}")
 
-        if name in feat_dict and feat_dict[name] != value:
-            # Conflict! Choose resolution strategy
-            logger.warning(f"Conflict: {name}={feat_dict[name]} vs {name}={value}")
-            # Strategy: keep first, keep last, or merge?
-            continue  # Keep first
-
-        feat_dict[name] = value
-
-    # Reconstruct
-    return '|'.join(f'{k}={v}' for k, v in sorted(feat_dict.items()))
+# Process all files
+normalize_directory('raw_annotations/', 'normalized_annotations/')
 ```
 
-### Invalid Feature Values
+## Error Handling
 
-**Problem**: Feature values don’t match expected set.
-
-**Solution**: Map or flag for manual review:
+### Handling Normalization Errors
 
 ```python
-def validate_and_normalize(features, feature_set):
-    """Normalize and validate feature values."""
-    normalized = normalize_features(features)
+from nlp_utilities.normalizers import normalize_features, normalize_xpos
 
-    # Check values
-    for feat in normalized.split('|'):
-        name, value = feat.split('=')
+# XPOS normalization errors
+try:
+    result = normalize_xpos(None, 'n-s---mn-')
+except ValueError as e:
+    print(f"Error: {e}")
+    # Output: Error: Must pass both UPOS and XPOS
 
-        valid_values = feature_set['features'].get(name, [])
-        if value not in valid_values:
-            logger.error(f"Invalid value: {name}={value}")
-            # Flag for manual review
-            raise ValueError(f"Invalid feature value: {name}={value}")
+try:
+    result = normalize_xpos('NOUN', '')
+except ValueError as e:
+    print(f"Error: {e}")
+    # Output: Error: Must pass both UPOS and XPOS
 
-    return normalized
+# Feature normalization errors
+try:
+    result = normalize_features(None, 'Case=Nom', feature_set)
+except ValueError as e:
+    print(f"Error: {e}")
+    # Output: Error: Must pass UPOS, FEATS, and a Feature set
+
+try:
+    result = normalize_features('NOUN', 'Case=Nom', None)
+except ValueError as e:
+    print(f"Error: {e}")
+    # Output: Error: Must pass UPOS, FEATS, and a Feature set
+```
+
+### Safe Normalization with Fallbacks
+
+```python
+def safe_normalize_xpos(upos, xpos):
+    """Normalize XPOS with fallback."""
+    try:
+        return normalize_xpos(upos, xpos)
+    except (ValueError, KeyError) as e:
+        print(f"Warning: Could not normalize XPOS '{xpos}' for UPOS '{upos}': {e}")
+        return '_'  # Return empty marker on error
+
+def safe_normalize_features(upos, feats, feature_set):
+    """Normalize features with fallback."""
+    try:
+        normalized = normalize_features(upos, feats, feature_set)
+        if normalized:
+            from nlp_utilities.converters.features import feature_dict_to_string
+            return feature_dict_to_string(normalized)
+        return '_'
+    except (ValueError, KeyError) as e:
+        print(f"Warning: Could not normalize features '{feats}' for UPOS '{upos}': {e}")
+        return '_'
+
+# Use safe versions in production
+for token in sentence:
+    token['xpos'] = safe_normalize_xpos(token['upos'], token['xpos'])
+    token['feats'] = safe_normalize_features(token['upos'], token['feats'], feature_set)
 ```
 
 ## See Also
@@ -553,3 +576,4 @@ def validate_and_normalize(features, feature_set):
 - [Validation](validation.md) - Validating normalized files
 - [Converters](converters.md) - Converting between formats
 - {ref}`api_reference` - Detailed normalizer API
+

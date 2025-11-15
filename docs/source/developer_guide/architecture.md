@@ -65,11 +65,15 @@ nlp_utilities/
    - Generates `.txt` files (raw text)
    - Generates `.ann` files (standoff annotations)
    - Creates brat configuration files
+   - Creates `metadata.json` file
+
 2. **brat_to_conllu.py**
    - Reads brat standoff annotations
+   - Reads context from `metadata.json` file
    - Maps back to CoNLL-U format
    - Retrieves morphology from reference file
    - Handles entity-to-token mapping
+
 3. **utils.py**
    - Shared utility functions
    - ID concordance management
@@ -123,35 +127,45 @@ ConlluValidator (Main class)
     └── tree_validation.py     # Cycles, connectivity
 ```
 
-**Design Pattern**: Strategy pattern with validator composition
+**Design Pattern**: Mixin composition for validation
 
 ```python
-class ConlluValidator:
-    """Main validator that composes multiple validators."""
+class ConlluValidator(
+    FormatValidationMixin,
+    IdSequenceValidationMixin,
+    UnicodeValidationMixin,
+    EnhancedDepsValidationMixin,
+    MetadataValidationMixin,
+    MiscValidationMixin,
+    StructureValidationMixin,
+    ContentValidationMixin,
+    CharacterValidationMixin,
+    LanguageFormatValidationMixin,
+    LanguageContentValidationMixin,
+    FeatureValidationMixin,
+):
+    """Main validator that composes multiple validation mixins."""
 
-    def __init__(self, lang: str = None, level: int = 2):
-        self.validators = [
-            FormatValidator(),
-            ContentValidator(),
-            StructureValidator(),
-        ]
-        if lang:
-            self.validators.append(LanguageValidator(lang))
+    def __init__(self, lang: str = 'ud', level: int = 2):
+        self.lang = lang
+        self.level = level
+        self.reporter = ErrorReporter()
+        # Load language-specific data if level >= 4
 
-    def validate(self) -> bool:
-        """Run all validators."""
-        for validator in self.validators:
-            if not validator.validate():
-                return False
-        return True
+    def validate_file(self, filepath: str) -> ErrorReporter:
+        """Validate a CoNLL-U file."""
+        # Parse file
+        # Run validation based on level
+        # Return ErrorReporter with errors
 ```
 
-**Validation Levels**:
+**Validation Levels** (1-5):
 
-1. **Format**: Basic CoNLL-U format compliance
-2. **Content**: Valid tags and features
-3. **Structure**: Tree properties (no cycles, single root)
-4. **Language-specific**: Language-appropriate tagsets
+1. **Level 1**: Format - Basic CoNLL-U format compliance (unicode, format, ID sequence, basic structure)
+2. **Level 2**: Content - Valid tags and features (metadata, MISC, character constraints, feature format, enhanced deps)
+3. **Level 3**: Extended - Tree properties (left-to-right relations, single subject, orphans, functional leaves)
+4. **Level 4**: Language Format - Language-specific format requirements (feature sets, deprels, auxiliaries, whitespace)
+5. **Level 5**: Language Content - Language-specific content validation
 
 #### Evaluators Submodule
 
@@ -173,23 +187,40 @@ ConlluEvaluator (Main class)
 class ConlluEvaluator(WordProcessingMixin, TreeValidationMixin):
     """Evaluator combining multiple metric calculations."""
 
-    def evaluate(self) -> dict:
+    def __init__(self, eval_deprels: bool = True, treebank_type: str = '0'):
+        self.eval_deprels = eval_deprels
+        self.treebank_type = self._parse_treebank_flags(treebank_type)
+
+    def evaluate_files(self, gold_path: str, system_path: str) -> dict[str, Score]:
         """Compute all metrics."""
+        # Parse files
+        # Align words
+        # Calculate metrics
         return {
-            'LAS': self.calculate_las(),
-            'UAS': self.calculate_uas(),
-            'UPOS': self.calculate_upos(),
-            'XPOS': self.calculate_xpos(),
-            'FEATS': self.calculate_feats(),
+            'Tokens': Score(...),
+            'Sentences': Score(...),
+            'Words': Score(...),
+            'UPOS': Score(...),
+            'XPOS': Score(...),
+            'UFeats': Score(...),
+            'AllTags': Score(...),
+            'Lemmas': Score(...),
+            'UAS': Score(...),
+            'LAS': Score(...),
+            'CLAS': Score(...),
+            'MLAS': Score(...),
+            'BLEX': Score(...),
+            'ELAS': Score(...),
+            'EULAS': Score(...),
         }
 ```
 
 **Key Design Elements**:
 
 - **Mixins**: Separate concerns (word processing vs tree validation)
-- **Lazy evaluation**: Metrics computed on demand
-- **Flexible comparison**: Support for partial credit, punctuation exclusion
-- **Error reporting**: Detailed per-token error information
+- **Score objects**: Each metric returns a Score object with precision, recall, f1, and counts
+- **Flexible comparison**: Support for different treebank types via configuration flags
+- **Word alignment**: Character-based alignment for handling tokenization differences
 
 ### Converters Module
 
@@ -210,54 +241,92 @@ converters/
 **Design Pattern**: Simple function mapping
 
 ```python
-def proiel_to_perseus(proiel_tag: str) -> str:
+def proiel_to_perseus(upos: str, xpos: str, feats: dict) -> str:
     """Convert PROIEL XPOS to Perseus format.
 
     Args:
-        proiel_tag: PROIEL format tag (e.g., "V-3PAI---3S---")
+        upos: Universal POS tag
+        xpos: PROIEL format tag (e.g., "N")
+        feats: Feature dictionary for reconciliation
 
     Returns:
         Perseus format tag (e.g., "v3spia---")
     """
     # Parse PROIEL tag
     # Map to Perseus positions
+    # Reconcile with FEATS when needed
     # Return 9-character Perseus tag
+
+def llct_to_perseus(upos: str, xpos: str, feats: dict) -> str:
+    """Convert LLCT XPOS to Perseus format.
+
+    Args:
+        upos: Universal POS tag
+        xpos: LLCT format tag (10-part pipe-separated)
+        feats: Feature dictionary for reconciliation
+
+    Returns:
+        Perseus format tag (e.g., "n-s---mn-")
+    """
+    # Parse 10-part LLCT tag (drop 2nd part)
+    # Map to Perseus 9-character positions
+    # Reconcile XPOS and FEATS values (prefer XPOS)
+    # Return normalized tag
 ```
 
 **Converter Types**:
 
 1. **UPOS Converters**: Language-specific POS → Universal POS
-2. **XPOS Converters**: Between different positional tag schemes
+2. **XPOS Converters**: Between different positional tag schemes (require upos, xpos, feats for reconciliation)
 3. **Feature Converters**: Dictionary ↔ CoNLL-U string format
 
 **Key Design Elements**:
 
 - **Pure functions**: Stateless, no side effects
-- **Explicit mappings**: Clear lookup tables for transparency
-- **Error handling**: Raise exceptions on unknown tags
+- **Explicit mappings**: Clear lookup tables for transparency (CONCORDANCES dictionaries)
+- **Reconciliation logic**: XPOS converters reconcile tag positions with FEATS values
 - **Format validation**: Check input/output format correctness
 
 ### Loaders Module
 
 **Purpose**: Load reference data and language-specific resources.
 
-**Architecture**: Simple loader functions with caching
+**Architecture**: Simple loader functions
 
 ```python
-def load_language_data(language: str) -> dict:
-    """Load language-specific feature sets.
+def load_language_data(
+    _type: str,
+    language: str | None = None,
+    additional_path: str | None = None,
+    load_dalme: bool = False
+) -> dict:
+    """Load language-specific resource data.
+
+    Args:
+        _type: Type of data to load ('feats', 'deprels', 'auxiliaries')
+        language: Language code (if None, loads universal data)
+        additional_path: Path to additional custom data
+        load_dalme: Whether to load DALME-specific data
 
     Returns:
-        dict with keys: 'upos', 'deprels', 'features'
+        dict with requested data structure
     """
     # Load from data/ directory
     # Parse JSON files
+    # Merge with additional data if provided
     # Return structured data
 
-def load_whitespace_exceptions(language: str) -> dict:
-    """Load tokenization exceptions."""
-    # Load language-specific exceptions
-    # Return dict of special tokens
+def load_whitespace_exceptions(
+    additional_path: str | None = None
+) -> list:
+    """Load tokenization whitespace exceptions.
+
+    Returns:
+        List of compiled regex patterns for tokens with spaces
+    """
+    # Load default exceptions
+    # Add custom exceptions if path provided
+    # Compile and return regex patterns
 ```
 
 **Data Sources**:
@@ -270,9 +339,10 @@ def load_whitespace_exceptions(language: str) -> dict:
 **Key Design Elements**:
 
 - **JSON format**: Human-readable, easy to edit
-- **Package resources**: Data bundled with package
-- **Lazy loading**: Load on demand, cache if needed
-- **Validation**: Validate data structure on load
+- **Package resources**: Data bundled with package (in `data/` directory)
+- **Type-first loading**: Specify data type ('feats', 'deprels', 'auxiliaries') before language
+- **Optional extensions**: Support for additional/custom data files
+- **DALME support**: Optional loading of DALME-specific morphological data
 
 ### Normalizers Module
 
@@ -282,32 +352,48 @@ def load_whitespace_exceptions(language: str) -> dict:
 
 ```python
 def normalize_features(
-    upos: str,
-    features: dict,
-    feature_set: dict
-) -> dict:
-    """Normalize morphological features."""
-    # Filter valid features for UPOS
-    # Sort by feature name
+    upos: str | None,
+    features: str | dict,
+    feature_set: dict | None
+) -> dict | None:
+    """Normalize morphological features.
+
+    Args:
+        upos: Universal POS tag for filtering valid features
+        features: Feature string or dict to normalize
+        feature_set: Feature set defining valid features by UPOS
+
+    Returns:
+        Normalized feature dictionary with only valid features
+    """
+    # Convert string to dict if needed
+    # Filter features valid for UPOS
+    # Capitalize feature names
     # Return cleaned dict
 
-def normalize_xpos(
-    xpos: str,
-    upos: str,
-    language: str = 'la'
-) -> str:
-    """Normalize XPOS tag to standard format."""
-    # Check format validity
-    # Apply language-specific rules
+def normalize_xpos(upos: str, xpos: str) -> str:
+    """Normalize XPOS tag to standard format.
+
+    Args:
+        upos: Universal POS tag
+        xpos: Language-specific POS tag to normalize
+
+    Returns:
+        Normalized 9-character Perseus format tag
+    """
+    # Convert UPOS to Perseus type
+    # Apply validity rules by position
+    # Replace invalid positions with '-'
+    # Ensure lowercase and correct length
     # Return normalized tag
 ```
 
 **Key Design Elements**:
 
-- **Non-destructive**: Return new values, don’t modify input
-- **Validation-aware**: Use feature sets for validation
-- **Flexible**: Support partial normalization
-- **Consistent**: Apply same rules across codebase
+- **Non-destructive**: Return new values, don't modify input
+- **Validation-aware**: Use feature sets for UPOS-based filtering
+- **Type flexible**: normalize_features accepts string or dict input
+- **Consistent**: Apply same rules across codebase (Perseus format, lowercase, proper length)
 
 ## Design Patterns
 
@@ -316,29 +402,52 @@ def normalize_xpos(
 Used in validators and evaluators:
 
 ```python
-# Inject feature set for validation
+# Configure validator with language-specific data
 validator = ConlluValidator(
-    feature_set=load_language_data('la')
+    lang='la',
+    level=4,
+    add_features='custom_features.json',
+    add_deprels='custom_deprels.json'
 )
 
-# Inject custom validators
-validator.add_validator(CustomValidator())
+# Configure evaluator for specific treebank type
+evaluator = ConlluEvaluator(
+    eval_deprels=True,
+    treebank_type='12'  # Disable enhancement types 1 and 2
+)
 ```
 
-### Strategy Pattern
+### Level-Based Validation Strategy
 
-Used for validation levels:
+Used for progressive validation:
 
 ```python
 class ConlluValidator:
-    """Choose validation strategy based on level."""
+    """Choose validation checks based on level."""
 
-    def __init__(self, level: int):
-        if level == 1:
-            self.strategy = BasicFormatValidation()
-        elif level == 2:
-            self.strategy = StructuralValidation()
-        # ...
+    def _validate_sentence(self, sentence):
+        # Level 1: Basic format, ID sequence, structure
+        self._validate_unicode(sentence)
+        self._validate_format(sentence)
+        self._validate_id_sequence(sentence)
+        self._validate_structure(sentence)
+
+        if self.level < 2:
+            return
+
+        # Level 2: Metadata, MISC, features, enhanced deps
+        self._validate_metadata(sentence)
+        self._validate_misc(sentence)
+        self._validate_feature_format(sentence)
+        self._validate_enhanced_dependencies(sentence)
+
+        if self.level < 3:
+            return
+
+        # Level 3: Content constraints
+        self._validate_content(sentence)
+
+        # ... levels 4 and 5
 ```
 
 ### Mixin Composition
@@ -356,12 +465,17 @@ class ConlluEvaluator(WordProcessingMixin, TreeValidationMixin):
 Used in converters:
 
 ```python
-def full_conversion(text):
-    """Compose multiple conversion steps."""
-    text = normalize_features(text)
-    text = proiel_to_perseus(text)
-    text = validate_format(text)
-    return text
+# Compose multiple conversion and normalization steps
+from nlp_utilities.converters.xpos import llct_to_perseus
+from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.loaders import load_language_data
+
+feature_set = load_language_data('feats', language='la')
+
+# Multi-step processing
+perseus_xpos = llct_to_perseus(upos, llct_xpos, feats)
+normalized_xpos = normalize_xpos(upos, perseus_xpos)
+normalized_feats = normalize_features(upos, feats, feature_set)
 ```
 
 ## Data Flow
@@ -420,33 +534,67 @@ flowchart TB
 
 ## Error Handling
 
-### Error Hierarchy
+### Error Reporting Structure
 
-```text
-ValidationError (Base)
-├── FormatError
-│   ├── InvalidColumnCount
-│   ├── InvalidIDFormat
-│   └── InvalidMetadata
-├── ContentError
-│   ├── InvalidUPOS
-│   ├── InvalidFeature
-│   └── InvalidDeprel
-└── StructuralError
-    ├── CycleDetected
-    ├── MultipleRoots
-    └── DisconnectedGraph
+The validation system uses a structured error reporting mechanism:
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class ErrorEntry:
+    """Represents a single validation error."""
+    alt_id: str | None          # Alternative sentence ID
+    testlevel: int              # Validation level (1-5)
+    error_type: str             # Category of error
+    testid: str                 # Test identifier
+    msg: str                    # Error message
+    node_id: str | None         # Node ID if applicable
+    line_no: int | None         # Line number
+    tree_counter: int | None    # Sentence counter
+
+class ErrorReporter:
+    """Manages error collection and reporting."""
+    
+    def warn(self, msg: str, error_type: str, testlevel: int = 0, 
+             testid: str = 'some-test', line_no: int | None = None,
+             node_id: str | None = None) -> None:
+        """Record a validation error."""
+        
+    def format_errors(self) -> list[str]:
+        """Format all errors as strings."""
+        
+    def get_error_count(self) -> int:
+        """Get total number of errors."""
 ```
 
-### Error Reporting
+### Error Collection Pattern
 
-Errors include:
+Validators collect errors without raising exceptions:
 
-- **Line number**: Where error occurred
-- **Error type**: Category of error
-- **Message**: Human-readable description
-- **Severity**: CRITICAL, ERROR, WARNING
-- **Suggestion**: How to fix (when applicable)
+```python
+class ConlluValidator:
+    def __init__(self, ...):
+        self.reporter = ErrorReporter()
+        
+    def validate_file(self, filepath: str) -> ErrorReporter:
+        """Validate and return error reporter."""
+        # Validation collects errors in reporter
+        # Never raises exceptions during validation
+        return self.reporter
+```
+
+### Error Display
+
+```python
+validator = ConlluValidator(lang='la', level=3)
+reporter = validator.validate_file('data.conllu')
+
+if reporter.get_error_count() > 0:
+    print(f"Found {reporter.get_error_count()} errors:")
+    for error_msg in reporter.format_errors():
+        print(error_msg)
+```
 
 ## Testing Architecture
 
@@ -454,41 +602,104 @@ See [Testing](testing.md) for detailed testing documentation.
 
 ## Extensibility
 
-### Adding New Validators
+### Adding Custom Validation Logic
+
+The validation system uses mixins, so extend by creating new mixin classes:
 
 ```python
-from nlp_utilities.conllu.validators import BaseValidator
+from nlp_utilities.conllu.validators.error_reporter import ErrorReporter
 
-class CustomValidator(BaseValidator):
+class CustomValidationMixin:
     """Add custom validation logic."""
+    
+    reporter: ErrorReporter  # Provided by ConlluValidator
+    
+    def validate_custom_rule(self, sentence):
+        """Check custom validation rule."""
+        for token in sentence:
+            if not self._is_valid(token):
+                self.reporter.warn(
+                    msg=f"Custom validation failed for token {token['id']}",
+                    error_type="Custom",
+                    testlevel=3,
+                    testid="custom-rule",
+                    line_no=token.get('line_no')
+                )
 
-    def validate(self, sentence):
-        # Your validation logic
-        if not valid:
-            self.add_error(line, message)
-        return is_valid
+# Create custom validator by composing with mixins
+from nlp_utilities.conllu.validators.validator import ConlluValidator
 
-# Register with main validator
-validator.add_validator(CustomValidator())
+class ExtendedValidator(ConlluValidator, CustomValidationMixin):
+    """Validator with custom logic."""
+    
+    def validate_file(self, filepath: str) -> ErrorReporter:
+        """Add custom validation step."""
+        reporter = super().validate_file(filepath)
+        # Run additional custom validation
+        return reporter
 ```
 
 ### Adding New Converters
 
+Create new converter functions following the existing pattern:
+
 ```python
-def custom_to_perseus(custom_tag: str) -> str:
-    """Convert custom tagset to Perseus."""
-    # Conversion logic
+# For XPOS converters requiring reconciliation
+def custom_to_perseus(upos: str, xpos: str, feats: dict) -> str:
+    """Convert custom tagset to Perseus format.
+    
+    Args:
+        upos: Universal POS tag
+        xpos: Custom format tag
+        feats: Feature dictionary for reconciliation
+        
+    Returns:
+        9-character Perseus format tag
+    """
+    # Parse custom tag
+    # Map positions to Perseus format
+    # Reconcile with FEATS
     return perseus_tag
 
-# Use in pipeline
-from nlp_utilities.converters.xpos import register_converter
-register_converter('custom', custom_to_perseus)
+# For simple UPOS converters
+def custom_to_upos(custom_pos: str) -> str:
+    """Convert custom POS to Universal POS."""
+    MAPPING = {
+        'custom1': 'NOUN',
+        'custom2': 'VERB',
+        # ...
+    }
+    return MAPPING.get(custom_pos, '_')
 ```
 
 ### Adding New Language Support
 
-1. Create `data/lang_code_features.json`
-2. Add language-specific validators
-3. Register in language loader
-4. Add tests for language-specific behavior
+1. **Create language-specific feature set** (`data/la_feats.json`):
+```json
+{
+  "Case": ["Nom", "Gen", "Dat", "Acc", "Voc", "Abl", "Loc"],
+  "Gender": ["Masc", "Fem", "Neut"]
+}
+```
 
+2. **Create deprel mapping** (`data/la_deprels.json`):
+```json
+{
+  "nsubj": "nominal subject",
+  "obj": "object"
+}
+```
+
+3. **Use in validation**:
+```python
+validator = ConlluValidator(
+    lang='la',
+    level=4,
+    add_features='la_feats.json',
+    add_deprels='la_deprels.json'
+)
+```
+
+## See Also
+
+- [Testing](testing.md) - Learn about testing strategy, organization, and practices

@@ -18,112 +18,139 @@ specifications and linguistic constraints. The validators catch:
 Basic validation of a CoNLL-U file:
 
 ```python
-from nlp_utilities.conllu.validators import Validator
+from nlp_utilities.conllu.validators import ConlluValidator
 
 # Create validator instance
-validator = Validator('corpus.conllu')
+validator = ConlluValidator(lang='la', level=2)
 
 # Run validation
-is_valid = validator.validate()
+errors = validator.validate_file('corpus.conllu')
 
-if not is_valid:
+if errors.get_error_count() > 0:
     # Print errors to console
-    validator.report_errors()
+    print('\n'.join(errors.format_errors()))
 ```
 
-The validator runs all checks by default and reports any issues found.
+The validator runs checks based on the specified level (1-5) and reports any issues found.
 
 ## Validation Levels
 
-Validators are organized by the aspects they check:
+The validator uses a 5-level system to control validation strictness:
 
-### Format Validators
+### Level 1: Basic Format
 
-Check basic CoNLL-U format compliance:
+Checks essential CoNLL-U format compliance:
 
-- **format.py**: Overall line structure, column counts
-- **metadata.py**: Sentence-level metadata comments
-- **unicode.py**: Character encoding issues
-- **id_sequence.py**: Token ID validity and sequencing
-- **spans.py**: Multi-word token and empty node span validity
+- Unicode validity
+- Basic format structure and column counts
+- Token ID validity and sequencing  
+- Basic tree structure (connectivity, cycles)
 
 ```python
-# Format-only validation
-from nlp_utilities.conllu.validators import FormatValidator
+from nlp_utilities.conllu.validators import ConlluValidator
 
-validator = FormatValidator('file.conllu')
-validator.validate()
+validator = ConlluValidator(level=1)
+errors = validator.validate_file('file.conllu')
 ```
 
-### Content Validators
+### Level 2: Standard Validation (Default)
 
-Check linguistic annotation validity:
+Adds content and metadata validation:
 
-- **content_validators.py**: Core column content (UPOS, DEPREL, FEATS)
-- **feature_format.py**: Morphological feature syntax
-- **enhanced_deps.py**: Enhanced dependency format
-- **misc_column.py**: MISC column format
-- **upos_deprel_compatibility.py**: Valid UPOS-DEPREL combinations
+- Metadata comments format
+- MISC column format
+- Character constraints in various columns
+- Morphological feature format and values
+- Enhanced dependency format
+- All Level 1 checks
 
 ```python
-# Content validation
-from nlp_utilities.conllu.validators import ContentValidator
-
-validator = ContentValidator('file.conllu')
-validator.validate()
+validator = ConlluValidator(level=2)  # Default level
+errors = validator.validate_file('file.conllu')
 ```
 
-### Structural Validators
+### Level 3: Extended Validation
 
-Check tree structure validity:
+Adds structural and content constraints:
 
-- **structural_constraints.py**: Dependency tree properties
-- **functional_leaves.py**: Leaf node restrictions
-- **tree_validation.py**: Graph cycles, connectivity
+- Left-to-right relations
+- Single subject constraint
+- Orphan validation
+- "goes with" and "fixed" span validation
+- Projective punctuation
+- Functional leaves
+- All Level 1-2 checks
 
 ```python
-# Structural validation
-from nlp_utilities.conllu.validators import StructuralValidator
-
-validator = StructuralValidator('file.conllu')
-validator.validate()
+validator = ConlluValidator(level=3)
+errors = validator.validate_file('file.conllu')
 ```
 
-### Language-Specific Validators
+### Level 4: Language-Specific Format
 
-Validate against language-specific tagsets:
+Validates language-specific format requirements:
 
-- **language_content.py**: Language-specific UPOS/DEPREL sets
-- **language_format.py**: Language-specific feature formats
-- **character_constraints.py**: Allowed characters by language
+- Language-specific feature sets
+- Language-specific dependency relations
+- Language-specific auxiliary verbs
+- Whitespace exceptions
+- All Level 1-3 checks
 
 ```python
-# Language-specific validation for Latin
-from nlp_utilities.conllu.validators import LanguageValidator
+validator = ConlluValidator(lang='la', level=4)
+errors = validator.validate_file('file.conllu')
+```
 
-validator = LanguageValidator('la_corpus.conllu', language='la')
-validator.validate()
+### Level 5: Language-Specific Content
+
+Full language-specific validation:
+
+- Language-specific content constraints
+- All Level 1-4 checks
+
+```python
+validator = ConlluValidator(lang='la', level=5)
+errors = validator.validate_file('file.conllu')
 ```
 
 ## Advanced Usage
 
 ### Custom Validator Configuration
 
-Configure which validators to run:
+Configure language-specific data sources:
 
 ```python
-from nlp_utilities.conllu.validators import Validator
+from nlp_utilities.conllu.validators import ConlluValidator
 
-validator = Validator(
-    'corpus.conllu',
-    # Disable specific validators
-    check_format=True,
-    check_content=True,
-    check_structure=False,  # Skip structural checks
-    check_language=False    # Skip language-specific checks
+validator = ConlluValidator(
+    lang='la',
+    level=4,
+    add_features='custom_features.json',  # Additional features file
+    add_deprels='custom_deprels.json',     # Additional deprels file
+    add_auxiliaries='custom_aux.json',     # Additional auxiliaries file
+    add_whitespace_exceptions='custom_whitespace.txt',  # Additional whitespace rules
+    load_dalme=False  # Whether to load DALME-specific data
 )
 
-validator.validate()
+errors = validator.validate_file('corpus.conllu')
+```
+
+### Validating String Content
+
+Validate CoNLL-U content directly from a string:
+
+```python
+validator = ConlluValidator(lang='la', level=2)
+
+conllu_text = """# sent_id = 1
+# text = example
+1\texample\texample\tNOUN\t_\t_\t0\troot\t_\t_
+
+"""
+
+errors = validator.validate_string(conllu_text)
+if errors.get_error_count() > 0:
+    print('\n'.join(errors.format_errors()))
 ```
 
 ### Accessing Error Details
@@ -131,76 +158,38 @@ validator.validate()
 Get structured error information:
 
 ```python
-validator = Validator('corpus.conllu')
-validator.validate()
+validator = ConlluValidator(lang='la', level=2)
+errors = validator.validate_file('corpus.conllu')
 
-# Access errors programmatically
-errors = validator.get_errors()
+# Check error count
+if errors.get_error_count() > 0:
+    print(f"Found {errors.get_error_count()} errors")
 
-for error in errors:
-    print(f"Line {error.line}: {error.message}")
-    print(f"  Severity: {error.severity}")
-    print(f"  Category: {error.category}")
+    # Get formatted error messages
+    for error_msg in errors.format_errors():
+        print(error_msg)
+
+    # Access error statistics
+    print(f"\nError counts by type: {errors.error_counter}")
 ```
-
-### Error Categories
-
-Errors are categorized for filtering:
-
-- `FORMAT_ERROR`: Syntax violations
-- `CONTENT_ERROR`: Invalid values
-- `STRUCTURE_ERROR`: Tree structure issues
-- `LANGUAGE_ERROR`: Language-specific violations
-
-### Error Severity Levels
-
-- `CRITICAL`: Must be fixed (prevents parsing)
-- `ERROR`: Should be fixed (violates specification)
-- `WARNING`: May need attention (unusual but valid)
 
 ## Validation Recipes
-
-### Pre-submission Validation
-
-Before submitting to Universal Dependencies:
-
-```python
-from nlp_utilities.conllu.validators import Validator
-
-# Full validation with all checks
-validator = Validator(
-    'submission.conllu',
-    language='la',
-    strict=True  # Treat warnings as errors
-)
-
-if not validator.validate():
-    validator.report_errors()
-    exit(1)
-```
 
 ### Post-Conversion Validation
 
 After converting from another format:
 
 ```python
-from nlp_utilities.conllu.validators import Validator
-from nlp_utilities.loaders import load_language_data
+from nlp_utilities.conllu.validators import ConlluValidator
 
-# Load expected feature set
-feature_set = load_language_data('la')
+# Focus on structure and content (level 3)
+validator = ConlluValidator(lang='la', level=3)
 
-validator = Validator(
-    'converted.conllu',
-    language='la',
-    feature_set=feature_set,
-    # Focus on structure and content
-    check_structure=True,
-    check_content=True
-)
+errors = validator.validate_file('converted.conllu')
 
-validator.validate()
-validator.report_errors()
+if errors.get_error_count() > 0:
+    print(f"Found {errors.get_error_count()} validation errors")
+    print('\n'.join(errors.format_errors()))
 ```
 
 ### Batch Validation
@@ -209,23 +198,24 @@ Validate multiple files:
 
 ```python
 from pathlib import Path
-from nlp_utilities.conllu.validators import Validator
+from nlp_utilities.conllu.validators import ConlluValidator
 
 corpus_dir = Path('corpus/')
+validator = ConlluValidator(lang='la', level=2)
 all_valid = True
 
 for file in corpus_dir.glob('*.conllu'):
     print(f"\nValidating {file.name}...")
-    validator = Validator(str(file))
+    errors = validator.validate_file(str(file))
 
-    if not validator.validate():
+    if errors.get_error_count() > 0:
         all_valid = False
-        validator.report_errors()
+        print('\n'.join(errors.format_errors()))
 
 if all_valid:
-    print("\n✓ All files valid!")
+    print("\nAll files valid!")
 else:
-    print("\n✗ Some files have errors")
+    print("\nSome files have errors")
 ```
 
 ## Common Validation Errors
@@ -277,8 +267,10 @@ Use the normalizer to fix automatically:
 
 ```python
 from nlp_utilities.normalizers import normalize_features
+from nlp_utilities.loaders import load_language_data
 
-fixed = normalize_features("Case=Nom|Number=Sing|gender=Masc")
+feature_set = load_language_data('feats', language='la')
+fixed = normalize_features('NOUN', 'Case=Nom|Number=Sing|gender=Masc', feature_set)
 # Returns: "Case=Nom|Gender=Masc|Number=Sing"
 ```
 
@@ -308,30 +300,6 @@ fixed = normalize_features("Case=Nom|Number=Sing|gender=Masc")
 3  word3  ...  2  deprel
 ```
 
-## Validation Best Practices
-
-1. **Validate Early and Often**
-
-   Run validation after each major editing step to catch issues quickly.
-2. **Use Language-Specific Settings**
-
-   Always specify the language code for accurate validation:
-   ```python
-   validator = Validator('file.conllu', language='la')
-   ```
-3. **Address Critical Errors First**
-
-   Fix `CRITICAL` errors before `ERROR` level, and `ERROR` before `WARNING`.
-4. **Keep Reference Data Updated**
-
-   Ensure your feature sets and tagsets match the UD version you’re targeting.
-5. **Automate Validation**
-
-   Include validation in your CI/CD pipeline:
-   ```bash
-   python -m nlp_utilities.conllu.validators corpus.conllu
-   ```
-
 ## Integration with Other Tools
 
 ### With Evaluation
@@ -339,20 +307,22 @@ fixed = normalize_features("Case=Nom|Number=Sing|gender=Masc")
 Validate before evaluating:
 
 ```python
-from nlp_utilities.conllu.validators import Validator
-from nlp_utilities.conllu.evaluators import Evaluator
+from nlp_utilities.conllu.validators import ConlluValidator
+from nlp_utilities.conllu.evaluators import ConlluEvaluator
 
 # Validate both files first
+validator = ConlluValidator(lang='la', level=2)
+
 for filename in ['gold.conllu', 'system.conllu']:
-    validator = Validator(filename)
-    if not validator.validate():
+    errors = validator.validate_file(filename)
+    if errors.get_error_count() > 0:
         print(f"{filename} has validation errors!")
-        validator.report_errors()
+        print('\n'.join(errors.format_errors()))
         exit(1)
 
 # Then evaluate
-evaluator = Evaluator('gold.conllu', 'system.conllu')
-results = evaluator.evaluate()
+evaluator = ConlluEvaluator()
+scores = evaluator.evaluate_files('gold.conllu', 'system.conllu')
 ```
 
 ### With Conversion
@@ -361,11 +331,11 @@ Validate after conversion:
 
 ```python
 from nlp_utilities.brat import brat_to_conllu
-from nlp_utilities.conllu.validators import Validator
+from nlp_utilities.conllu.validators import ConlluValidator
 from nlp_utilities.loaders import load_language_data
 
 # Convert
-feature_set = load_language_data('la')
+feature_set = load_language_data('feats', language='la')
 brat_to_conllu(
     input_directory='brat_files/',
     output_directory='output/',
@@ -374,10 +344,12 @@ brat_to_conllu(
 )
 
 # Validate result
-validator = Validator('output/converted.conllu', language='la')
-if not validator.validate():
+validator = ConlluValidator(lang='la', level=3)
+errors = validator.validate_file('output/reference-from_brat.conllu')
+
+if errors.get_error_count() > 0:
     print("Conversion produced invalid CoNLL-U!")
-    validator.report_errors()
+    print('\n'.join(errors.format_errors()))
 ```
 
 ## See Also

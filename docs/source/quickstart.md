@@ -137,7 +137,7 @@ Standardize XPOS tags from different treebanks:
 
 ```python
 from nlp_utilities.converters.upos import dalme_to_upos, upos_to_perseus
-from nlp_utilities.converters.xpos import ittb_to_perseus
+from nlp_utilities.converters.xpos import ittb_to_perseus, llct_to_perseus
 
 print(dalme_to_upos('adjective'))
 # Returns 'ADJ'
@@ -147,6 +147,10 @@ print(upos_to_perseus('NOUN'))
 
 print(ittb_to_perseus('VERB', 'gen4|tem1|mod1'))  
 # Returns 'v1sp-----'
+
+# LLCT converter requires UPOS, XPOS, and FEATS
+print(llct_to_perseus('NOUN', 'n|n|-|s|-|-|-|m|n|-', 'Case=Nom|Gender=Masc|Number=Sing'))
+# Returns 'n-s---mn-'
 ```
 
 ### Feature Conversion
@@ -175,7 +179,7 @@ Clean and standardize annotations.
 
 ### Feature Normalization
 
-Normalize features and extended PoS tags:
+Normalize features and extended POS tags:
 
 ```python
 from nlp_utilities.loaders import load_language_data
