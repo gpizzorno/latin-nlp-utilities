@@ -393,3 +393,46 @@ PROIEL_CONCORDANCES = {
         'Sup': 's',  # Superlative
     },
 }
+
+# Mappings for LLCT to Perseus XPOS conversions
+# https://universaldependencies.org/treebanks/la_llct/index.html
+LLCT_CONCORDANCES = {
+    'number': {
+        'Sing': 's',  # Singular
+        'Plur': 'p',  # Plural
+    },
+    'tense': {
+        'Pres': 'p',  # Present
+        'Past': 'r',  # Perfect
+        'Pqp': 'l',  # Pluperfect
+        'Fut': 'f',  # Future
+    },
+    'mood': {
+        'Ind': 'i',  # Indicative
+        'Sub': 's',  # Subjunctive
+        'Imp': 'm',  # Imperative
+    },
+    'voice': {
+        'Act': 'a',  # Active
+        'Pass': 'p',  # Passive
+    },
+    'gender': {
+        'Fem': 'f',  # Feminine
+        'Masc': 'm',  # Masculine
+        'Neut': 'n',  # Neuter
+    },
+    'case': {
+        'Abl': 'b',  # Ablative
+        'Acc': 'a',  # Accusative
+        'Dat': 'd',  # Dative
+        'Gen': 'g',  # Genitive
+        'Nom': 'n',  # Nominative
+        'Voc': 'v',  # Vocative
+        'Loc': 'l',  # Locative
+    },
+    'degree': {
+        'Abs': 'x',  # Abs?
+        'Cmp': 'c',  # Comparative
+        'Dim': 'x',  # Dim?
+    },
+}
