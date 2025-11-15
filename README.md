@@ -120,7 +120,7 @@ print(f'LAS: {scores["LAS"].f1:.2%}')
 
 ```python
 from nlp_utilities.converters.upos import dalme_to_upos, upos_to_perseus
-from nlp_utilities.converters.xpos import ittb_to_perseus
+from nlp_utilities.converters.xpos import ittb_to_perseus, llct_to_perseus
 from nlp_utilities.converters.features import feature_string_to_dict, feature_dict_to_string
 
 print(dalme_to_upos('adjective'))
@@ -131,6 +131,9 @@ print(upos_to_perseus('NOUN'))
 
 print(ittb_to_perseus('VERB', 'gen4|tem1|mod1'))  
 # Returns 'v1sp-----'
+
+print(llct_to_perseus('VERB', 'v|v|3|s|p|i|a|-|-|-', 'Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act'))
+# Returns 'v3spia---'
 
 feat_dict = feature_string_to_dict('Case=Nom|Gender=Neut|Number=Sing')
 # Returns a dictionary: 
