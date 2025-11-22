@@ -143,19 +143,29 @@ print(feature_dict_to_string(feat_dict))
 # Returns 'Case=Nom|Gender=Neut|Number=Sing'
 ```
 
-### Normalize Tags
+### Normalize Morphology
 
 ```python
 from nlp_utilities.loaders import load_language_data
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
 
 feature_set = load_language_data('feats', language='la')
-print(normalize_features('NOUN', 'Case=Nom|Gender=Fem|Number=Sing|Mood=Ind', feature_set))
-# Returns feature dictionary:
-{'Case': 'Nom', 'Gender': 'Fem', 'Number': 'Sing'}
 
-print(normalize_xpos('PROPN', 'a-s---fn-'))
-# Returns 'n-s---fn-'
+# Normalize morphology with feature reconciliation
+# VerbForm is missing from feats but present in ref_feats
+xpos, feats = normalize_morphology(
+    upos='VERB',
+    xpos='v-s-ga-g-',
+    feats='Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|Voice=Act',
+    feature_set=feature_set,
+    ref_features='Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|VerbForm=Ger|Voice=Act'
+)
+
+print(xpos)
+# Returns 'v-stga-g-' (normalized and validated)
+
+print(feats)
+# Returns {'Aspect': 'Perf', 'Case': 'Gen', 'Degree': 'Pos', 'Number': 'Sing', 'VerbForm': 'Ger', 'Voice': 'Act'}
 ```
 
 For more examples and detailed usage, see the [Quickstart Guide](https://gpizzorno.github.io/latin-nlp-utilities/quickstart.html).
