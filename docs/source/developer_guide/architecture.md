@@ -11,6 +11,7 @@ The package is organized into five main modules:
 - **converters**: Tagset and feature format conversion
 - **loaders**: Data loading utilities
 - **normalizers**: Annotation normalization
+- **validators**: Morphology validation
 
 ## Package Structure
 
@@ -45,6 +46,7 @@ nlp_utilities/
 │       └── llct_converters.py
 ├── loaders.py           # Data loading utilities
 ├── normalizers.py       # Feature normalization
+├── validators.py        # Morphology validation
 └── data/                # Reference data
     ├── feats.json
     ├── deprels.json
@@ -279,6 +281,76 @@ def llct_to_perseus(upos: str, xpos: str, feats: dict) -> str:
 1. **UPOS Converters**: Language-specific POS → Universal POS
 2. **XPOS Converters**: Between different positional tag schemes (require upos, xpos, feats for reconciliation)
 3. **Feature Converters**: Dictionary ↔ CoNLL-U string format
+4. **Format Converters**: Auto-detect and convert XPOS formats to Perseus
+5. **Feature-to-XPOS Converters**: Generate XPOS from feature dictionaries
+
+**Additional Converter Functions**:
+
+```python
+def format_xpos(upos: str, xpos: str | None, feats: dict[str, str] | str | None) -> str:
+    """Convert XPOS to Perseus format with automatic format detection.
+
+    Args:
+        upos: Universal POS tag
+        xpos: XPOS string in any format (LLCT, ITTB, PROIEL, Perseus, etc.)
+        feats: Feature dictionary or string
+
+    Returns:
+        Perseus format XPOS (9 characters)
+
+    Format detection (regex patterns):
+        - PERSEUS_XPOS_MATCHER: [nvapmdcrileugt-]{9}
+        - LLCT_XPOS_MATCHER: Pipe-separated 10-part format
+        - ITTB_XPOS_MATCHER: e.g., 'gen4|tem1|mod1'
+        - PROIEL_XPOS_MATCHER: Single/double character codes
+
+    Workflow:
+        1. Match xpos against known patterns
+        2. Call appropriate converter (llct_to_perseus, ittb_to_perseus, etc.)
+        3. If no match or None, return default: '{upos_code}--------'
+        4. For Perseus format, ensure first char matches UPOS
+    """
+    if xpos is not None:
+        if re.match(PERSEUS_XPOS_MATCHER, xpos):
+            return f'{upos_to_perseus(upos)}{xpos[1:]}'
+        if re.match(LLCT_XPOS_MATCHER, xpos):
+            return llct_to_perseus(upos, xpos, feats)
+        if re.match(ITTB_XPOS_MATCHER, xpos):
+            return ittb_to_perseus(upos, xpos)
+        if re.match(PROIEL_XPOS_MATCHER, xpos):
+            return proiel_to_perseus(upos, feats)
+    return f'{upos_to_perseus(upos)}--------'
+
+def features_to_xpos(feats: dict[str, str] | str) -> str:
+    """Convert features to XPOS in Perseus format.
+
+    Args:
+        feats: Feature string or dictionary
+
+    Returns:
+        9-character Perseus XPOS string
+
+    Uses FEATS_TO_XPOS mapping:
+        {('Case', 'Nom'): (8, 'n'), ('Case', 'Gen'): (8, 'g'), ...}
+        Maps (feature, value) pairs to (position, character)
+
+    Workflow:
+        1. Initialize xpos as 9 dashes: '---------'
+        2. For each feature-value pair in feats
+        3. Look up corresponding (position, character) in FEATS_TO_XPOS
+        4. Set xpos[position-1] = character
+        5. Return assembled XPOS string
+    """
+    if isinstance(feats, str):
+        feats = feature_string_to_dict(feats)
+    
+    xpos = ['-'] * 9
+    for (feat, value), (position, char) in FEATS_TO_XPOS.items():
+        if feats.get(feat) == value:
+            xpos[position - 1] = char
+    
+    return ''.join(xpos)
+```
 
 **Key Design Elements**:
 
@@ -286,6 +358,8 @@ def llct_to_perseus(upos: str, xpos: str, feats: dict) -> str:
 - **Explicit mappings**: Clear lookup tables for transparency (CONCORDANCES dictionaries)
 - **Reconciliation logic**: XPOS converters reconcile tag positions with FEATS values
 - **Format validation**: Check input/output format correctness
+- **Auto-detection**: format_xpos automatically detects input format
+- **Bidirectional**: Can convert features→XPOS and XPOS→features
 
 ### Loaders Module
 
@@ -346,54 +420,175 @@ def load_whitespace_exceptions(
 
 ### Normalizers Module
 
-**Purpose**: Normalize and standardize annotations.
+**Purpose**: Normalize and standardize morphological annotations.
 
-**Architecture**: Transformation functions
+**Architecture**: Composite transformation function
 
 ```python
-def normalize_features(
-    upos: str | None,
-    features: str | dict,
-    feature_set: dict | None
-) -> dict | None:
-    """Normalize morphological features.
+def normalize_morphology(
+    upos: str,
+    xpos: str,
+    feats: dict[str, str] | str,
+    feature_set: dict[str, Any],
+    ref_features: dict[str, str] | str | None = None,
+) -> tuple[str, dict[str, str]]:
+    """Normalize morphological information.
 
-    Args:
-        upos: Universal POS tag for filtering valid features
-        features: Feature string or dict to normalize
-        feature_set: Feature set defining valid features by UPOS
-
-    Returns:
-        Normalized feature dictionary with only valid features
-    """
-    # Convert string to dict if needed
-    # Filter features valid for UPOS
-    # Capitalize feature names
-    # Return cleaned dict
-
-def normalize_xpos(upos: str, xpos: str) -> str:
-    """Normalize XPOS tag to standard format.
+    Takes UPOS, XPOS, and FEATS, normalizes and validates them against
+    a provided feature set, and reconciles with reference features if provided.
 
     Args:
         upos: Universal POS tag
-        xpos: Language-specific POS tag to normalize
+        xpos: Language-specific POS tag (any format: LLCT, ITTB, PROIEL, Perseus)
+        feats: Feature string or dictionary
+        feature_set: Feature set dictionary defining valid features by UPOS
+        ref_features: Reference features to reconcile with (optional)
 
     Returns:
-        Normalized 9-character Perseus format tag
+        Tuple of (normalized_xpos, validated_features)
+
+    Workflow:
+        1. Format XPOS to Perseus standard (format_xpos)
+        2. Validate XPOS against UPOS (validate_xpos)
+        3. Convert feats to dictionary if needed
+        4. Reconcile with ref_features (feats take precedence)
+        5. Validate features against feature_set (validate_features)
+        6. Generate XPOS from validated features (features_to_xpos)
+        7. Validate generated XPOS (validate_xpos)
+        8. Reconcile provided and generated XPOS (provided takes precedence)
     """
-    # Convert UPOS to Perseus type
-    # Apply validity rules by position
-    # Replace invalid positions with '-'
-    # Ensure lowercase and correct length
-    # Return normalized tag
+    # 1. Normalize XPOS format
+    xpos = format_xpos(upos, xpos, feats)
+    
+    # 2. Validate XPOS against UPOS
+    xpos = validate_xpos(upos, xpos)
+    
+    # 3. Ensure feats are a dict
+    if isinstance(feats, str):
+        feats = feature_string_to_dict(feats)
+    
+    # 4. Reconcile with reference features
+    if ref_features is not None:
+        if isinstance(ref_features, str):
+            ref_features = feature_string_to_dict(ref_features)
+        for key, value in ref_features.items():
+            if key not in feats:
+                feats[key] = value
+    
+    # 5. Validate features against feature set
+    feats = validate_features(upos, feats, feature_set)
+    
+    # 6. Generate XPOS from features
+    xpos_from_feats = features_to_xpos(feats)
+    xpos_from_feats = validate_xpos(upos, xpos_from_feats)
+    
+    # 7. Reconcile XPOS values (provided takes precedence)
+    for i in range(9):
+        if xpos[i] == '-':
+            xpos = xpos[:i] + xpos_from_feats[i] + xpos[i + 1:]
+    
+    return xpos, feats
 ```
 
 **Key Design Elements**:
 
-- **Non-destructive**: Return new values, don't modify input
-- **Validation-aware**: Use feature sets for UPOS-based filtering
-- **Type flexible**: normalize_features accepts string or dict input
-- **Consistent**: Apply same rules across codebase (Perseus format, lowercase, proper length)
+- **Comprehensive normalization**: Single function handles XPOS, FEATS, and their reconciliation
+- **Format detection**: Automatically detects and converts LLCT, ITTB, PROIEL formats to Perseus
+- **Bidirectional reconciliation**: Reconciles provided XPOS with generated XPOS, and feats with ref_features
+- **Validation integration**: Uses validate_xpos and validate_features internally
+- **Non-destructive**: Returns new values, doesn't modify input
+- **Type flexible**: Accepts string or dict for feats and ref_features
+
+### Validators Module
+
+**Purpose**: Validate morphological annotations against feature sets and format rules.
+
+**Architecture**: Validation functions
+
+```python
+def validate_features(
+    upos: str,
+    feats: dict[str, str] | str,
+    feature_set: dict[str, Any]
+) -> dict[str, str]:
+    """Ensure features are valid for given UPOS based on feature set.
+
+    Args:
+        upos: Universal POS tag
+        feats: Feature string or dictionary
+        feature_set: Feature set dictionary defining valid features by UPOS
+
+    Returns:
+        Validated feature dictionary (invalid features removed)
+
+    Validation steps:
+        1. Convert feats string to dict if needed
+        2. Normalize attribute names (case-insensitive matching)
+        3. Normalize value names (case-insensitive matching)
+        4. Check if feature is valid for the given UPOS
+        5. Check if value is not marked as invalid (0) in feature set
+        6. Return only valid features
+    """
+    # Convert to dict if string
+    if isinstance(feats, str):
+        feats = feature_string_to_dict(feats)
+    
+    validated_feats = {}
+    for attr, value in feats.items():
+        # Normalize and validate
+        if attr_valid_for_upos(attr, value, upos, feature_set):
+            validated_feats[norm_attr] = norm_value
+    
+    return validated_feats
+
+def validate_xpos(upos: str, xpos: str | None) -> str:
+    """Ensure XPOS is valid for given UPOS.
+
+    Args:
+        upos: Universal POS tag
+        xpos: Language-specific POS tag (Perseus format)
+
+    Returns:
+        Validated 9-character Perseus XPOS string
+
+    Validation steps:
+        1. Set first character to match UPOS (Perseus mapping)
+        2. Check each position against VALIDITY_BY_POS rules
+        3. Replace invalid characters with '-'
+        4. Ensure exactly 9 characters
+
+    Position validity rules (Perseus format):
+        - Position 1: UPOS-dependent (n, v, a, p, m, d, c, r, l, e, i, u, g, -)
+        - Position 2: Only valid for 'v' (verbs)
+        - Position 3: Valid for n, v, a, p, m
+        - Position 4-6: Only valid for 'v' (verbs)
+        - Position 7-8: Valid for n, v, a, p, m
+        - Position 9: Only valid for 'a' (adjectives)
+    """
+    upos_code = upos_to_perseus(upos)
+    
+    if xpos is None or len(xpos) != 9:
+        return f'{upos_code}--------'
+    
+    xpos_list = list(xpos)
+    xpos_list[0] = upos_code  # Ensure first char matches UPOS
+    
+    # Validate each position
+    for position, valid_pos in VALIDITY_BY_POS.items():
+        char = xpos_list[position - 1]
+        if char != '-' and upos_code not in valid_pos:
+            xpos_list[position - 1] = '-'
+    
+    return ''.join(xpos_list)
+```
+
+**Key Design Elements**:
+
+- **Feature filtering**: Removes features invalid for UPOS
+- **Position validation**: Enforces Perseus XPOS format rules
+- **Case normalization**: Handles case-insensitive feature matching
+- **Used internally**: Called by normalize_morphology for validation
+- **Standalone usage**: Can be used independently for validation-only tasks
 
 ## Design Patterns
 
@@ -462,20 +657,35 @@ class ConlluEvaluator(WordProcessingMixin, TreeValidationMixin):
 
 ### Function Composition
 
-Used in converters:
+Used in converters and normalizers:
 
 ```python
-# Compose multiple conversion and normalization steps
-from nlp_utilities.converters.xpos import llct_to_perseus
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+# Single-function normalization (recommended)
+from nlp_utilities.normalizers import normalize_morphology
 from nlp_utilities.loaders import load_language_data
 
 feature_set = load_language_data('feats', language='la')
 
-# Multi-step processing
-perseus_xpos = llct_to_perseus(upos, llct_xpos, feats)
-normalized_xpos = normalize_xpos(upos, perseus_xpos)
-normalized_feats = normalize_features(upos, feats, feature_set)
+# Handles format detection, validation, and reconciliation
+normalized_xpos, validated_feats = normalize_morphology(
+    upos='VERB',
+    xpos='v|v|3|s|p|i|a|-|-|-',  # LLCT format - auto-detected
+    feats='Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act',
+    feature_set=feature_set
+)
+
+# Component-level composition (advanced)
+from nlp_utilities.converters.xpos import format_xpos
+from nlp_utilities.converters.features import features_to_xpos
+from nlp_utilities.validators import validate_xpos, validate_features
+
+# Step-by-step processing
+xpos = format_xpos(upos, llct_xpos, feats)  # Convert to Perseus
+xpos = validate_xpos(upos, xpos)  # Validate positions
+feats = validate_features(upos, feats, feature_set)  # Filter invalid
+xpos_from_feats = features_to_xpos(feats)  # Generate from features
+xpos_from_feats = validate_xpos(upos, xpos_from_feats)  # Validate generated
+# Reconcile provided and generated XPOS...
 ```
 
 ## Data Flow

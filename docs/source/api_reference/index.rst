@@ -10,6 +10,7 @@ Complete API documentation for all modules:
 - :mod:`nlp_utilities.converters`: Tagset and format converters
 - :mod:`nlp_utilities.loaders`: Data loading utilities
 - :mod:`nlp_utilities.normalizers`: Feature and tag normalization
+- :mod:`nlp_utilities.validators`: Feature and tag validation
 
 .. toctree::
    :maxdepth: 2
@@ -19,4 +20,4 @@ Complete API documentation for all modules:
    converters
    loaders
    normalizers
-
+   validators

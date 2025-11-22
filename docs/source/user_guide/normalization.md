@@ -1,232 +1,322 @@
 # Normalization
 
-This guide covers normalizing and standardizing linguistic annotations.
+This guide covers normalizing and standardizing morphological annotations.
 
 ## Overview
 
 Normalization utilities ensure consistency in annotation format:
 
-- **Feature normalization**: Fix capitalization, sort alphabetically, validate format
-- **XPOS normalization**: Standardize language-specific POS tags
+- **Morphology normalization**: Comprehensive normalization of XPOS and FEATS together
+- **Format detection**: Automatically detect and convert different XPOS formats
+- **Validation**: Filter invalid features and XPOS positions
+- **Reconciliation**: Merge provided and reference features/XPOS
 
 These tools are useful for:
 
 - Cleaning imported or converted annotations
 - Ensuring Universal Dependencies compliance
 - Preparing data for validation and evaluation
-- Standardizing annotations across annotators
+- Standardizing annotations across annotators and treebanks
 
 ## Quick Start
 
-Normalizing morphological features:
+Normalizing morphological annotations:
 
 ```python
-from nlp_utilities.normalizers import normalize_features
+from nlp_utilities.normalizers import normalize_morphology
 from nlp_utilities.loaders import load_language_data
 
 # Load feature set for Latin
 feature_set = load_language_data('feats', language='la')
 
-# Normalize features (removes invalid features for the UPOS)
-normalized = normalize_features(
-    'NOUN',
-    'Case=Nom|Gender=Masc|Number=Sing|Mood=Ind',  # Mood is invalid for NOUN
-    feature_set
+# Normalize XPOS and FEATS together
+xpos, feats = normalize_morphology(
+    upos='VERB',
+    xpos='v-s-ga-g-',
+    feats='Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|Voice=Act',
+    feature_set=feature_set,
+    ref_features='VerbForm=Ger'  # Missing feature added from reference
 )
-print(normalized)
-# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+
+print(xpos)
+# Output: 'v-stga-g-'
+
+print(feats)
+# Output: {'Aspect': 'Perf', 'Case': 'Gen', 'Degree': 'Pos', 'Number': 'Sing', 'VerbForm': 'Ger', 'Voice': 'Act'}
 ```
 
-## Feature Normalization
+## Morphology Normalization
 
-The feature normalizer ensures morphological features meet CoNLL-U specifications and are valid for the given UPOS tag.
+The primary normalization function handles XPOS and FEATS together, with automatic format detection and validation.
 
 ### Basic Usage
 
 ```python
-from nlp_utilities.normalizers import normalize_features
+from nlp_utilities.normalizers import normalize_morphology
 from nlp_utilities.loaders import load_language_data
 
-# Load feature set
 feature_set = load_language_data('feats', language='la')
 
-# Normalize with dictionary input
-features = {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
-normalized = normalize_features('NOUN', features, feature_set)
-print(normalized)
-# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+# Basic normalization
+xpos, feats = normalize_morphology(
+    upos='NOUN',
+    xpos='n-s---mn-',
+    feats='Case=Nom|Gender=Masc|Number=Sing',
+    feature_set=feature_set
+)
 
-# Normalize with string input (CoNLL-U format)
-features = 'Case=Nom|Gender=Masc|Number=Sing'
-normalized = normalize_features('NOUN', features, feature_set)
-print(normalized)
-# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+print(xpos)  # 'n-s---mn-' (validated)
+print(feats)  # {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+```
+
+### With Reference Features
+
+Use `ref_features` to fill in missing features from a reference source:
+
+```python
+# Features are incomplete - missing NumForm
+xpos, feats = normalize_morphology(
+    upos='NUM',
+    xpos='m-p---fa-',
+    feats='Case=Acc|Gender=Fem|Number=Plur',
+    feature_set=feature_set,
+    ref_features='NumForm=Word'  # Will be added
+)
+
+print(feats)
+# Output: {'Case': 'Acc', 'Gender': 'Fem', 'NumForm': 'Word', 'Number': 'Plur'}
+```
+
+### Examples
+
+**Example 1: VERB with gerund features**
+
+```python
+xpos, feats = normalize_morphology(
+    upos='VERB',
+    xpos='v-s-ga-g-',
+    feats='Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|Voice=Act',
+    feature_set=feature_set,
+    ref_features='Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|VerbForm=Ger|Voice=Act'
+)
+
+print(xpos)
+# Output: 'v-stga-g-' (position 3 filled from features)
+
+print(feats)
+# Output: {'Aspect': 'Perf', 'Case': 'Gen', 'Degree': 'Pos', 'Number': 'Sing', 'VerbForm': 'Ger', 'Voice': 'Act'}
+```
+
+**Example 2: AUX with finite verb features**
+
+```python
+xpos, feats = normalize_morphology(
+    upos='AUX',
+    xpos='v2spia---',
+    feats='Mood=Ind|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act',
+    feature_set=feature_set
+)
+
+print(xpos)
+# Output: 'v2spia---' (all positions validated)
+
+print(feats)
+# Output: {'Mood': 'Ind', 'Number': 'Sing', 'Person': 2', 'Tense': 'Pres', 'VerbForm': 'Fin', 'Voice': 'Act'}
+```
+
+**Example 3: ADJ with degree reconciliation**
+
+```python
+xpos, feats = normalize_morphology(
+    upos='ADJ',
+    xpos='a-s---nbp',
+    feats='Case=Abl|Degree=Pos|Gender=Neut|Number=Sing',
+    feature_set=feature_set,
+    ref_features='Case=Abl|Gender=Masc|Number=Sing'  # Gender conflicts - feats wins
+)
+
+print(xpos)
+# Output: 'a-s---nbp' (validated)
+
+print(feats)
+# Output: {'Case': 'Abl', 'Degree': 'Pos', 'Gender': 'Neut', 'Number': 'Sing'}
+# Note: Gender=Neut from feats takes precedence over Gender=Masc from ref_features
+```
+
+**Example 4: NOUN with XPOS/UPOS mismatch correction**
+
+```python
+# XPOS suggests VERB, but UPOS is NOUN
+xpos, feats = normalize_morphology(
+    upos='NOUN',
+    xpos='v2spma---',  # Wrong UPOS character
+    feats='Mood=Imp|Number=Sing|Person=2|Tense=Pres|VerbForm=Fin|Voice=Act',
+    feature_set=feature_set
+)
+
+print(xpos)
+# Output: 'n-s------' (corrected to NOUN format, invalid features removed)
+
+print(feats)
+# Output: {'Number': 'Sing'} (only Number is valid for NOUN)
 ```
 
 ### What Gets Normalized
 
-The normalizer performs several operations:
+The normalizer performs these operations:
 
-1. **Removes invalid features for UPOS**: Features that are not valid for the given part of speech are filtered out.
+1. **Formats XPOS**: Auto-detects and converts LLCT, ITTB, PROIEL formats to Perseus
+2. **Validates XPOS**: Checks each position against UPOS-specific validity rules
+3. **Reconciles features**: Merges feats with ref_features (feats take precedence)
+4. **Validates features**: Filters out features invalid for the given UPOS
+5. **Generates XPOS from features**: Creates XPOS positions from validated features
+6. **Reconciles XPOS**: Merges provided and generated XPOS (provided takes precedence)
+7. **Returns tuple**: (normalized_xpos, validated_features)
 
-```python
-# VerbForm is only valid for VERB, not NOUN
-features = {'Case': 'Nom', 'VerbForm': 'Fin'}
-normalized = normalize_features('NOUN', features, feature_set)
-print(normalized)
-# Output: {'Case': 'Nom'}  # VerbForm removed
-```
+## Component Functions
 
-2. **Removes invalid feature values**: Feature values that are marked as invalid (0) in the feature set are filtered out.
+While `normalize_morphology` is recommended for most use cases, you can also use its component functions independently.
 
-```python
-# If 'Fem' is marked as invalid for nouns in the feature set
-features = {'Case': 'Nom', 'Gender': 'Fem'}
-normalized = normalize_features('NOUN', features, feature_set)
-# Output: {'Case': 'Nom'}  # Gender=Fem removed if invalid
-```
+### `validate_features`
 
-3. **Filters unknown attributes**: Features not in the feature set are removed.
+Filter features to only those valid for a given UPOS:
 
 ```python
-features = {'Case': 'Nom', 'UnknownAttr': 'Value'}
-normalized = normalize_features('NOUN', features, feature_set)
-print(normalized)
-# Output: {'Case': 'Nom'}  # UnknownAttr removed
+from nlp_utilities.validators import validate_features
+from nlp_utilities.loaders import load_language_data
+
+feature_set = load_language_data('feats', language='la')
+
+# Mood is invalid for NOUN - will be filtered out
+validated = validate_features(
+    upos='NOUN',
+    feats={'Case': 'Nom', 'Gender': 'Fem', 'Number': 'Sing', 'Mood': 'Ind'},
+    feature_set=feature_set
+)
+
+print(validated)
+# Output: {'Case': 'Nom', 'Gender': 'Fem', 'Number': 'Sing'}
+
+# Works with strings too
+validated = validate_features(
+    upos='NOUN',
+    feats='Case=Nom|Gender=Fem|Number=Sing|Mood=Ind',
+    feature_set=feature_set
+)
+
+print(validated)
+# Output: {'Case': 'Nom', 'Gender': 'Fem', 'Number': 'Sing'}
 ```
 
-4. **Handles empty/missing features**: Returns empty dict for underscore, empty string, or empty dict.
+**Use cases:**
+- Validating features before file-level validation
+- Checking which features are valid for a UPOS
+- Cleaning imported annotations
+
+### `validate_xpos`
+
+Ensure XPOS positions are valid for the given UPOS:
 
 ```python
-# Empty feature marker
-normalized = normalize_features('NOUN', '_', feature_set)
-print(normalized)
-# Output: {}
+from nlp_utilities.validators import validate_xpos
 
-# Empty string
-normalized = normalize_features('NOUN', '', feature_set)
-print(normalized)
-# Output: {}
+# First character wrong for NOUN
+validated = validate_xpos(upos='NOUN', xpos='a-s---fn-')
+print(validated)
+# Output: 'n-s---fn-' (first character corrected)
+
+# Position 2 only valid for verbs
+validated = validate_xpos(upos='NOUN', xpos='n1s---mn-')
+print(validated)
+# Output: 'n-s---mn-' (position 2 cleared)
+
+# Verb with valid positions
+validated = validate_xpos(upos='VERB', xpos='v3spia---')
+print(validated)
+# Output: 'v3spia---' (all positions valid)
 ```
 
-5. **Preserves insertion order**: Feature order is preserved (Python 3.7+).
+**Position validity rules (Perseus format):**
+- Position 1: UPOS-dependent (n, v, a, p, m, d, c, r, l, e, i, u, g, -)
+- Position 2: Only valid for 'v' (verbs)
+- Position 3: Valid for n, v, a, p, m
+- Position 4-6: Only valid for 'v' (verbs)
+- Position 7-8: Valid for n, v, a, p, m
+- Position 9: Only valid for 'a' (adjectives)
+
+**Use cases:**
+- Correcting UPOS/XPOS mismatches
+- Validating positional tags
+- Cleaning converted annotations
+
+### `format_xpos`
+
+Auto-detect and convert XPOS formats to Perseus:
 
 ```python
-features = {'Number': 'Sing', 'Case': 'Nom', 'Gender': 'Masc'}
-normalized = normalize_features('NOUN', features, feature_set)
-# Order preserved: Number, Case, Gender
+from nlp_utilities.converters.xpos import format_xpos
+
+# LLCT format (pipe-separated)
+xpos = format_xpos(
+    upos='VERB',
+    xpos='v|v|3|s|p|i|a|-|-|-',
+    feats='Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act'
+)
+print(xpos)  # 'v3spia---'
+
+# ITTB format
+xpos = format_xpos(
+    upos='VERB',
+    xpos='gen4|tem1|mod1',
+    feats='Mood=Ind|Tense=Pres|Voice=Pass'
+)
+print(xpos)  # 'v--pi----'
+
+# PROIEL format (uses FEATS, XPOS is minimal)
+xpos = format_xpos(
+    upos='NOUN',
+    xpos='Nb',
+    feats='Case=Acc|Gender=Neut|Number=Sing'
+)
+print(xpos)  # 'n-s---na-'
+
+# Already Perseus - just ensures UPOS matches
+xpos = format_xpos(
+    upos='NOUN',
+    xpos='a-s---fn-',  # Wrong UPOS char
+    feats='Case=Nom|Gender=Fem|Number=Sing'
+)
+print(xpos)  # 'n-s---fn-' (UPOS char corrected)
 ```
 
-## XPOS Normalization
+**Use cases:**
+- Converting between treebank formats
+- Harmonizing cross-treebank annotations
+- Auto-detecting format in mixed data
 
-Standardize language-specific POS tags and ensure correct correlation with UPOS.
+### `features_to_xpos`
 
-### Basic Usage
+Generate Perseus XPOS from feature dictionary:
 
 ```python
-from nlp_utilities.normalizers import normalize_xpos
+from nlp_utilities.converters.features import features_to_xpos
 
-# Normalize XPOS based on UPOS
-# Corrects first character and validates position-specific characters
-result = normalize_xpos('NOUN', 'a-s---fn-')
-print(result)
-# Output: 'n-s---fn-'  # First char corrected from 'a' to 'n'
+# Generate XPOS from features
+xpos = features_to_xpos('Case=Nom|Gender=Masc|Number=Sing')
+print(xpos)  # '-----mn-'  (positions 7,8 filled)
 
-# Another example with VERB
-result = normalize_xpos('VERB', 'n3spia---')
-print(result)
-# Output: 'v3spia---'  # First char corrected from 'n' to 'v'
+xpos = features_to_xpos('Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act')
+print(xpos)  # '-3spia---'  (verb positions filled)
+
+# Works with dictionaries too
+xpos = features_to_xpos({'Case': 'Acc', 'Gender': 'Fem', 'Number': 'Plur'})
+print(xpos)  # '-p---fa-'
 ```
 
-### What Gets Normalized
-
-The XPOS normalizer performs position-based validation:
-
-1. **Corrects the first character**: Sets it to match the Perseus tag for the UPOS.
-
-```python
-# PROPN should start with 'n' (same as NOUN in Perseus)
-result = normalize_xpos('PROPN', 'a-s---fn-')
-print(result)
-# Output: 'n-s---fn-'  # First char corrected to 'n'
-
-# Unknown UPOS maps to '-'
-result = normalize_xpos('INTJ', 'i-s---fn-')
-print(result)
-# Output: '---------'  # First char becomes '-'
-```
-
-2. **Validates each position**: Each position has specific valid characters based on the Perseus XPOS scheme.
-
-```python
-# Position 2: only valid for 'v' (verbs)
-result = normalize_xpos('NOUN', 'n1s---mn-')
-print(result)
-# Output: 'n-s---mn-'  # Position 2 becomes '-' (not valid for 'n')
-
-# Position 2: valid for verbs
-result = normalize_xpos('VERB', 'v3spia---')
-print(result)
-# Output: 'v3spia---'  # Position 2 kept (valid for 'v')
-```
-
-**Position validity rules**:
-- Position 2: valid for 'v' (verbs only)
-- Position 3: valid for 'n', 'v', 'a', 'p', 'm' (nouns, verbs, adjectives, pronouns, numerals)
-- Position 4: valid for 'v' (verbs only)
-- Position 5: valid for 'v' (verbs only)
-- Position 6: valid for 'v' (verbs only)
-- Position 7: valid for 'n', 'v', 'a', 'p', 'm'
-- Position 8: valid for 'n', 'v', 'a', 'p', 'm'
-- Position 9: valid for 'a' (adjectives only)
-
-3. **Ensures lowercase**: All characters are converted to lowercase.
-
-```python
-result = normalize_xpos('NOUN', 'N-S---MN-')
-print(result)
-# Output: 'n-s---mn-'  # All lowercase
-```
-
-4. **Pads to correct length**: Ensures the result is exactly 9 characters.
-
-```python
-# Short XPOS gets padded
-result = normalize_xpos('NOUN', 'Ns')
-print(result)
-# Output: 'n-s------'  # Padded to 9 characters
-
-# Long XPOS gets truncated after processing
-result = normalize_xpos('VERB', 'V3spia---extra')
-print(result)
-# Output: 'v3spia----'  # Processed and padded
-```
-
-### Examples by Part of Speech
-
-```python
-from nlp_utilities.normalizers import normalize_xpos
-
-# Verb: most positions are valid
-result = normalize_xpos('VERB', 'Vabcdefgh')
-print(result)
-# Output: 'vabcdefg-'  # Positions 2-8 valid, 9 invalid for verbs
-
-# Adjective: positions 3, 7, 8, 9 valid
-result = normalize_xpos('ADJ', 'Aabcdefgh')
-print(result)
-# Output: 'a-b---fgh'  # Only positions 3, 7, 8, 9 kept
-
-# Noun: positions 3, 7, 8 valid
-result = normalize_xpos('NOUN', 'Nabcdefgh')
-print(result)
-# Output: 'n-b---fg-'  # Only positions 3, 7, 8 kept
-
-# Pronoun: same as noun
-result = normalize_xpos('PRON', 'Pabcdefgh')
-print(result)
-# Output: 'p-b---fg-'  # Only positions 3, 7, 8 kept
-```
+**Use cases:**
+- Generating XPOS when only FEATS are available
+- Filling missing XPOS positions
+- Creating initial XPOS tags from morphological features
 
 ## Feature Set Loading
 
@@ -239,25 +329,6 @@ from nlp_utilities.loaders import load_language_data
 
 # Load Latin feature set
 feature_set = load_language_data('feats', language='la')
-
-# Feature set structure:
-# {
-#     'Case': {
-#         'byupos': {
-#             'NOUN': {'Nom': 1, 'Gen': 1, 'Dat': 1, 'Acc': 1, 'Voc': 1, 'Abl': 1},
-#             'ADJ': {'Nom': 1, 'Gen': 1, 'Dat': 1, 'Acc': 1, 'Voc': 1, 'Abl': 1},
-#             'VERB': {'Nom': 0, 'Gen': 0, ...},  # Invalid for verbs
-#         }
-#     },
-#     'Gender': {
-#         'byupos': {
-#             'NOUN': {'Masc': 1, 'Fem': 1, 'Neut': 1},
-#             'ADJ': {'Masc': 1, 'Fem': 1, 'Neut': 1},
-#             ...
-#         }
-#     },
-#     ...
-# }
 
 # Use with normalize_features
 from nlp_utilities.normalizers import normalize_features
@@ -272,6 +343,28 @@ Each feature in the set has a `byupos` dictionary that maps UPOS tags to valid v
 - **Value `1`**: Valid for this UPOS
 - **Value `0`**: Invalid/not allowed for this UPOS
 - **Missing UPOS**: Feature not applicable to this UPOS
+
+JSON representation:
+
+```json
+{
+    "Case": {
+            "byupos": {
+            "NOUN": {"Nom": 1, "Gen": 1, "Dat": 1, "Acc": 1, "Voc": 1, "Abl": 1},
+            "ADJ": {"Nom": 1, "Gen": 1, "Dat": 1, "Acc": 1, "Voc": 1, "Abl": 1},
+            "VERB": {"Nom": 0, "Gen": 0}
+        }
+    },
+    "Gender": {
+        "byupos": {
+            "NOUN": {"Masc": 1, "Fem": 1, "Neut": 1},
+            "ADJ": {"Masc": 1, "Fem": 1, "Neut": 1}
+        }
+    }
+}
+```
+
+Working with feature sets as Python dictionaries:
 
 ```python
 # Example: Case feature
@@ -350,17 +443,17 @@ whitespace_exceptions = load_whitespace_exceptions(language='la')
 
 ### Normalizing a CoNLL-U File
 
-Process an entire CoNLL-U file to normalize all features and XPOS tags:
+Process an entire CoNLL-U file to normalize all morphological annotations:
 
 ```python
-from nlp_utilities.loaders import load_language_data, load_conllu
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
+from nlp_utilities.loaders import load_language_data
 from nlp_utilities.converters.features import feature_dict_to_string
 
 # Load feature set
 feature_set = load_language_data('feats', language='la')
 
-# Load CoNLL-U file
+# Load CoNLL-U file (assuming you have a load function)
 sentences = load_conllu('input.conllu')
 
 # Normalize all annotations
@@ -370,67 +463,67 @@ for sentence in sentences:
         if '-' in str(token['id']) or '.' in str(token['id']):
             continue
         
-        # Normalize features
-        if token['feats'] != '_':
-            normalized_feats = normalize_features(
-                token['upos'],
-                token['feats'],
-                feature_set
+        # Normalize morphology
+        if token['upos'] != '_' and token['xpos'] != '_':
+            xpos, feats = normalize_morphology(
+                upos=token['upos'],
+                xpos=token['xpos'],
+                feats=token['feats'] if token['feats'] != '_' else {},
+                feature_set=feature_set
             )
-            # Convert back to string for CoNLL-U
-            if normalized_feats:
-                token['feats'] = feature_dict_to_string(normalized_feats)
-            else:
-                token['feats'] = '_'
-        
-        # Normalize XPOS
-        if token['xpos'] != '_' and token['upos'] != '_':
-            token['xpos'] = normalize_xpos(token['upos'], token['xpos'])
+            
+            # Update token
+            token['xpos'] = xpos
+            token['feats'] = feature_dict_to_string(feats) if feats else '_'
 
-# Save normalized file
-save_conllu(sentences, 'output_normalized.conllu')
 ```
 
 ### Cleaning Imported Annotations
 
-Normalize annotations from external sources:
+Normalize annotations from external sources with ref_features:
 
 ```python
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
 from nlp_utilities.loaders import load_language_data
+from nlp_utilities.converters.features import feature_dict_to_string
 
 feature_set = load_language_data('feats', language='la')
 
-def clean_annotation(token, feature_set):
+def clean_annotation(token, feature_set, ref_token=None):
     """Clean a single token's annotation."""
-    # Normalize XPOS
-    if token['xpos'] != '_' and token['upos'] != '_':
-        try:
-            token['xpos'] = normalize_xpos(token['upos'], token['xpos'])
-        except ValueError as e:
-            print(f"Warning: Could not normalize XPOS for token {token['form']}: {e}")
-            token['xpos'] = '_'
+    if token['upos'] == '_':
+        return token
     
-    # Normalize features
-    if token['feats'] != '_':
-        try:
-            normalized = normalize_features(token['upos'], token['feats'], feature_set)
-            if normalized:
-                from nlp_utilities.converters.features import feature_dict_to_string
-                token['feats'] = feature_dict_to_string(normalized)
-            else:
-                token['feats'] = '_'
-        except ValueError as e:
-            print(f"Warning: Could not normalize features for token {token['form']}: {e}")
-            token['feats'] = '_'
+    try:
+        # Get reference features if available
+        ref_features = None
+        if ref_token and ref_token['feats'] != '_':
+            ref_features = ref_token['feats']
+        
+        # Normalize
+        xpos, feats = normalize_morphology(
+            upos=token['upos'],
+            xpos=token['xpos'] if token['xpos'] != '_' else f"{token['upos'][0].lower()}--------",
+            feats=token['feats'] if token['feats'] != '_' else {},
+            feature_set=feature_set,
+            ref_features=ref_features
+        )
+        
+        token['xpos'] = xpos
+        token['feats'] = feature_dict_to_string(feats) if feats else '_'
+        
+    except Exception as e:
+        print(f"Warning: Could not normalize token {token['form']}: {e}")
+        token['xpos'] = f"{token['upos'][0].lower()}--------"
+        token['feats'] = '_'
     
     return token
 
-# Apply to all tokens
-for sentence in sentences:
-    for token in sentence:
-        if isinstance(token['id'], int):  # Skip multiword tokens
-            clean_annotation(token, feature_set)
+# Apply to all tokens with reference
+for sentence, ref_sentence in zip(imported_sentences, reference_sentences):
+    for token, ref_token in zip(sentence, ref_sentence):
+        if isinstance(token['id'], int):
+            clean_annotation(token, feature_set, ref_token)
 ```
 
 ### Validating After Normalization
@@ -438,7 +531,7 @@ for sentence in sentences:
 Always validate after normalizing to ensure correctness:
 
 ```python
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
 from nlp_utilities.conllu import ConlluValidator
 from nlp_utilities.loaders import load_language_data
 
@@ -464,8 +557,9 @@ Normalize multiple files in batch:
 
 ```python
 from pathlib import Path
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
 from nlp_utilities.loaders import load_language_data
+from nlp_utilities.converters.features import feature_dict_to_string
 
 def normalize_directory(input_dir, output_dir):
     """Normalize all CoNLL-U files in a directory."""
@@ -481,23 +575,18 @@ def normalize_directory(input_dir, output_dir):
         # Normalize each sentence
         for sentence in sentences:
             for token in sentence:
-                if isinstance(token['id'], int):
-                    # Normalize XPOS
-                    if token['xpos'] != '_' and token['upos'] != '_':
-                        token['xpos'] = normalize_xpos(token['upos'], token['xpos'])
-                    
-                    # Normalize features
-                    if token['feats'] != '_':
-                        normalized = normalize_features(
-                            token['upos'],
-                            token['feats'],
-                            feature_set
+                if isinstance(token['id'], int) and token['upos'] != '_':
+                    try:
+                        xpos, feats = normalize_morphology(
+                            upos=token['upos'],
+                            xpos=token['xpos'] if token['xpos'] != '_' else f"{token['upos'][0].lower()}--------",
+                            feats=token['feats'] if token['feats'] != '_' else {},
+                            feature_set=feature_set
                         )
-                        if normalized:
-                            from nlp_utilities.converters.features import feature_dict_to_string
-                            token['feats'] = feature_dict_to_string(normalized)
-                        else:
-                            token['feats'] = '_'
+                        token['xpos'] = xpos
+                        token['feats'] = feature_dict_to_string(feats) if feats else '_'
+                    except Exception as e:
+                        print(f"  Error in {token['form']}: {e}")
         
         # Save normalized file
         output_file = output_path / conllu_file.name
@@ -513,62 +602,57 @@ normalize_directory('raw_annotations/', 'normalized_annotations/')
 ### Handling Normalization Errors
 
 ```python
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
+from nlp_utilities.validators import validate_features, validate_xpos
 
-# XPOS normalization errors
+# Validation errors
 try:
-    result = normalize_xpos(None, 'n-s---mn-')
+    result = validate_xpos(None, 'n-s---mn-')
 except ValueError as e:
     print(f"Error: {e}")
-    # Output: Error: Must pass both UPOS and XPOS
+    # Output: Error: UPOS must be provided to validate XPOS
 
 try:
-    result = normalize_xpos('NOUN', '')
+    result = validate_features(None, 'Case=Nom', feature_set)
 except ValueError as e:
     print(f"Error: {e}")
-    # Output: Error: Must pass both UPOS and XPOS
+    # Output: Error: UPOS and feature set must be provided to validate FEATS
 
-# Feature normalization errors
+# Format detection errors
 try:
-    result = normalize_features(None, 'Case=Nom', feature_set)
+    xpos, feats = normalize_morphology('NOUN', None, {}, feature_set)
 except ValueError as e:
     print(f"Error: {e}")
-    # Output: Error: Must pass UPOS, FEATS, and a Feature set
-
-try:
-    result = normalize_features('NOUN', 'Case=Nom', None)
-except ValueError as e:
-    print(f"Error: {e}")
-    # Output: Error: Must pass UPOS, FEATS, and a Feature set
+    # Output: Error: Both UPOS and FEATS must be provided to format XPOS
 ```
 
 ### Safe Normalization with Fallbacks
 
 ```python
-def safe_normalize_xpos(upos, xpos):
-    """Normalize XPOS with fallback."""
-    try:
-        return normalize_xpos(upos, xpos)
-    except (ValueError, KeyError) as e:
-        print(f"Warning: Could not normalize XPOS '{xpos}' for UPOS '{upos}': {e}")
-        return '_'  # Return empty marker on error
+from nlp_utilities.normalizers import normalize_morphology
+from nlp_utilities.converters.features import feature_dict_to_string
 
-def safe_normalize_features(upos, feats, feature_set):
-    """Normalize features with fallback."""
+def safe_normalize_morphology(upos, xpos, feats, feature_set, ref_features=None):
+    """Normalize morphology with fallback."""
     try:
-        normalized = normalize_features(upos, feats, feature_set)
-        if normalized:
-            from nlp_utilities.converters.features import feature_dict_to_string
-            return feature_dict_to_string(normalized)
-        return '_'
-    except (ValueError, KeyError) as e:
-        print(f"Warning: Could not normalize features '{feats}' for UPOS '{upos}': {e}")
-        return '_'
+        return normalize_morphology(upos, xpos, feats, feature_set, ref_features)
+    except Exception as e:
+        print(f"Warning: Could not normalize for UPOS '{upos}': {e}")
+        # Return safe defaults
+        default_xpos = f"{upos[0].lower()}--------" if upos else '---------'
+        return default_xpos, {}
 
-# Use safe versions in production
+# Use safe version in production
 for token in sentence:
-    token['xpos'] = safe_normalize_xpos(token['upos'], token['xpos'])
-    token['feats'] = safe_normalize_features(token['upos'], token['feats'], feature_set)
+    if token['upos'] != '_':
+        xpos, feats = safe_normalize_morphology(
+            token['upos'],
+            token['xpos'],
+            token['feats'],
+            feature_set
+        )
+        token['xpos'] = xpos
+        token['feats'] = feature_dict_to_string(feats) if feats else '_'
 ```
 
 ## See Also

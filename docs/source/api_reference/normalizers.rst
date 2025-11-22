@@ -1,7 +1,7 @@
 Normalizers Module
 ==================
 
-The ``nlp_utilities.normalizers`` module provides utilities for normalizing morphological features and part-of-speech tags.
+The ``nlp_utilities.normalizers`` module provides utilities for normalizing morphological features and tags.
 
 Functions
 ---------
@@ -11,21 +11,13 @@ Functions
    :undoc-members:
    :show-inheritance:
 
-Feature Normalization
-~~~~~~~~~~~~~~~~~~~~~
+Morphology Normalization
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: nlp_utilities.normalizers.normalize_features
+.. autofunction:: nlp_utilities.normalizers.normalize_morphology
    :noindex:
 
-   Normalize morphological features based on the UPOS tag and a feature set definition.
-   This ensures that only valid features for a given part of speech are retained.
+   Normalize morphological information including UPOS, XPOS, and FEATS to ensure consistency.
 
-XPOS Normalization
-~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: nlp_utilities.normalizers.normalize_xpos
-   :noindex:
-
-   Normalize language-specific POS tags (XPOS) to Perseus format based on the UPOS tag.
-   This ensures consistent 9-character positional tags.
 

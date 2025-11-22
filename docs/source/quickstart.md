@@ -17,7 +17,7 @@ Verify the installation:
 python -c "import nlp_utilities; print('Ready to go!')"
 ```
 
-## Your First Conversion
+## Conversion
 
 Let’s convert a CoNLL-U file to brat format for visual annotation.
 
@@ -34,7 +34,7 @@ conllu_to_brat(
     sents_per_doc=10,  # 10 sentences per document
 )
 
-print("Conversion complete! Check brat_annotations/ directory")
+print("Conversion complete! Check brat_annotations directory")
 ```
 
 **What happens:**
@@ -67,7 +67,7 @@ brat_to_conllu(
 print("Converted back to CoNLL-U!")
 ```
 
-## Your First Evaluation
+## Evaluation
 
 Evaluate parser output against gold standard.
 
@@ -89,7 +89,7 @@ print(f"Labeled Attachment Score (LAS): {results['LAS']:.2f}%")
 print(f"UPOS Accuracy: {results['UPOS']:.2f}%")
 ```
 
-## Your First Validation
+## Validation
 
 Validate CoNLL-U files for format and linguistic correctness.
 
@@ -127,7 +127,7 @@ for error in reporter.format_errors():
 # Reconstructed: 'Una scala ....' (first diff at position 9)
 ```
 
-## Your First Conversion
+## Tagset Conversion
 
 Convert between different tagsets.
 
@@ -173,26 +173,91 @@ print(feat_string)
 # Output: Case=Gen|Gender=Fem|Number=Sing
 ```
 
-## Your First Normalization
+## Normalization
 
-Clean and standardize annotations.
+Clean and standardize morphological annotations.
 
-### Feature Normalization
+### Normalize Morphology
 
-Normalize features and extended POS tags:
+Normalize XPOS and FEATS together with automatic format detection and validation:
 
 ```python
 from nlp_utilities.loaders import load_language_data
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
 
 feature_set = load_language_data('feats', language='la')
-print(normalize_features('NOUN', 'Case=Nom|Gender=Fem|Number=Sing|Mood=Ind', feature_set))
-# Returns feature dictionary:
-{'Case': 'Nom', 'Gender': 'Fem', 'Number': 'Sing'}
 
-print(normalize_xpos('PROPN', 'a-s---fn-'))
-# Returns 'n-s---fn-'
+# Example: NUM with NumForm feature reconciliation
+xpos, feats = normalize_morphology(
+    upos='NUM',
+    xpos='m-p---fa-',
+    feats='Case=Acc|Gender=Fem|Number=Plur',
+    feature_set=feature_set,
+    ref_features='NumForm=Word'  # Missing feature added from reference
+)
+
+print(xpos)
+# Output: 'm-p---fa-' (validated)
+
+print(feats)
+# Output: {'Case': 'Acc', 'Gender': 'Fem', 'NumForm': 'Word', 'Number': 'Plur'}
 ```
+
+**What it does:**
+- Detects and converts XPOS format (LLCT, ITTB, PROIEL → Perseus)
+- Validates XPOS positions against UPOS
+- Filters invalid features for the given UPOS
+- Reconciles with reference features (ref_features)
+- Returns tuple of (normalized_xpos, validated_features)
+
+## Validation
+
+Validate morphological annotations at the value level.
+
+### Validate Features
+
+Filter features to only those valid for a given UPOS:
+
+```python
+from nlp_utilities.loaders import load_language_data
+from nlp_utilities.validators import validate_features
+
+feature_set = load_language_data('feats', language='la')
+
+# Mood is invalid for NOUN - will be filtered out
+validated = validate_features(
+    upos='NOUN',
+    feats='Case=Nom|Gender=Fem|Number=Sing|Mood=Ind',
+    feature_set=feature_set
+)
+
+print(validated)
+# Output: {'Case': 'Nom', 'Gender': 'Fem', 'Number': 'Sing'}
+# Note: Mood=Ind removed (not valid for NOUN)
+```
+
+### Validate XPOS
+
+Ensure XPOS positions are valid for the given UPOS:
+
+```python
+from nlp_utilities.validators import validate_xpos
+
+# First character wrong for NOUN (should be 'n', not 'a')
+validated = validate_xpos(upos='NOUN', xpos='a-s---fn-')
+print(validated)
+# Output: 'n-s---fn-' (first character corrected)
+
+# Position 2 is only valid for verbs - will be removed
+validated = validate_xpos(upos='NOUN', xpos='n1s---mn-')
+print(validated)
+# Output: 'n-s---mn-' (position 2 cleared)
+```
+
+**Use cases:**
+- `validate_features()` and `validate_xpos()` are used internally by `normalize_morphology()`
+- Can be used standalone for validation-only tasks
+- Useful for checking annotations before file-level validation
 
 ## Next Steps
 

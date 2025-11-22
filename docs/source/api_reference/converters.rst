@@ -22,6 +22,14 @@ Feature Converters
 XPOS Converters
 ---------------
 
+Format XPOS
+~~~~~~~~~~~
+
+.. automodule:: nlp_utilities.converters.xpos.format_xpos
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ITTB to Perseus
 ~~~~~~~~~~~~~~~
 

@@ -42,11 +42,12 @@ tests/
 │   └── conllu/
 ├── helpers/                 # Test utilities
 │   └── conllu/
-└── test_data/               # Test fixtures
-    ├── gold.conllu
-    ├── system.conllu
-    ├── en_sentence.json
-    └── brat/
+├── test_data/               # Test fixtures
+|   ├── gold.conllu
+|   ├── system.conllu
+|   ├── en_sentence.json
+|   └── brat/
+└── validators/              # Validator tests
 ```
 
 **Naming Conventions**:
@@ -170,6 +171,51 @@ import pytest
 def test_ittb_to_perseus_verbs(ittb_tag, expected):
     """Test multiple ITTB verb conversions."""
     assert ittb_to_perseus(ittb_tag) == expected
+```
+
+### Testing Tuple Returns
+
+When functions return tuples (like `normalize_morphology`), unpack and test each value:
+
+```python
+from nlp_utilities.normalizers import normalize_morphology
+from nlp_utilities.loaders import load_language_data
+
+def test_normalize_morphology_returns_tuple(feature_set):
+    """Test that normalize_morphology returns (xpos, feats) tuple."""
+    # Arrange
+    upos = 'NOUN'
+    xpos = 'n-s---mn-'
+    feats = 'Case=Nom|Gender=Masc|Number=Sing'
+    
+    # Act
+    result_xpos, result_feats = normalize_morphology(
+        upos, xpos, feats, feature_set
+    )
+    
+    # Assert - test both return values
+    assert isinstance(result_xpos, str)
+    assert len(result_xpos) == 9
+    assert result_xpos[0] == 'n'
+    
+    assert isinstance(result_feats, dict)
+    assert result_feats['Case'] == 'Nom'
+    assert result_feats['Gender'] == 'Masc'
+    assert result_feats['Number'] == 'Sing'
+
+def test_normalize_morphology_with_ref_features(feature_set):
+    """Test feature reconciliation with ref_features."""
+    xpos, feats = normalize_morphology(
+        upos='VERB',
+        xpos='v-s-ga-g-',
+        feats='Aspect=Perf|Case=Gen|Number=Sing',
+        feature_set=feature_set,
+        ref_features='VerbForm=Ger'  # Should be added
+    )
+    
+    assert 'VerbForm' in feats
+    assert feats['VerbForm'] == 'Ger'
+    assert xpos[0] == 'v'
 ```
 
 ### Testing Exceptions
@@ -333,16 +379,24 @@ from hypothesis import given, strategies as st
     number=st.sampled_from(['Sing', 'Plur']),
     gender=st.sampled_from(['Masc', 'Fem', 'Neut'])
 )
-def test_feature_normalization(case, number, gender):
-    """Test feature normalization with generated values."""
+def test_morphology_normalization(case, number, gender, feature_set):
+    """Test morphology normalization with generated values."""
     features = f"Case={case}|Number={number}|Gender={gender}"
-    normalized = normalize_features(features)
+    xpos, feats = normalize_morphology(
+        upos='NOUN',
+        xpos='n--------',
+        feats=features,
+        feature_set=feature_set
+    )
 
     # Properties that should always hold
-    assert 'Case=' in normalized
-    assert 'Number=' in normalized
-    assert 'Gender=' in normalized
-    assert normalized == '|'.join(sorted(normalized.split('|')))
+    assert xpos[0] == 'n'  # UPOS character
+    assert len(xpos) == 9  # Perseus format
+    assert 'Case' in feats
+    assert 'Number' in feats
+    assert 'Gender' in feats
+    # Features should be validated for NOUN
+    assert all(key in ['Case', 'Number', 'Gender', 'Degree'] for key in feats.keys())
 ```
 
 ### Custom Strategies
@@ -541,13 +595,52 @@ def test_mock_loader(mocker):
     """Test with mocked data loader."""
     mock_load = mocker.patch('nlp_utilities.loaders.load_language_data')
     mock_load.return_value = {
-        'upos': ['NOUN', 'VERB'],
-        'features': {'Case': ['Nom', 'Gen']}
+        'Case': {
+            'byupos': {'NOUN': {'Nom': 1, 'Gen': 1}},
+            'uvalues': ['Nom', 'Gen'],
+            'lvalues': [],
+            'evalues': []
+        }
     }
 
-    result = normalize_features('Case=Nom', feature_set=mock_load())
+    xpos, feats = normalize_morphology(
+        upos='NOUN',
+        xpos='n--------',
+        feats='Case=Nom',
+        feature_set=mock_load()
+    )
 
-    assert result == {'Case': 'Nom'}
+    assert feats == {'Case': 'Nom'}
+    assert xpos[0] == 'n'
+
+def test_validate_features(mocker):
+    """Test validate_features with mocked feature set."""
+    from nlp_utilities.validators import validate_features
+    
+    mock_feature_set = {
+        'Case': {
+            'byupos': {'NOUN': {'Nom': 1, 'Gen': 0}},  # Gen marked invalid
+            'uvalues': ['Nom', 'Gen'],
+            'lvalues': [],
+            'evalues': []
+        }
+    }
+    
+    result = validate_features('NOUN', {'Case': 'Nom', 'Case': 'Gen'}, mock_feature_set)
+    assert 'Nom' in str(result)  # Valid value kept
+
+def test_validate_xpos():
+    """Test validate_xpos with various UPOS tags."""
+    from nlp_utilities.validators import validate_xpos
+    
+    # Test NOUN validation
+    result = validate_xpos('NOUN', 'a-s---fn-')
+    assert result[0] == 'n'  # First char corrected
+    
+    # Test VERB validation
+    result = validate_xpos('VERB', 'n3spia---')
+    assert result[0] == 'v'  # First char corrected
+    assert result[1] == '3'  # Position 2 valid for verbs
 ```
 
 ## Testing Best Practices
