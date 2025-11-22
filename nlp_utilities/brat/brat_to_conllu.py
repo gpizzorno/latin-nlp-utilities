@@ -9,7 +9,7 @@ from typing import Any
 import conllu
 
 from nlp_utilities.converters.features import feature_dict_to_string
-from nlp_utilities.normalizers import normalize_features, normalize_xpos
+from nlp_utilities.normalizers import normalize_morphology
 
 from .utils import (
     get_next_id_number,
@@ -162,8 +162,9 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
             # quick fix for sum/esse as auxiliary verbs
             entity_upos = 'AUX' if entity_deprel == 'aux' else safe_type_to_type(entity['upos'])  # type: ignore [arg-type]
             if token_upos != entity_upos:
-                token['xpos'] = normalize_xpos(entity_upos, token['xpos'])
-                token['feats'] = feature_dict_to_string(normalize_features(entity_upos, token['feats'], feature_set))
+                xpos, feats = normalize_morphology(entity_upos, token['xpos'], token['feats'], feature_set)
+                token['xpos'] = xpos
+                token['feats'] = feature_dict_to_string(feats)
                 token['upos'] = entity_upos
 
             # resolve entity head - check if it's a ROOT entity or regular token
