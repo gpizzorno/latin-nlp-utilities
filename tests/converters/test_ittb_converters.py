@@ -3,16 +3,16 @@
 import pytest
 
 from nlp_utilities.converters.xpos.ittb_converters import (
-    cas_to_case,
-    cas_to_number,
-    gen_to_gender,
-    gen_to_number,
-    gen_to_person,
-    grnp_to_degree,
+    _cas_to_case,
+    _cas_to_number,
+    _gen_to_gender,
+    _gen_to_number,
+    _gen_to_person,
+    _grnp_to_degree,
+    _mod_to_mood,
+    _mod_to_voice,
+    _tem_to_tense,
     ittb_to_perseus,
-    mod_to_mood,
-    mod_to_voice,
-    tem_to_tense,
 )
 
 
@@ -30,7 +30,7 @@ from nlp_utilities.converters.xpos.ittb_converters import (
     ],
 )
 def test_gen_to_person(value: str | None, expected: str) -> None:
-    assert gen_to_person(value) == expected
+    assert _gen_to_person(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -47,7 +47,7 @@ def test_gen_to_person(value: str | None, expected: str) -> None:
     ],
 )
 def test_gen_to_number(value: str | None, expected: str) -> None:
-    assert gen_to_number(value) == expected
+    assert _gen_to_number(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -70,7 +70,7 @@ def test_gen_to_number(value: str | None, expected: str) -> None:
     ],
 )
 def test_cas_to_number(value: str | None, expected: str) -> None:
-    assert cas_to_number(value) == expected
+    assert _cas_to_number(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -87,7 +87,7 @@ def test_cas_to_number(value: str | None, expected: str) -> None:
     ],
 )
 def test_tem_to_tense(value: str | None, expected: str) -> None:
-    assert tem_to_tense(value) == expected
+    assert _tem_to_tense(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -113,7 +113,7 @@ def test_tem_to_tense(value: str | None, expected: str) -> None:
     ],
 )
 def test_mod_to_mood(value: str | None, expected: str) -> None:
-    assert mod_to_mood(value) == expected
+    assert _mod_to_mood(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -139,7 +139,7 @@ def test_mod_to_mood(value: str | None, expected: str) -> None:
     ],
 )
 def test_mod_to_voice(value: str | None, expected: str) -> None:
-    assert mod_to_voice(value) == expected
+    assert _mod_to_voice(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -153,7 +153,7 @@ def test_mod_to_voice(value: str | None, expected: str) -> None:
     ],
 )
 def test_gen_to_gender(value: str | None, expected: str) -> None:
-    assert gen_to_gender(value) == expected
+    assert _gen_to_gender(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -176,7 +176,7 @@ def test_gen_to_gender(value: str | None, expected: str) -> None:
     ],
 )
 def test_cas_to_case(value: str | None, expected: str) -> None:
-    assert cas_to_case(value) == expected
+    assert _cas_to_case(value) == expected
 
 
 @pytest.mark.parametrize(
@@ -190,43 +190,43 @@ def test_cas_to_case(value: str | None, expected: str) -> None:
     ],
 )
 def test_grnp_to_degree(value: str | None, expected: str) -> None:
-    assert grnp_to_degree(value) == expected
+    assert _grnp_to_degree(value) == expected
 
 
 def test_grnp_to_degree_none() -> None:
-    assert grnp_to_degree(None) == '-'
+    assert _grnp_to_degree(None) == '-'
 
 
 def test_gen_to_person_none() -> None:
-    assert gen_to_person(None) == '-'
+    assert _gen_to_person(None) == '-'
 
 
 def test_gen_to_number_none() -> None:
-    assert gen_to_number(None) == '-'
+    assert _gen_to_number(None) == '-'
 
 
 def test_cas_to_number_none() -> None:
-    assert cas_to_number(None) == '-'
+    assert _cas_to_number(None) == '-'
 
 
 def test_tem_to_tense_none() -> None:
-    assert tem_to_tense(None) == '-'
+    assert _tem_to_tense(None) == '-'
 
 
 def test_mod_to_mood_none() -> None:
-    assert mod_to_mood(None) == '-'
+    assert _mod_to_mood(None) == '-'
 
 
 def test_mod_to_voice_none() -> None:
-    assert mod_to_voice(None) == '-'
+    assert _mod_to_voice(None) == '-'
 
 
 def test_gen_to_gender_none() -> None:
-    assert gen_to_gender(None) == '-'
+    assert _gen_to_gender(None) == '-'
 
 
 def test_cas_to_case_none() -> None:
-    assert cas_to_case(None) == '-'
+    assert _cas_to_case(None) == '-'
 
 
 # Integration tests for ittb_to_perseus

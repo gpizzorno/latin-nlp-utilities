@@ -3,13 +3,13 @@
 import pytest
 
 from nlp_utilities.converters.xpos.proiel_converters import (
-    to_case,
-    to_degree,
-    to_gender,
-    to_mood,
-    to_number,
-    to_tense,
-    to_voice,
+    _to_case,
+    _to_degree,
+    _to_gender,
+    _to_mood,
+    _to_number,
+    _to_tense,
+    _to_voice,
 )
 
 
@@ -24,7 +24,7 @@ from nlp_utilities.converters.xpos.proiel_converters import (
     ],
 )
 def test_to_number(input_value: str | None, expected: str) -> None:
-    assert to_number(input_value) == expected
+    assert _to_number(input_value) == expected
 
 
 @pytest.mark.parametrize(
@@ -40,7 +40,7 @@ def test_to_number(input_value: str | None, expected: str) -> None:
     ],
 )
 def test_to_tense(input_value: str | None, expected: str) -> None:
-    assert to_tense(input_value) == expected
+    assert _to_tense(input_value) == expected
 
 
 @pytest.mark.parametrize(
@@ -55,7 +55,7 @@ def test_to_tense(input_value: str | None, expected: str) -> None:
     ],
 )
 def test_to_mood(input_value: str | None, expected: str) -> None:
-    assert to_mood(input_value) == expected
+    assert _to_mood(input_value) == expected
 
 
 @pytest.mark.parametrize(
@@ -69,7 +69,7 @@ def test_to_mood(input_value: str | None, expected: str) -> None:
     ],
 )
 def test_to_voice(input_value: str | None, expected: str) -> None:
-    assert to_voice(input_value) == expected
+    assert _to_voice(input_value) == expected
 
 
 @pytest.mark.parametrize(
@@ -84,7 +84,7 @@ def test_to_voice(input_value: str | None, expected: str) -> None:
     ],
 )
 def test_to_gender(input_value: str | None, expected: str) -> None:
-    assert to_gender(input_value) == expected
+    assert _to_gender(input_value) == expected
 
 
 @pytest.mark.parametrize(
@@ -102,7 +102,7 @@ def test_to_gender(input_value: str | None, expected: str) -> None:
     ],
 )
 def test_to_case(input_value: str | None, expected: str) -> None:
-    assert to_case(input_value) == expected
+    assert _to_case(input_value) == expected
 
 
 @pytest.mark.parametrize(
@@ -117,4 +117,4 @@ def test_to_case(input_value: str | None, expected: str) -> None:
     ],
 )
 def test_to_degree(input_value: str | None, expected: str) -> None:
-    assert to_degree(input_value) == expected
+    assert _to_degree(input_value) == expected
