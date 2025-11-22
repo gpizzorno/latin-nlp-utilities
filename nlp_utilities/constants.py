@@ -441,3 +441,46 @@ LLCT_CONCORDANCES = {
         'Dim': 'x',  # Dim?
     },
 }
+
+# Universal Latin Mappings
+FEATS_TO_XPOS = {
+    ('Person', '1'): (2, '1'),  # First person
+    ('Person', '2'): (2, '2'),  # Second person
+    ('Person', '3'): (2, '3'),  # Third person
+    ('Number', 'Sing'): (3, 's'),  # Singular
+    ('Number', 'Plur'): (3, 'p'),  # Plural
+    ('Aspect', 'Imp'): (4, 'i'),  # Imperfect
+    ('Aspect', 'Perf'): (4, 't'),  # Future Perfect
+    ('Tense', 'Pres'): (4, 'p'),  # Present
+    ('Tense', 'Past'): (4, 'r'),  # Perfect
+    ('Tense', 'Pqp'): (4, 'l'),  # Pluperfect
+    ('Tense', 'Fut'): (4, 'f'),  # Future
+    ('VerbForm', 'Inf'): (5, 'n'),  # Infinitive
+    ('VerbForm', 'Part'): (5, 'p'),  # Participle
+    ('VerbForm', 'Ger'): (5, 'd'),  # Gerund
+    ('VerbForm', 'Gdv'): (5, 'g'),  # Gerundive
+    ('VerbForm', 'Sup'): (5, 'u'),  # Supine
+    ('Mood', 'Ind'): (5, 'i'),  # Indicative
+    ('Mood', 'Sub'): (5, 's'),  # Subjunctive
+    ('Mood', 'Imp'): (5, 'm'),  # Imperative
+    ('Voice', 'Act'): (6, 'a'),  # Active
+    ('Voice', 'Pass'): (6, 'p'),  # Passive
+    ('VerbType', 'Deponent'): (6, 'd'),  # Deponent
+    ('Gender', 'Fem'): (7, 'f'),  # Feminine
+    ('Gender', 'Masc'): (7, 'm'),  # Masculine
+    ('Gender', 'Neut'): (7, 'n'),  # Neuter
+    ('Case', 'Abl'): (8, 'b'),  # Ablative
+    ('Case', 'Acc'): (8, 'a'),  # Accusative
+    ('Case', 'Dat'): (8, 'd'),  # Dative
+    ('Case', 'Gen'): (8, 'g'),  # Genitive
+    ('Case', 'Nom'): (8, 'n'),  # Nominative
+    ('Case', 'Voc'): (8, 'v'),  # Vocative
+    ('Case', 'Loc'): (8, 'l'),  # Locative
+    ('Case', 'Ins'): (8, 'i'),  # Instrumental
+    ('Degree', 'Cmp'): (9, 'c'),  # Comparative
+    ('Degree', 'Pos'): (9, 'p'),  # Positive
+    ('Degree', 'Sup'): (9, 's'),  # Superlative
+    ('Degree', 'Abs'): (9, 'a'),  # Absolute
+}
+
+XPOS_TO_FEATS = {v: k for k, v in FEATS_TO_XPOS.items()}
