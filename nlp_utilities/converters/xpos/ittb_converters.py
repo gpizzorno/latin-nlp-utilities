@@ -6,7 +6,7 @@ from nlp_utilities.constants import ITTB_CONCORDANCES
 from nlp_utilities.converters.upos import upos_to_perseus
 
 
-def gen_to_person(value: str | None) -> str:
+def _gen_to_person(value: str | None) -> str:
     """Convert ITTB 'gen' to Perseus 2: 'person'."""
     if value is None:
         return '-'
@@ -20,7 +20,7 @@ def gen_to_person(value: str | None) -> str:
     return '-'  # Return '-' if no match found
 
 
-def gen_to_number(value: str | None) -> str:
+def _gen_to_number(value: str | None) -> str:
     """Convert ITTB 'gen' to Perseus 3: 'number'."""
     if value is None:
         return '-'
@@ -34,7 +34,7 @@ def gen_to_number(value: str | None) -> str:
     return '-'  # Return '-' if no match found
 
 
-def cas_to_number(value: str | None) -> str:
+def _cas_to_number(value: str | None) -> str:
     """Convert ITTB 'cas' to Perseus 3: 'number'."""
     if value is None:
         return '-'
@@ -48,7 +48,7 @@ def cas_to_number(value: str | None) -> str:
     return '-'  # Return '-' if no match found
 
 
-def tem_to_tense(value: str | None) -> str:
+def _tem_to_tense(value: str | None) -> str:
     """Convert ITTB 'tem' to Perseus 4: 'tense'."""
     if value is None:
         return '-'
@@ -58,7 +58,7 @@ def tem_to_tense(value: str | None) -> str:
     return concordance.get(value, '-')  # Return '-' if no match found
 
 
-def mod_to_mood(value: str | None) -> str:
+def _mod_to_mood(value: str | None) -> str:
     """Convert ITTB 'mod' to Perseus 5: 'mood'."""
     if value is None:
         return '-'
@@ -72,7 +72,7 @@ def mod_to_mood(value: str | None) -> str:
     return '-'  # Return '-' if no match found
 
 
-def mod_to_voice(value: str | None) -> str:
+def _mod_to_voice(value: str | None) -> str:
     """Convert ITTB 'mod' to Perseus 6: 'voice'."""
     if value is None:
         return '-'
@@ -86,7 +86,7 @@ def mod_to_voice(value: str | None) -> str:
     return '-'  # Return '-' if no match found
 
 
-def gen_to_gender(value: str | None) -> str:
+def _gen_to_gender(value: str | None) -> str:
     """Convert ITTB 'gen' to Perseus 7: 'gender'."""
     if value is None:
         return '-'
@@ -96,7 +96,7 @@ def gen_to_gender(value: str | None) -> str:
     return concordance.get(value, '-')  # Return '-' if no match found
 
 
-def cas_to_case(value: str | None) -> str:
+def _cas_to_case(value: str | None) -> str:
     """Convert ITTB 'cas' to Perseus 8: 'case'."""
     if value is None:
         return '-'
@@ -110,7 +110,7 @@ def cas_to_case(value: str | None) -> str:
     return '-'  # Return '-' if no match found
 
 
-def grnp_to_degree(value: str | None) -> str:
+def _grnp_to_degree(value: str | None) -> str:
     """Convert ITTB 'grn' or 'grp' to Perseus 9: 'degree'."""
     if value is None:
         return '-'
@@ -121,7 +121,16 @@ def grnp_to_degree(value: str | None) -> str:
 
 
 def ittb_to_perseus(upos: str | None, xpos: str | None) -> str:
-    """Format ITTB UPOS and XPOS as Perseus XPOS tag."""
+    """Convert ITTB UPOS and XPOS to Perseus XPOS tag.
+
+    Arguments:
+        upos: The Universal Part of Speech tag.
+        xpos: The ITTB XPOS tag.
+
+    Returns:
+        A Perseus XPOS string.
+
+    """
     if upos is None or xpos is None:
         return '----------'
 
@@ -129,24 +138,24 @@ def ittb_to_perseus(upos: str | None, xpos: str | None) -> str:
 
     # compile tags:
     pos = upos_to_perseus(upos)  # 1: part of speech
-    person = gen_to_person(xpos_dict['gen']) if 'gen' in xpos_dict else '-'  # 2: person
+    person = _gen_to_person(xpos_dict['gen']) if 'gen' in xpos_dict else '-'  # 2: person
 
     # 3: number
     if 'cas' in xpos_dict:
-        number = cas_to_number(xpos_dict['cas'])
+        number = _cas_to_number(xpos_dict['cas'])
     elif 'gen' in xpos_dict:
-        number = gen_to_number(xpos_dict['gen'])
+        number = _gen_to_number(xpos_dict['gen'])
     else:
         number = '-'
 
-    tense = tem_to_tense(xpos_dict['tem']) if 'tem' in xpos_dict else '-'  # 4: tense
-    mood = mod_to_mood(xpos_dict['mod']) if 'mod' in xpos_dict else '-'  # 5: mood
-    voice = mod_to_voice(xpos_dict['mod']) if 'mod' in xpos_dict else '-'  # 6: voice
-    gender = gen_to_gender(xpos_dict['gen']) if 'gen' in xpos_dict else '-'  # 7: gender
-    case = cas_to_case(xpos_dict['cas']) if 'cas' in xpos_dict else '-'  # 8: case
+    tense = _tem_to_tense(xpos_dict['tem']) if 'tem' in xpos_dict else '-'  # 4: tense
+    mood = _mod_to_mood(xpos_dict['mod']) if 'mod' in xpos_dict else '-'  # 5: mood
+    voice = _mod_to_voice(xpos_dict['mod']) if 'mod' in xpos_dict else '-'  # 6: voice
+    gender = _gen_to_gender(xpos_dict['gen']) if 'gen' in xpos_dict else '-'  # 7: gender
+    case = _cas_to_case(xpos_dict['cas']) if 'cas' in xpos_dict else '-'  # 8: case
 
     # 9: degree
     ittb_t = xpos_dict.get('grn', xpos_dict.get('grp'))
-    degree = grnp_to_degree(ittb_t) if ittb_t else '-'
+    degree = _grnp_to_degree(ittb_t) if ittb_t else '-'
 
     return f'{pos}{person}{number}{tense}{mood}{voice}{gender}{case}{degree}'

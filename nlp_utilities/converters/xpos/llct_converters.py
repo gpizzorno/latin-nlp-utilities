@@ -7,7 +7,7 @@ from nlp_utilities.converters.features import feature_string_to_dict
 from nlp_utilities.converters.upos import upos_to_perseus
 
 
-def validate_xpos_value(value: str | None, feats_type: str) -> str | None:
+def _validate_xpos_value(value: str | None, feats_type: str) -> str | None:
     """Validate LLCT XPOS value against concordance."""
     if value is None or value == '-':
         return None
@@ -20,13 +20,13 @@ def validate_xpos_value(value: str | None, feats_type: str) -> str | None:
     return None
 
 
-def reconcile_xpos_feats(xpos_value: str | None, feats_value: str | None, feats_type: str) -> str:
+def _reconcile_xpos_feats(xpos_value: str | None, feats_value: str | None, feats_type: str) -> str:
     """Reconcile LLCT XPOS and FEATS values."""
     # map FEATS value to XPOS value
     feats_value = LLCT_CONCORDANCES[feats_type].get(feats_value) if feats_value else None
     # validate both values
-    xpos_value = validate_xpos_value(xpos_value, feats_type)
-    feats_value = validate_xpos_value(feats_value, feats_type)
+    xpos_value = _validate_xpos_value(xpos_value, feats_type)
+    feats_value = _validate_xpos_value(feats_value, feats_type)
 
     # if neither value is valid, return '-'
     if not any([xpos_value, feats_value]):
@@ -42,12 +42,24 @@ def reconcile_xpos_feats(xpos_value: str | None, feats_value: str | None, feats_
     return xpos_value if xpos_value else '-'
 
 
-def llct_to_perseus(upos: str, xpos: str, feats: str) -> str:
-    """Format LLCT UPOS, XPOS, and FEATS as Perseus XPOS tag."""
+def llct_to_perseus(upos: str, xpos: str, feats: dict[str, str] | str) -> str:
+    """Convert LLCT UPOS, XPOS, and FEATS to Perseus XPOS tag.
+
+    Arguments:
+        upos: The Universal Part of Speech tag.
+        xpos: An LLCT XPOS string.
+        feats: A feature string or dictionary of features.
+
+    Returns:
+        A Perseus XPOS string.
+
+    """
     if not feats and '|' not in xpos:  # invalid punctuation xpos
         return f'{upos_to_perseus(upos)}--------'
 
-    feats_dict = feature_string_to_dict(feats)
+    if isinstance(feats, str):
+        feats = feature_string_to_dict(feats)
+
     parts = xpos.split('|')
 
     if len(parts) != 9:  # noqa: PLR2004
@@ -59,13 +71,13 @@ def llct_to_perseus(upos: str, xpos: str, feats: str) -> str:
 
     # ensure correct PoS tag
     pos = upos_to_perseus(upos)  # 1: part of speech
-    person = feats_dict.get('Person', '-')  # 2: person
-    number = reconcile_xpos_feats(number, feats_dict.get('Number'), 'number')  # 3: number
-    tense = reconcile_xpos_feats(tense, feats_dict.get('Tense'), 'tense')  # 4: tense
-    mood = reconcile_xpos_feats(mood, feats_dict.get('Mood'), 'mood')  # 5: mood
-    voice = reconcile_xpos_feats(voice, feats_dict.get('Voice'), 'voice')  # 6: voice
-    gender = reconcile_xpos_feats(gender, feats_dict.get('Gender'), 'gender')  # 7: gender
-    case = reconcile_xpos_feats(case, feats_dict.get('Case'), 'case')  # 8: case
-    degree = reconcile_xpos_feats(degree, feats_dict.get('Degree'), 'degree')  # 9: degree
+    person = feats.get('Person', '-')  # 2: person
+    number = _reconcile_xpos_feats(number, feats.get('Number'), 'number')  # 3: number
+    tense = _reconcile_xpos_feats(tense, feats.get('Tense'), 'tense')  # 4: tense
+    mood = _reconcile_xpos_feats(mood, feats.get('Mood'), 'mood')  # 5: mood
+    voice = _reconcile_xpos_feats(voice, feats.get('Voice'), 'voice')  # 6: voice
+    gender = _reconcile_xpos_feats(gender, feats.get('Gender'), 'gender')  # 7: gender
+    case = _reconcile_xpos_feats(case, feats.get('Case'), 'case')  # 8: case
+    degree = _reconcile_xpos_feats(degree, feats.get('Degree'), 'degree')  # 9: degree
 
     return f'{pos}{person}{number}{tense}{mood}{voice}{gender}{case}{degree}'
