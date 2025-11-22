@@ -4,74 +4,66 @@ from __future__ import annotations
 
 from typing import Any
 
-from nlp_utilities.constants import VALIDITY_BY_POS
-from nlp_utilities.converters.features import feature_string_to_dict
-from nlp_utilities.converters.upos import upos_to_perseus
+from .converters.features import feature_string_to_dict, features_to_xpos
+from .converters.xpos import format_xpos
+from .validators import validate_features, validate_xpos
 
 
-def normalize_features(
-    upos: str | None,
-    features: str | dict[str, Any],
-    feature_set: dict[str, Any] | None,
-) -> dict[str, Any] | None:
-    """Normalize features based on UPOS and a feature set.
+def normalize_morphology(
+    upos: str,
+    xpos: str,
+    feats: dict[str, str] | str,
+    feature_set: dict[str, Any],
+    ref_features: dict[str, str] | str | None = None,
+) -> tuple[str, dict[str, str]]:
+    """Normalize morphological information.
 
-    Arguments:
-        upos: The Universal Part of Speech tag.
-        features: A feature string or dictionary of features.
-        feature_set: A feature set dictionary defining valid features.
-
-    Returns:
-        A normalized feature dictionary or None.
-
-    """
-    if upos is None or feature_set is None:
-        msg = 'Must pass UPOS, FEATS, and a Feature set'
-        raise ValueError(msg)
-
-    if isinstance(features, str):
-        features = feature_string_to_dict(features)
-
-    if features:
-        output = {}
-
-        for attr, value in features.items():
-            # normalize attr label: capitalize first letter
-            attr = attr.capitalize()  # noqa: PLW2901
-            # check if attr is in feature set and value is valid for UPOS
-            if attr in feature_set:
-                record = feature_set[attr]
-                if upos in record['byupos'] and value in record['byupos'][upos] and record['byupos'][upos][value] != 0:
-                    output[attr] = value
-
-        return output
-
-    return features
-
-
-def normalize_xpos(upos: str, xpos: str) -> str:
-    """Normalize XPOS based on UPOS.
+    Takes UPOS, XPOS, and FEATS, normalizes and validates them against
+    a provided feature set, and reconciles with reference features if provided.
 
     Arguments:
         upos: The Universal Part of Speech tag.
         xpos: The language-specific Part of Speech tag.
+        feats: A string or dictionary of features.
+        feature_set: A feature set dictionary defining valid features.
+        ref_features: A reference feature string or dictionary to reconcile with (optional).
 
     Returns:
-        A normalized XPOS string.
+        A tuple containing the normalized XPOS string and validated feature dictionary.
 
     """
-    if not upos or not xpos:
-        msg = 'Must pass both UPOS and XPOS'
-        raise ValueError(msg)
+    # normalize xpos format if needed
+    xpos = format_xpos(upos, xpos, feats)
+    # validate xpos against upos
+    xpos = validate_xpos(upos, xpos)
+    # ensure feats are a dict
+    if isinstance(feats, str):
+        feats = feature_string_to_dict(feats)
 
-    upos_tag = upos_to_perseus(upos)
-    new_xpos = ''
-    for i, val in enumerate(xpos[1:], start=2):
-        new_xpos = new_xpos + val if upos_tag in VALIDITY_BY_POS.get(i, '') else new_xpos + '-'
+    if ref_features is not None and isinstance(ref_features, str):
+        ref_features = feature_string_to_dict(ref_features)
 
-    # ensure lowercase
-    new_xpos = new_xpos.lower()
-    # ensure correct length
-    new_xpos = new_xpos + '-' * (8 - len(new_xpos))
+    # reconcile feats with reference features if provided
+    # feats take precedence over ref_features, but we fill in
+    # missing keys from ref_features
+    if ref_features is not None:
+        for key, value in ref_features.items():
+            if key not in feats:
+                feats[key] = value
 
-    return f'{upos_tag}{new_xpos}'
+    # use feature_set to validate against upos
+    feats = validate_features(upos, feats, feature_set)
+
+    # generate an xpos set from the validated features
+    xpos_from_feats = features_to_xpos(feats)
+    # validate generated xpos against upos
+    xpos_from_feats = validate_xpos(upos, xpos_from_feats)
+
+    # reconcile two sets of xpos
+    # the provided xpos takes precedence over generated xpos
+    # but we fill in missing slots
+    for i in range(9):
+        if xpos[i] == '-':
+            xpos = xpos[:i] + xpos_from_feats[i] + xpos[i + 1 :]
+
+    return xpos, feats
