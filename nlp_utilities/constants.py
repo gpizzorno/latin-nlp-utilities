@@ -232,6 +232,11 @@ MARK_UPOS = r'^(NOUN|PROPN|ADJ|PRON|DET|NUM|VERB|AUX|INTJ)$'
 CC_UPOS = r'^(NOUN|PROPN|ADJ|PRON|DET|NUM|VERB|AUX|INTJ)$'
 # UPOS-DEPREL compatibility lists
 PUNCT_DEPREL = r'^(punct|root)$'
+# XPOS Matchers
+LLCT_XPOS_MATCHER = r'^(\w|Propn)(\|(\w|-)){9}$'
+ITTB_XPOS_MATCHER = r'^[A-Z]?\d{1,2}(\|\w{4})*$'
+PERSEUS_XPOS_MATCHER = r'^[123espitrlfndgumabvc-]{9}$'
+PROIEL_XPOS_MATCHER = r'^[A-Z][a-z-]$'
 
 # Character mapping for CoNLL-X types to brat-compatible types
 TYPE_TO_BRAT_TYPE = {
@@ -355,31 +360,31 @@ ITTB_CONCORDANCES = {
 # https://github.com/PerseusDL/treebank_data/blob/master/v2.1/Latin/TAGSET.txt
 # https://itreebank.marginalia.it/doc/Tagset_Perseus.pdf
 PROIEL_CONCORDANCES = {
-    'to_number': {
+    'number': {
         'Sing': 's',  # Singular
         'Plur': 'p',  # Plural
     },
-    'to_tense': {
+    'tense': {
         'Pres': 'p',  # Present
         'Past': 'r',  # Perfect
         'Pqp': 'l',  # Pluperfect
         'Fut': 'f',  # Future
     },
-    'to_mood': {
+    'mood': {
         'Ind': 'i',  # Indicative
         'Sub': 's',  # Subjunctive
         'Imp': 'm',  # Imperative
     },
-    'to_voice': {
+    'voice': {
         'Act': 'a',  # Active
         'Pass': 'p',  # Passive
     },
-    'to_gender': {
+    'gender': {
         'Fem': 'f',  # Feminine
         'Masc': 'm',  # Masculine
         'Neut': 'n',  # Neuter
     },
-    'to_case': {
+    'case': {
         'Abl': 'b',  # Ablative
         'Acc': 'a',  # Accusative
         'Dat': 'd',  # Dative
@@ -387,7 +392,7 @@ PROIEL_CONCORDANCES = {
         'Nom': 'n',  # Nominative
         'Voc': 'v',  # Vocative
     },
-    'to_degree': {
+    'degree': {
         'Cmp': 'c',  # Comparative
         'Pos': 'p',  # Positive
         'Sup': 's',  # Superlative
