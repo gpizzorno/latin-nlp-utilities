@@ -28,9 +28,12 @@ def format_xpos(upos: str, xpos: str | None, feats: dict[str, str] | str | None)
         A Perseus XPOS string.
 
     """
-    if upos is None or feats is None:
-        msg = 'Both UPOS and FEATS must be provided to format XPOS.'
+    if upos is None:
+        msg = 'UPOS must be provided to format XPOS.'
         raise ValueError(msg)
+
+    if not feats:
+        feats = {}
 
     if isinstance(feats, str):
         feats = feature_string_to_dict(feats)
