@@ -7,14 +7,8 @@ from nlp_utilities.converters.xpos import format_xpos
 
 def test_format_xpos_requires_upos() -> None:
     """Test that UPOS is required."""
-    with pytest.raises(ValueError, match='Both UPOS and FEATS must be provided'):
+    with pytest.raises(ValueError, match='UPOS must be provided to format XPOS'):
         format_xpos(None, 'n-s---mn-', {'Case': 'Nom'})  # type: ignore [arg-type]
-
-
-def test_format_xpos_requires_feats() -> None:
-    """Test that FEATS is required."""
-    with pytest.raises(ValueError, match='Both UPOS and FEATS must be provided'):
-        format_xpos('NOUN', 'n-s---mn-', None)
 
 
 def test_format_xpos_accepts_empty_feats_dict() -> None:
