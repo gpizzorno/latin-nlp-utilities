@@ -53,7 +53,7 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
         with meta_path.open('r', encoding='utf-8') as file:
             metadata = json.load(file)
 
-        ref_conllu = metadata.get('conllu_filename')
+        ref_conllu = ref_conllu if ref_conllu else metadata.get('conllu_filename')
         sents_per_doc = metadata.get('sents_per_doc')  # noqa: F841
         output_root = metadata.get('output_root')
         meta_error = 'none found in metadata file.'
