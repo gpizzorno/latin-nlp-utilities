@@ -137,7 +137,9 @@ def sort_annotations_set(annotations: list[dict[str, Any]]) -> list[dict[str, st
         A sorted list of annotation dictionaries.
 
     """
-    return sorted(annotations, key=lambda x: int(x['id']))
+    _type = annotations[0]['type'] if annotations else None
+    sort_by_field = 'start' if _type == 'T' else 'id'
+    return sorted(annotations, key=lambda x: int(x[sort_by_field]))
 
 
 def sort_annotations(annotations: list[dict[str, Any]]) -> list[dict[str, str | int]]:
