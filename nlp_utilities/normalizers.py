@@ -36,9 +36,8 @@ def normalize_morphology(
     xpos = format_xpos(upos, xpos, feats)
     # validate xpos against upos
     xpos = validate_xpos(upos, xpos)
-    # ensure feats are a dict
-    if isinstance(feats, str):
-        feats = feature_string_to_dict(feats)
+    # set default for feats if None and ensure it is a dict
+    feats = feature_string_to_dict(feats) if isinstance(feats, str) else feats if feats is not None else {}
 
     if ref_features is not None and isinstance(ref_features, str):
         ref_features = feature_string_to_dict(ref_features)
