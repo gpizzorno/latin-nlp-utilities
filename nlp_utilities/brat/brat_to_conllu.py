@@ -157,15 +157,19 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
                 )
                 raise ValueError(msg)
 
-            token_upos = token['upos']
             entity_deprel = safe_type_to_type(entity.get('deprel', '_'))  # type: ignore [arg-type]
             # quick fix for sum/esse as auxiliary verbs
             entity_upos = 'AUX' if entity_deprel == 'aux' else safe_type_to_type(entity['upos'])  # type: ignore [arg-type]
-            if token_upos != entity_upos:
-                xpos, feats = normalize_morphology(entity_upos, token['xpos'], token['feats'], feature_set)
-                token['xpos'] = xpos
-                token['feats'] = feature_dict_to_string(feats)
-                token['upos'] = entity_upos
+            # normalize morphology
+            xpos, feats = normalize_morphology(
+                upos=entity_upos,
+                xpos=token['xpos'],
+                feats=token['feats'],
+                feature_set=feature_set,
+            )
+            token['xpos'] = xpos
+            token['feats'] = feature_dict_to_string(feats)
+            token['upos'] = entity_upos
 
             # resolve entity head - check if it's a ROOT entity or regular token
             raw_entity_head = entity.get('head')
@@ -192,6 +196,7 @@ def brat_to_conllu(  # noqa: C901, PLR0912, PLR0913, PLR0915
 
                 if new_deps:
                     token['deps'] = new_deps
+
             elif entity_head and entity_deprel:
                 token['deps'] = [(entity_deprel, entity_head)]
 
@@ -230,8 +235,6 @@ def _get_annotations(annotation_files: list[str]) -> tuple[list[dict[str, Any]],
     for ann_file in annotation_files:
         annotations.append(read_annotations(ann_file))
         lines.append(read_text_lines(ann_file.replace('.ann', '.txt')))
-
-    # fixes / checks
 
     # adjust offsets
     base_offset = 0
