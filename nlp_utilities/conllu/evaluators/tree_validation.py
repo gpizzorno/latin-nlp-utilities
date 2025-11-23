@@ -13,7 +13,7 @@ class TreeValidationMixin:
     # Type hints for attributes from ConlluEvaluator
     eval_deprels: bool
 
-    def _validate_tree_structure(self, sentence: conllu.TokenList, sent_id: str = 'unknown') -> None:
+    def _validate_tree_structure(self, sentence: conllu.TokenList, sent_id: str = 'unknown') -> None:  # noqa: C901
         """Validate the dependency tree structure of a sentence.
 
         Arguments:
@@ -44,7 +44,11 @@ class TreeValidationMixin:
         # Validate HEAD values are in valid range
         num_words = len(words)
         for token in words:
-            head = token['head']
+            head = token.get('head')
+            if head is None:
+                msg = f'Sentence {sent_id}: Word "{token["form"]}" (id={token["id"]}) has no HEAD'
+                raise UDError(msg)
+
             if head < 0 or head > num_words:
                 msg = (
                     f"Sentence {sent_id}: HEAD {head} for word '{token['form']}' "
