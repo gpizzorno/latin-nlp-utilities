@@ -12,11 +12,11 @@ sys.path.insert(0, str(Path(__file__).parents[2].resolve()))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Latin NLP Utilities'
+project = 'CoNLL-U Tools'
 copyright = '%Y, Gabe Pizzorno'
 author = 'Gabe Pizzorno'
-release = '1.0.0'
-version = '1.0.0'
+release = '1.3.0'
+version = '1.3.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -119,13 +119,13 @@ html_theme_options = {
 html_context = {
     'display_github': True,
     'github_user': 'gpizzorno',
-    'github_repo': 'latin-nlp-utilities',
+    'github_repo': 'conllu_tools',
     'github_version': 'main',
     'conf_py_path': '/docs/source/',
 }
 
 html_title = f'{project} v{version}'
-html_short_title = 'Latin NLP Utils'
+html_short_title = 'CoNLL-U Tools'
 html_favicon = None
 html_logo = None
 
@@ -148,7 +148,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass).
 latex_documents = [
-    ('index', 'LatinNLPUtilities.tex', 'Latin NLP Utilities Documentation', 'Gabe Pizzorno', 'manual'),
+    ('index', 'conllu_tools.tex', 'CoNLL-U Tools Documentation', 'Gabe Pizzorno', 'manual'),
 ]
 
 # -- Options for manual page output -----------------------------------------
@@ -156,7 +156,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'latinnlputilities', 'Latin NLP Utilities Documentation', [author], 1),
+    ('index', 'conllu_tools', 'CoNLL-U Tools Documentation', [author], 1),
 ]
 
 # -- Options for Texinfo output ---------------------------------------------
@@ -167,11 +167,11 @@ man_pages = [
 texinfo_documents = [
     (
         'index',
-        'LatinNLPUtilities',
-        'Latin NLP Utilities Documentation',
+        'CoNLLUTools',
+        'CoNLL-U Tools Documentation',
         author,
-        'LatinNLPUtilities',
-        'Tools for working with Latin treebanks and annotated corpora.',
+        'CoNLLUTools',
+        'Tools for working with CoNLL-U files, UD treebanks, and annotated corpora.',
         'Miscellaneous',
     ),
 ]
