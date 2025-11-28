@@ -1,13 +1,13 @@
-# Latin NLP Utilities
+# CoNLL-U Tools
 
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Language-Python-blue.svg)](https://www.python.org)
-[![Tests](https://github.com/gpizzorno/latin-nlp-utilities/actions/workflows/tests.yml/badge.svg)](https://github.com/gpizzorno/latin-nlp-utilities/actions/workflows/tests.yml)
-[![Documentation](https://img.shields.io/badge/Docs-latest-blue.svg)](https://gpizzorno.github.io/latin-nlp-utilities/)
+[![Tests](https://github.com/gpizzorno/conllu_tools/actions/workflows/tests.yml/badge.svg)](https://github.com/gpizzorno/conllu_tools/actions/workflows/tests.yml)
+[![Documentation](https://img.shields.io/badge/Docs-latest-blue.svg)](https://gpizzorno.github.io/conllu_tools/)
 
-**Latin NLP Utilities** is a set of convenience tools for working with Latin treebanks and annotated corpora. It provides converters, evaluation scripts, validation tools, and utilities for transforming, validating, and comparing Latin linguistic data in [CoNLL-U](https://universaldependencies.org/format.html) and [brat](https://brat.nlplab.org) standoff formats.
+**CoNLL-U Tools** is a set of convenience tools for working with CoNLL-U files, UD treebanks, and annotated corpora. It provides converters, evaluation scripts, validation tools, and utilities for transforming, validating, and comparing linguistic data in [CoNLL-U](https://universaldependencies.org/format.html) and [brat](https://brat.nlplab.org) standoff formats.
 
-[Read the documentation](https://gpizzorno.github.io/latin-nlp-utilities/)
+[Read the documentation](https://gpizzorno.github.io/conllu_tools/)
 
 ## Features
 
@@ -17,24 +17,24 @@
 - **Evaluation**: Score system outputs against gold-standard CoNLL-U files, including enhanced dependencies
 - **Extensible**: Easily add new tagset converters or feature mappings
 
-For detailed information about each feature, see the [User Guide](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/index.html).
+For detailed information about each feature, see the [User Guide](https://gpizzorno.github.io/conllu_tools/user_guide/index.html).
 
 ## Installation
 
 ### Quick Install
 
 ```sh
-pip install latin-nlp-utilities
+pip install conllu_tools
 ```
 
-For detailed installation instructions, including platform-specific guidance and troubleshooting, see the [Installation Guide](https://gpizzorno.github.io/latin-nlp-utilities/installation.html).
+For detailed installation instructions, including platform-specific guidance and troubleshooting, see the [Installation Guide](https://gpizzorno.github.io/conllu_tools/installation.html).
 
 ## Quick Start
 
 ### Convert CoNLL-U to brat
 
 ```python
-from nlp_utilities.brat import conllu_to_brat
+from conllu_tools.io import conllu_to_brat
 
 conllu_to_brat(
     conllu_filename='path/to/conllu/yourfile.conllu',
@@ -51,8 +51,8 @@ conllu_to_brat(
 ### Convert brat to CoNLL-U
 
 ```python
-from nlp_utilities.brat import brat_to_conllu
-from nlp_utilities.loaders import load_language_data
+from conllu_tools.io import brat_to_conllu
+from conllu_tools.io import load_language_data
 
 feature_set = load_language_data('feats', language='la')
 brat_to_conllu(
@@ -69,7 +69,7 @@ brat_to_conllu(
 ### Validate CoNLL-U Files
 
 ```python
-from nlp_utilities.conllu import ConlluValidator
+from conllu_tools import ConlluValidator
 
 validator = ConlluValidator(lang='la', level=2)
 reporter = validator.validate_file('path/to/yourfile.conllu')
@@ -80,7 +80,7 @@ print(f'Errors found: {reporter.get_error_count()}')
 # Inspect first error
 sent_id, order, testlevel, error = reporter.errors[0]
 print(f'Sentence ID: {sent_id}')  # e.g. 34
-print(f'Testing at level: {sent_id}')  # e.g. 2
+print(f'Testing at level: {testlevel}')  # e.g. 2
 print(f'Error test level: {error.testlevel}')  # e.g. 1
 print(f'Error type: {error.error_type}')  # e.g. "Metadata"
 print(f'Test ID: {error.testid}')  # e.g. "text-mismatch"
@@ -100,7 +100,7 @@ for error in reporter.format_errors():
 ### Evaluate CoNLL-U Files
 
 ```python
-from nlp_utilities.conllu import ConlluEvaluator
+from conllu_tools import ConlluEvaluator
 
 evaluator = ConlluEvaluator(eval_deprels=True, treebank_type='0')
 scores = evaluator.evaluate_files(
@@ -119,9 +119,9 @@ print(f'LAS: {scores["LAS"].f1:.2%}')
 ### Convert Between Tagsets
 
 ```python
-from nlp_utilities.converters.upos import dalme_to_upos, upos_to_perseus
-from nlp_utilities.converters.xpos import ittb_to_perseus, llct_to_perseus
-from nlp_utilities.converters.features import feature_string_to_dict, feature_dict_to_string
+from conllu_tools.utils.upos import dalme_to_upos, upos_to_perseus
+from conllu_tools.utils.xpos import ittb_to_perseus, llct_to_perseus
+from conllu_tools.utils.features import feature_string_to_dict, feature_dict_to_string
 
 print(dalme_to_upos('adjective'))
 # Returns 'ADJ'
@@ -146,8 +146,8 @@ print(feature_dict_to_string(feat_dict))
 ### Normalize Morphology
 
 ```python
-from nlp_utilities.loaders import load_language_data
-from nlp_utilities.normalizers import normalize_morphology
+from conllu_tools.io import load_language_data
+from conllu_tools.utils.normalization import normalize_morphology
 
 feature_set = load_language_data('feats', language='la')
 
@@ -168,22 +168,22 @@ print(feats)
 # Returns {'Aspect': 'Perf', 'Case': 'Gen', 'Degree': 'Pos', 'Number': 'Sing', 'VerbForm': 'Ger', 'Voice': 'Act'}
 ```
 
-For more examples and detailed usage, see the [Quickstart Guide](https://gpizzorno.github.io/latin-nlp-utilities/quickstart.html).
+For more examples and detailed usage, see the [Quickstart Guide](https://gpizzorno.github.io/conllu_tools/quickstart.html).
 
 ## Documentation
 
 The full documentation includes:
 
-- **[Installation Guide](https://gpizzorno.github.io/latin-nlp-utilities/installation.html)**: Detailed installation instructions and troubleshooting
-- **[Quickstart Guide](https://gpizzorno.github.io/latin-nlp-utilities/quickstart.html)**: Get started quickly with common tasks
-- **[User Guide](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/index.html)**: Comprehensive guides for all features
-  - [brat Conversion](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/brat_conversion.html): CoNLL-U ↔ brat conversion
-  - [Validation](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/validation.html): Validation framework and recipes
-  - [Evaluation](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/evaluation.html): Metrics and evaluation workflows
-  - [Converters](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/converters.html): Tagset conversions
-  - [Normalization](https://gpizzorno.github.io/latin-nlp-utilities/user_guide/normalization.html): Feature normalization
-- **[API Reference](https://gpizzorno.github.io/latin-nlp-utilities/api_reference/index.html)**: Complete API documentation
-- **[Developer Guide](https://gpizzorno.github.io/latin-nlp-utilities/developer_guide/index.html)**: Architecture and testing guides for contributors
+- **[Installation Guide](https://gpizzorno.github.io/conllu_tools/installation.html)**: Detailed installation instructions and troubleshooting
+- **[Quickstart Guide](https://gpizzorno.github.io/conllu_tools/quickstart.html)**: Get started quickly with common tasks
+- **[User Guide](https://gpizzorno.github.io/conllu_tools/user_guide/index.html)**: Comprehensive guides for all features
+  - [brat Conversion](https://gpizzorno.github.io/conllu_tools/user_guide/brat_conversion.html): CoNLL-U ↔ brat conversion
+  - [Validation](https://gpizzorno.github.io/conllu_tools/user_guide/validation.html): Validation framework and recipes
+  - [Evaluation](https://gpizzorno.github.io/conllu_tools/user_guide/evaluation.html): Metrics and evaluation workflows
+  - [Converters](https://gpizzorno.github.io/conllu_tools/user_guide/converters.html): Tagset conversions
+  - [Normalization](https://gpizzorno.github.io/conllu_tools/user_guide/normalization.html): Feature normalization
+- **[API Reference](https://gpizzorno.github.io/conllu_tools/api_reference/index.html)**: Complete API documentation
+- **[Developer Guide](https://gpizzorno.github.io/conllu_tools/developer_guide/index.html)**: Architecture and testing guides for contributors
 
 
 ## Acknowledgments
