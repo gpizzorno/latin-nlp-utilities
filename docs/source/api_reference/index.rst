@@ -5,19 +5,17 @@ API Reference
 
 Complete API documentation for all modules:
 
-- :mod:`nlp_utilities.brat`: brat standoff conversion utilities
-- :mod:`nlp_utilities.conllu`: CoNLL-U validation and evaluation
-- :mod:`nlp_utilities.converters`: Tagset and format converters
-- :mod:`nlp_utilities.loaders`: Data loading utilities
-- :mod:`nlp_utilities.normalizers`: Feature and tag normalization
-- :mod:`nlp_utilities.validators`: Feature and tag validation
+- :mod:`conllu_tools.io`: data loading and CoNLL-U/brat conversion utilities
+- :mod:`conllu_tools.validation`: CoNLL-U validation
+- :mod:`conllu_tools.evaluation`: CoNLL-U evaluation
+- :mod:`conllu_tools.matching`: Complex linguistic pattern matching
+- :mod:`conllu_tools.utils`: Tagset and format utilities
 
 .. toctree::
    :maxdepth: 2
 
-   brat
-   conllu
-   converters
-   loaders
-   normalizers
-   validators
+   io
+   validation
+   evaluation
+   matching
+   utils

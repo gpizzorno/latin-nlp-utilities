@@ -1,20 +1,20 @@
 (quickstart)=
 # Quick Start Guide
 
-This guide will get you up and running with `latin-nlp-utilities` in minutes.
+This guide will get you up and running with CoNLL-U Tools in minutes.
 
 ## Installation
 
 First, install the package:
 
 ```bash
-pip install latin-nlp-utilities
+pip install conllu_tools
 ```
 
 Verify the installation:
 
 ```bash
-python -c "import nlp_utilities; print('Ready to go!')"
+python -c "import conllu_tools; print('Ready to go!')"
 ```
 
 ## Conversion
@@ -24,7 +24,7 @@ Let’s convert a CoNLL-U file to brat format for visual annotation.
 ### CoNLL-U to brat
 
 ```python
-from nlp_utilities.brat import conllu_to_brat
+from conllu_tools.io import conllu_to_brat
 
 # Convert CoNLL-U to brat format
 conllu_to_brat(
@@ -50,8 +50,8 @@ print("Conversion complete! Check brat_annotations directory")
 After annotating in brat, convert back to CoNLL-U:
 
 ```python
-from nlp_utilities.brat import brat_to_conllu
-from nlp_utilities.loaders import load_language_data
+from conllu_tools.io import brat_to_conllu
+from conllu_tools.io import load_language_data
 
 # Load feature set for validation
 feature_set = load_language_data('feats', language='la')
@@ -67,28 +67,6 @@ brat_to_conllu(
 print("Converted back to CoNLL-U!")
 ```
 
-## Evaluation
-
-Evaluate parser output against gold standard.
-
-### Basic Evaluation
-
-```python
-from nlp_utilities.conllu import ConlluEvaluator
-
-# Compare gold standard with system output
-evaluator = ConlluEvaluator(eval_deprels=True, treebank_type='0')
-scores = evaluator.evaluate_files(
-    gold_path='path/to/gold_standard.conllu',
-    system_path='path/to/parser_output.conllu',
-)
-
-# Print results
-print(f"Unlabeled Attachment Score (UAS): {results['UAS']:.2f}%")
-print(f"Labeled Attachment Score (LAS): {results['LAS']:.2f}%")
-print(f"UPOS Accuracy: {results['UPOS']:.2f}%")
-```
-
 ## Validation
 
 Validate CoNLL-U files for format and linguistic correctness.
@@ -96,7 +74,7 @@ Validate CoNLL-U files for format and linguistic correctness.
 ### Basic Validation
 
 ```python
-from nlp_utilities.conllu import ConlluValidator
+from conllu_tools import ConlluValidator
 
 # Create validator
 validator = ConlluValidator(lang='la', level=2)
@@ -110,7 +88,7 @@ print(f'Errors found: {reporter.get_error_count()}')
 # Inspect first error
 sent_id, order, testlevel, error = reporter.errors[0]
 print(f'Sentence ID: {sent_id}')  # e.g. 34
-print(f'Testing at level: {sent_id}')  # e.g. 2
+print(f'Testing at level: {testlevel}')  # e.g. 2
 print(f'Error test level: {error.testlevel}')  # e.g. 1
 print(f'Error type: {error.error_type}')  # e.g. "Metadata"
 print(f'Test ID: {error.testid}')  # e.g. "text-mismatch"
@@ -127,63 +105,44 @@ for error in reporter.format_errors():
 # Reconstructed: 'Una scala ....' (first diff at position 9)
 ```
 
-## Tagset Conversion
+## Evaluation
 
-Convert between different tagsets.
+Evaluate parser output against gold standard.
 
-### XPOS Conversion
-
-Standardize XPOS tags from different treebanks:
+### Basic Evaluation
 
 ```python
-from nlp_utilities.converters.upos import dalme_to_upos, upos_to_perseus
-from nlp_utilities.converters.xpos import ittb_to_perseus, llct_to_perseus
+from conllu_tools import ConlluEvaluator
 
-print(dalme_to_upos('adjective'))
-# Returns 'ADJ'
+# Compare gold standard with system output
+evaluator = ConlluEvaluator(eval_deprels=True, treebank_type='0')
+scores = evaluator.evaluate_files(
+    gold_path='path/to/gold_standard.conllu',
+    system_path='path/to/parser_output.conllu',
+)
 
-print(upos_to_perseus('NOUN'))
-# Returns 'n'
-
-print(ittb_to_perseus('VERB', 'gen4|tem1|mod1'))  
-# Returns 'v1sp-----'
-
-# LLCT converter requires UPOS, XPOS, and FEATS
-print(llct_to_perseus('NOUN', 'n|n|-|s|-|-|-|m|n|-', 'Case=Nom|Gender=Masc|Number=Sing'))
-# Returns 'n-s---mn-'
+# Print scores
+print(f"Unlabeled Attachment Score (UAS): {scores['UAS']:.2f}%")
+print(f"Labeled Attachment Score (LAS): {scores['LAS']:.2f}%")
+print(f"UPOS Accuracy: {scores['UPOS']:.2f}%")
 ```
 
-### Feature Conversion
+## Pattern Matching
 
-Convert between feature string and dictionary formats:
+[ADD CONTENT]
 
-```python
-from nlp_utilities.converters.features import feature_string_to_dict, feature_dict_to_string
 
-# String to dictionary
-feat_string = "Case=Nom|Gender=Masc|Number=Sing"
-feat_dict = feature_string_to_dict(feat_string)
-print(feat_dict)
-# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+## Utils
 
-# Dictionary to string (automatically sorted)
-feat_dict = {'Number': 'Sing', 'Case': 'Gen', 'Gender': 'Fem'}
-feat_string = feature_dict_to_string(feat_dict)
-print(feat_string)
-# Output: Case=Gen|Gender=Fem|Number=Sing
-```
-
-## Normalization
-
-Clean and standardize morphological annotations.
+[ADD INTRO]
 
 ### Normalize Morphology
 
 Normalize XPOS and FEATS together with automatic format detection and validation:
 
 ```python
-from nlp_utilities.loaders import load_language_data
-from nlp_utilities.normalizers import normalize_morphology
+from conllu_tools.io import load_language_data
+from conllu_tools.utils.normalization import normalize_morphology
 
 feature_set = load_language_data('feats', language='la')
 
@@ -210,54 +169,50 @@ print(feats)
 - Reconciles with reference features (ref_features)
 - Returns tuple of (normalized_xpos, validated_features)
 
-## Validation
+Convert between different tagsets.
 
-Validate morphological annotations at the value level.
+### XPOS Conversion
 
-### Validate Features
-
-Filter features to only those valid for a given UPOS:
+Standardize XPOS tags from different treebanks:
 
 ```python
-from nlp_utilities.loaders import load_language_data
-from nlp_utilities.validators import validate_features
+from conllu_tools.utils.upos import dalme_to_upos, upos_to_perseus
+from conllu_tools.utils.xpos import ittb_to_perseus, llct_to_perseus
 
-feature_set = load_language_data('feats', language='la')
+print(dalme_to_upos('adjective'))
+# Returns 'ADJ'
 
-# Mood is invalid for NOUN - will be filtered out
-validated = validate_features(
-    upos='NOUN',
-    feats='Case=Nom|Gender=Fem|Number=Sing|Mood=Ind',
-    feature_set=feature_set
-)
+print(upos_to_perseus('NOUN'))
+# Returns 'n'
 
-print(validated)
-# Output: {'Case': 'Nom', 'Gender': 'Fem', 'Number': 'Sing'}
-# Note: Mood=Ind removed (not valid for NOUN)
+print(ittb_to_perseus('VERB', 'gen4|tem1|mod1'))  
+# Returns 'v1sp-----'
+
+# LLCT converter requires UPOS, XPOS, and FEATS
+print(llct_to_perseus('NOUN', 'n|n|-|s|-|-|-|m|n|-', 'Case=Nom|Gender=Masc|Number=Sing'))
+# Returns 'n-s---mn-'
 ```
 
-### Validate XPOS
+### Feature Conversion
 
-Ensure XPOS positions are valid for the given UPOS:
+Convert between feature string and dictionary formats:
 
 ```python
-from nlp_utilities.validators import validate_xpos
+from conllu_tools.utils.features import feature_string_to_dict, feature_dict_to_string
 
-# First character wrong for NOUN (should be 'n', not 'a')
-validated = validate_xpos(upos='NOUN', xpos='a-s---fn-')
-print(validated)
-# Output: 'n-s---fn-' (first character corrected)
+# String to dictionary
+feat_string = "Case=Nom|Gender=Masc|Number=Sing"
+feat_dict = feature_string_to_dict(feat_string)
+print(feat_dict)
+# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
 
-# Position 2 is only valid for verbs - will be removed
-validated = validate_xpos(upos='NOUN', xpos='n1s---mn-')
-print(validated)
-# Output: 'n-s---mn-' (position 2 cleared)
+# Dictionary to string (automatically sorted)
+feat_dict = {'Number': 'Sing', 'Case': 'Gen', 'Gender': 'Fem'}
+feat_string = feature_dict_to_string(feat_dict)
+print(feat_string)
+# Output: Case=Gen|Gender=Fem|Number=Sing
 ```
 
-**Use cases:**
-- `validate_features()` and `validate_xpos()` are used internally by `normalize_morphology()`
-- Can be used standalone for validation-only tasks
-- Useful for checking annotations before file-level validation
 
 ## Next Steps
 
@@ -265,22 +220,29 @@ Now that you’ve seen the basics, dive deeper:
 
 **User Guides**
 
-- [brat Conversion](user_guide/brat_conversion.md) - Complete brat conversion guide
-- [Validation](user_guide/validation.md) - Comprehensive validation guide
+- [Conversion](user_guide/brat_conversion.md) - Conversion guide
+- [Validation](user_guide/validation.md) - Validation guide
 - [Evaluation](user_guide/evaluation.md) - Detailed evaluation metrics
-- [Converters](user_guide/converters.md) - Tagset conversion guide
-- [Normalization](user_guide/normalization.md) - Normalization workflows
+- [Matching](user_guide/matching.md) - Pattern matching guide
+- [Utils](user_guide/utils.md) - Utils guide
+
+**Examples**
+
+- [Input/Output](examples/io.md)
+- [Validation](examples/validation.md)
+- [Evaluation](examples/evaluation.md)
+- [Normalization](examples/normalization.md)
 
 **API Reference**
 
-- {doc}`api_reference/brat` - brat conversion API
-- {doc}`api_reference/conllu` - Validators and evaluators
-- {doc}`api_reference/converters` - Converter functions
-- {doc}`api_reference/loaders` - Data loading utilities
-- {doc}`api_reference/normalizers` - Normalization functions
+- {doc}`api_reference/io` - Input/Output/Conversion API
+- {doc}`api_reference/validation` - Validation API
+- {doc}`api_reference/evaluation` - Evaluation API
+- {doc}`api_reference/matching` - Pattern matching API
+- {doc}`api_reference/utils` - Utils functions
 
 ## Need Help?
 
-- **Issues**: [https://github.com/gpizzorno/latin-nlp-utilities/issues](https://github.com/gpizzorno/latin-nlp-utilities/issues)
+- **Issues**: [https://github.com/gpizzorno/conllu_tools/issues](https://github.com/gpizzorno/conllu_tools/issues)
 - **Documentation**: Use the search bar in these docs
-- **Examples**: Check the test files for more usage examples
+- **More examples**: Check the test files for more usage examples

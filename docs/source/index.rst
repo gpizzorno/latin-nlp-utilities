@@ -1,7 +1,7 @@
-.. Latin NLP Utilities documentation master file
+.. CoNLL-U Tools documentation master file
 
-Latin NLP Utilities Documentation
-==================================
+CoNLL-U Tools Documentation
+===========================
 
 .. image:: https://img.shields.io/badge/License-MIT-green.svg
    :target: https://opensource.org/licenses/MIT
@@ -11,11 +11,11 @@ Latin NLP Utilities Documentation
    :target: https://www.python.org
    :alt: Python
 
-.. image:: https://github.com/gpizzorno/latin-nlp-utilities/actions/workflows/tests.yml/badge.svg
-   :target: https://github.com/gpizzorno/latin-nlp-utilities/actions/workflows/tests.yml
+.. image:: https://github.com/gpizzorno/conllu_tools/actions/workflows/tests.yml/badge.svg
+   :target: https://github.com/gpizzorno/conllu_tools/actions/workflows/tests.yml
    :alt: Tests
 
-**Latin NLP Utilities** is a set of convenience tools for working with Latin treebanks and annotated corpora. It provides converters, evaluation scripts, validation tools, and utilities for transforming, validating, and comparing Latin linguistic data in `CoNLL-U`_ and `brat`_ standoff formats.
+**CoNLL-U Tools** is a set of convenience tools for working with CoNLL-U files, UD treebanks, and annotated corpora. It provides converters, evaluation scripts, validation tools, and utilities for transforming, validating, and comparing linguistic data in `CoNLL-U`_ and `brat`_ standoff formats.
 
 .. _CoNLL-U: https://universaldependencies.org/format.html
 .. _brat: https://brat.nlplab.org
@@ -42,6 +42,7 @@ Quick Links
 - :ref:`installation`
 - :ref:`quickstart`
 - :ref:`user_guide`
+- :ref:`examples`
 - :ref:`api_reference`
 
 .. toctree::
@@ -51,8 +52,8 @@ Quick Links
    installation.md
    quickstart.md
    user_guide/index
+   examples/index
    api_reference/index
-   developer_guide/index
 
 Indices and tables
 ==================

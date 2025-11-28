@@ -17,7 +17,7 @@ The evaluation module computes standard metrics for dependency parsing and lingu
 Basic evaluation comparing gold standard and system output:
 
 ```python
-from nlp_utilities.conllu.evaluators import ConlluEvaluator
+from conllu_tools.evaluation import ConlluEvaluator
 
 # Create evaluator
 evaluator = ConlluEvaluator()
@@ -104,7 +104,7 @@ Measures correct morphological feature sets (FEATS column).
 Skip dependency evaluation if not needed:
 
 ```python
-from nlp_utilities.conllu.evaluators import ConlluEvaluator
+from conllu_tools.evaluation import ConlluEvaluator
 
 evaluator = ConlluEvaluator(eval_deprels=False)
 
@@ -154,76 +154,7 @@ if las_score.aligned_total:
     print(f"Aligned accuracy: {las_score.aligned_accuracy:.2f}%")
 ```
 
-## Evaluation Recipes
 
-### Parser Development
-
-Track progress during parser development:
-
-```python
-from nlp_utilities.conllu.evaluators import ConlluEvaluator
-from pathlib import Path
-
-evaluator = ConlluEvaluator()
-dev_gold = 'data/dev.conllu'
-
-# Evaluate each parser iteration
-for model_file in sorted(Path('models/').glob('iter_*.conllu')):
-    scores = evaluator.evaluate_files(dev_gold, str(model_file))
-
-    print(f"{model_file.stem}:")
-    print(f"  LAS: {scores['LAS'].f1:.2f}%")
-    print(f"  UAS: {scores['UAS'].f1:.2f}%")
-```
-
-### Cross-Validation
-
-Evaluate multiple folds:
-
-```python
-from nlp_utilities.conllu.evaluators import ConlluEvaluator
-import numpy as np
-
-evaluator = ConlluEvaluator()
-las_scores = []
-uas_scores = []
-
-for fold in range(1, 6):
-    gold_file = f'fold_{fold}_gold.conllu'
-    system_file = f'fold_{fold}_system.conllu'
-
-    scores = evaluator.evaluate_files(gold_file, system_file)
-
-    las_scores.append(scores['LAS'].f1)
-    uas_scores.append(scores['UAS'].f1)
-
-print(f"Mean LAS: {np.mean(las_scores):.2f}% (±{np.std(las_scores):.2f})")
-print(f"Mean UAS: {np.mean(uas_scores):.2f}% (±{np.std(uas_scores):.2f})")
-```
-
-### Baseline Comparison
-
-Compare multiple systems:
-
-```python
-from nlp_utilities.conllu.evaluators import ConlluEvaluator
-
-evaluator = ConlluEvaluator()
-gold_file = 'test.conllu'
-systems = {
-    'Baseline': 'baseline_output.conllu',
-    'Model A': 'model_a_output.conllu',
-    'Model B': 'model_b_output.conllu',
-}
-
-print(f"{'System':<15} {'UAS':>8} {'LAS':>8} {'UPOS':>8}")
-print("-" * 45)
-
-for name, system_file in systems.items():
-    scores = evaluator.evaluate_files(gold_file, system_file)
-
-    print(f"{name:<15} {scores['UAS'].f1:>7.2f}% {scores['LAS'].f1:>7.2f}% {scores['UPOS'].f1:>7.2f}%")
-```
 
 ## Common Issues
 
@@ -268,72 +199,8 @@ for idx, (gold_sent, sys_sent) in enumerate(zip(gold_sents, system_sents), 1):
         print(f"Sentence {idx}: gold has {len(gold_sent)}, system has {len(sys_sent)}")
 ```
 
-## Integration Examples
-
-### With Conversion
-
-Evaluate conversion accuracy:
-
-```python
-from nlp_utilities.brat import brat_to_conllu
-from nlp_utilities.conllu.evaluators import ConlluEvaluator
-from nlp_utilities.loaders import load_language_data
-
-# Convert
-feature_set = load_language_data('feats', language='la')
-brat_to_conllu(
-    input_directory='brat_files/',
-    output_directory='output/',
-    ref_conllu='original.conllu',
-    feature_set=feature_set
-)
-
-# Evaluate: how well did round-trip preserve structure?
-evaluator = ConlluEvaluator()
-scores = evaluator.evaluate_files('original.conllu', 'output/original-from_brat.conllu')
-
-print(f"Round-trip preservation:")
-print(f"  LAS: {scores['LAS'].f1:.2f}% (should be ~100%)")
-```
-
-### Export Results
-
-Save evaluation results:
-
-```python
-import json
-from nlp_utilities.conllu.evaluators import ConlluEvaluator
-
-evaluator = ConlluEvaluator()
-scores = evaluator.evaluate_files('gold.conllu', 'system.conllu')
-
-# Save as JSON
-results_dict = {
-    metric: {
-        'precision': score.precision,
-        'recall': score.recall,
-        'f1': score.f1,
-        'gold_total': score.gold_total,
-        'system_total': score.system_total,
-        'correct': score.correct
-    }
-    for metric, score in scores.items()
-}
-
-with open('eval_results.json', 'w') as f:
-    json.dump(results_dict, f, indent=2)
-
-# Save as CSV for spreadsheet analysis
-import csv
-with open('eval_results.csv', 'w', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(['Metric', 'Precision', 'Recall', 'F1'])
-    for metric, score in scores.items():
-        writer.writerow([metric, f"{score.precision:.2f}", f"{score.recall:.2f}", f"{score.f1:.2f}"])
-```
-
 ## See Also
 
 - [Validation](validation.md) - Validating CoNLL-U files
-- [Brat Conversion](brat_conversion.md) - Converting between formats
-- {ref}`api_reference` - Detailed evaluator API
+- [Conversion](conversion.md) - Converting between formats
+- {ref}`api_reference/evaluation` - Detailed evaluation API

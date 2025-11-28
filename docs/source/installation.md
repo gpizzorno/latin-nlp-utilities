@@ -1,14 +1,14 @@
 (installation)=
 # Installation
 
-This guide covers installing `latin-nlp-utilities` for various use cases.
+This guide covers installing `conllu_tools` for various use cases.
 
 ## Quick Install
 
 Install the latest version using pip:
 
 ```bash
-pip install latin-nlp-utilities
+pip install conllu_tools
 ```
 
 This installs the package and all required dependencies.
@@ -25,8 +25,8 @@ This installs the package and all required dependencies.
 ### From Source
 
 ```bash
-git clone https://github.com/gpizzorno/latin-nlp-utilities.git
-cd latin-nlp-utilities
+git clone https://github.com/gpizzorno/conllu_tools.git
+cd conllu_tools
 pip install -e .
 ```
 
@@ -35,7 +35,7 @@ pip install -e .
 Install the latest development version without cloning:
 
 ```bash
-pip install git+https://github.com/gpizzorno/latin-nlp-utilities.git
+pip install git+https://github.com/gpizzorno/conllu_tools.git
 ```
 
 ### Specific Version
@@ -43,7 +43,7 @@ pip install git+https://github.com/gpizzorno/latin-nlp-utilities.git
 Install a specific version from GitHub:
 
 ```bash
-pip install git+https://github.com/gpizzorno/latin-nlp-utilities.git@v1.0.0
+pip install git+https://github.com/gpizzorno/conllu_tools.git@v1.0.0
 ```
 
 ### Upgrade
@@ -51,14 +51,14 @@ pip install git+https://github.com/gpizzorno/latin-nlp-utilities.git@v1.0.0
 Update to the latest version:
 
 ```bash
-cd latin-nlp-utilities
+cd conllu_tools
 git pull origin main
 pip install -e . --upgrade
 ```
 
 ## Troubleshooting
 
-### Import Error: No module named ‘nlp_utilities’
+### Import Error: No module named ‘conllu_tools’
 
 **Problem**: Python cannot find the installed package.
 
@@ -67,7 +67,7 @@ pip install -e . --upgrade
 1. Verify installation:
 
 ```bash
-pip list | grep latin-nlp-utilities
+pip list | grep conllu_tools
 ```
 2. Check that you’re using the correct Python environment:
 
@@ -79,7 +79,7 @@ python -m site
 3. Reinstall the package:
 
 ```bash
-pip uninstall latin-nlp-utilities
+pip uninstall conllu_tools
 pip install -e .
 ```
 
@@ -136,4 +136,5 @@ After installation, see:
 
 - [Quick Start Guide](quickstart.md) - Get started with common tasks
 - {doc}`user_guide/index` - Comprehensive usage guides
+- {doc}`examples/index` - Usage examples
 - {doc}`api_reference/index` - Full API documentation

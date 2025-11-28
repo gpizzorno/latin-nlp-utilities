@@ -1,8 +1,6 @@
-# Brat Conversion
+# Conversion
 
-This guide covers converting between Brat standoff annotation format and CoNLL-U format.
-
-## Overview
+This guide covers converting between brat standoff annotation format and CoNLL-U format.
 
 Brat is a web-based annotation tool that uses standoff format (separate `.ann` and `.txt` files).
 CoNLL-U is a tabular format for representing linguistic annotations, especially dependency trees.
@@ -21,7 +19,7 @@ Converting CoNLL-U files to Brat standoff format enables visual annotation and r
 ### Basic Usage
 
 ```python
-from nlp_utilities.brat import conllu_to_brat
+from conllu_tools.io import conllu_to_brat
 
 conllu_to_brat(
     conllu_filename='input.conllu',
@@ -111,8 +109,8 @@ Converting Brat annotations back to CoNLL-U format after manual annotation or re
 ### Basic Usage
 
 ```python
-from nlp_utilities.brat import brat_to_conllu
-from nlp_utilities.loaders import load_language_data
+from conllu_tools.io import brat_to_conllu
+from conllu_tools.io import load_language_data
 
 # Load feature set for validation
 feature_set = load_language_data('feats', language='la')
@@ -142,7 +140,7 @@ brat_to_conllu(
   in the input directory with this information.
 
 **feature_set** (dict)
-: Feature set definition loaded from {func}`nlp_utilities.loaders.load_language_data`.
+: Feature set definition loaded from {func}`conllu_tools.io.load_language_data`.
   Used to validate and normalize features. Required parameter.
 
 **output_root** (bool, optional)
@@ -169,8 +167,8 @@ brat_to_conllu(
 If you converted to Brat using `conllu_to_brat`, a `metadata.json` file was created. You can use it to simplify the conversion back:
 
 ```python
-from nlp_utilities.brat import brat_to_conllu
-from nlp_utilities.loaders import load_language_data
+from conllu_tools.io import brat_to_conllu
+from conllu_tools.io import load_language_data
 
 # Load feature set (still required)
 feature_set = load_language_data('feats', language='la')
@@ -192,41 +190,7 @@ The function will automatically:
 
 **Manual parameters override metadata**: If you provide parameters explicitly, they take precedence over metadata values.
 
-## Round-trip Conversion
 
-For a complete workflow where you start with CoNLL-U, annotate in Brat, and return to CoNLL-U:
-
-```python
-from nlp_utilities.brat import conllu_to_brat, brat_to_conllu
-from nlp_utilities.loaders import load_language_data
-
-# Step 1: Convert to Brat
-conllu_to_brat(
-    conllu_filename='corpus.conllu',
-    output_directory='for_annotation/',
-    output_root=True,
-    sents_per_doc=50
-)
-# This creates metadata.json with all the conversion parameters
-
-# ... Manual annotation in Brat ...
-
-# Step 2: Convert back to CoNLL-U
-feature_set = load_language_data('feats', language='la')
-brat_to_conllu(
-    input_directory='for_annotation/',
-    output_directory='annotated_output/',
-    feature_set=feature_set
-)
-# metadata.json automatically provides ref_conllu, output_root, and sents_per_doc!
-```
-
-### Important Notes
-
-1. The `metadata.json` file simplifies round-trip conversion by storing parameters
-2. If `metadata.json` is not present, you must provide `ref_conllu` and `output_root` explicitly
-3. The reference CoNLL-U file should have the same sentences in the same order
-4. Only dependency structure (HEAD/DEPREL) is modified; morphology comes from reference
 
 ## Troubleshooting
 
@@ -309,6 +273,5 @@ If you see garbled characters:
 
 ## See Also
 
-- {ref}`api_reference` - Detailed API documentation
-- [Validation](validation.md) - Validating converted CoNLL-U files
-- [Evaluation](evaluation.md) - Evaluating conversion accuracy
+- {ref}`api_reference/io` - Detailed API documentation
+- [Examples](examples/io.md) - Conversion examples
