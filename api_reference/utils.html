@@ -1,0 +1,773 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utils Module &mdash; CoNLL-U Tools v1.3.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1f29e9d3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Matching Module" href="matching.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CoNLL-U Tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#quick-install">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-requirements">System Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#other-installation-methods">Other Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-github-direct">From GitHub (Direct)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#specific-version">Specific Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#import-error-no-module-named-conllu-tools">Import Error: No module named ‘conllu_tools’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#version-conflicts">Version Conflicts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#permission-errors">Permission Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#conversion">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#conll-u-to-brat">CoNLL-U to brat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#brat-to-conll-u">brat to CoNLL-U</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validation">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-validation">Basic Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#evaluation">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-evaluation">Basic Evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#pattern-matching">Pattern Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#xpos-conversion">XPOS Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#feature-conversion">Feature Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#need-help">Need Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/conversion.html">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#conll-u-to-brat">CoNLL-U to Brat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#output-structure">Output Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#the-metadata-json-file">The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#brat-to-conll-u">Brat to CoNLL-U</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id2">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id3">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#using-metadata-json-for-automatic-configuration">Using metadata.json for Automatic Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-metadata-json">Missing metadata.json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id-mismatches">ID Mismatches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#token-mismatch-errors">Token Mismatch Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-features">Missing Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-output-file">Missing Output File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#encoding-issues">Encoding Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/validation.html">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#validation-levels">Validation Levels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-1-basic-format">Level 1: Basic Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-2-standard-validation-default">Level 2: Standard Validation (Default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-3-extended-validation">Level 3: Extended Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-4-language-specific-format">Level 4: Language-Specific Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-5-language-specific-content">Level 5: Language-Specific Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#custom-validator-configuration">Custom Validator Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#validating-string-content">Validating String Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#accessing-error-details">Accessing Error Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#common-validation-errors">Common Validation Errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#id-sequence-errors">ID Sequence Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#multi-word-token-errors">Multi-word Token Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#upos-deprel-compatibility">UPOS-DEPREL Compatibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#tree-structure-errors">Tree Structure Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/evaluation.html">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#understanding-metrics">Understanding Metrics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#unlabeled-attachment-score-uas">Unlabeled Attachment Score (UAS)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#labeled-attachment-score-las">Labeled Attachment Score (LAS)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#upos-accuracy">UPOS Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#xpos-accuracy">XPOS Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#features-accuracy">Features Accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#disabling-dependency-evaluation">Disabling Dependency Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#treebank-type-configuration">Treebank Type Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#accessing-score-details">Accessing Score Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#file-alignment">File Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#token-count-mismatch">Token Count Mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/matching.html">Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#building-patterns">Building Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#searching-a-corpus">Searching a Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#working-with-match-results">Working with Match Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#pattern-syntax">Pattern Syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#token-patterns">Token Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#sentence-patterns">Sentence Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#manual-pattern-construction">Manual Pattern Construction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#condition-types">Condition Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#nested-conditions">Nested Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-explanation">Pattern Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#matching-individual-sentences">Matching Individual Sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-not-matching">Pattern Not Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#empty-feature-handling">Empty Feature Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#quantifier-behavior">Quantifier Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/loading.html">Data Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#feature-set-loading">Feature Set Loading</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#basic-loading">Basic Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#understanding-the-feature-set-format">Understanding the Feature Set Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#custom-feature-sets">Custom Feature Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#loading-other-language-data">Loading Other Language Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/utils.html">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#quick-start">Quick Start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#with-reference-features">With Reference Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#what-gets-normalized">What Gets Normalized</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#dalme-to-upos">DALME to UPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#upos-to-perseus">UPOS to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-features-to-xpos">Convert Features to XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-xpos-to-features">Convert XPOS to Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-features">Validate Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#low-level-conversion-tools">Low-level Conversion Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/io.html">I/O Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#round-trip-conversion">Round-trip Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#important-notes">Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/validation.html">Validation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#post-conversion-validation">Post-Conversion Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#batch-validation">Batch Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#integration-with-other-tools">Integration with Other Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-before-evaluation">Validate Before Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-after-conversion">Validate After Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/evaluation.html">Evaluation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#parser-development">Parser Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#cross-validation">Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#baseline-comparison">Baseline Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#evaluate-conversion-accuracy">Evaluate Conversion Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#export-results-to-json-csv">Export Results to JSON/CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/matching.html">Matching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#latin-linguistic-patterns">Latin Linguistic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#syntactic-patterns">Syntactic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#morphological-patterns">Morphological Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/normalization.html">Normalization Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#basic-normalization">Basic Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-1-verb-with-gerund-features">Example 1: VERB with Gerund Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-2-aux-with-finite-verb-features">Example 2: AUX with Finite Verb Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-3-adj-with-degree-reconciliation">Example 3: ADJ with Degree Reconciliation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-4-noun-with-xpos-upos-mismatch-correction">Example 4: NOUN with XPOS/UPOS Mismatch Correction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#normalization-workflows">Normalization Workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#normalizing-a-conll-u-file">Normalizing a CoNLL-U File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#cleaning-imported-annotations">Cleaning Imported Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#validating-after-normalization">Validating After Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#batch-normalization">Batch Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#handling-normalization-errors">Handling Normalization Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#safe-normalization-with-fallbacks">Safe Normalization with Fallbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/utils.html">Utilities Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#convert-features-to-xpos">Convert Features to XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#complete-workflow">Complete Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#filling-partial-xpos">Filling Partial XPOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#format-xpos">Format XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#processing-mixed-formats">Processing Mixed Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="io.html">IO Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="io.html#conversion-functions">Conversion Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html#module-conllu_tools.io">Data Loading Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="io.html#conllu_tools.io.brat_to_conllu"><code class="docutils literal notranslate"><span class="pre">brat_to_conllu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="io.html#conllu_tools.io.conllu_to_brat"><code class="docutils literal notranslate"><span class="pre">conllu_to_brat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="io.html#conllu_tools.io.load_language_data"><code class="docutils literal notranslate"><span class="pre">load_language_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="io.html#conllu_tools.io.load_whitespace_exceptions"><code class="docutils literal notranslate"><span class="pre">load_whitespace_exceptions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#module-conllu_tools.validation.validator">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conllu_tools.validation.validator.ConlluValidator"><code class="docutils literal notranslate"><span class="pre">ConlluValidator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conllu_tools.validation.error_reporter.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conllu_tools.validation.error_reporter.ErrorEntry"><code class="docutils literal notranslate"><span class="pre">ErrorEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conllu_tools.validation.error_reporter.ErrorReporter"><code class="docutils literal notranslate"><span class="pre">ErrorReporter</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation.html">Evaluation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#module-conllu_tools.evaluation.evaluator">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.evaluator.ConlluEvaluator"><code class="docutils literal notranslate"><span class="pre">ConlluEvaluator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.base.UDError"><code class="docutils literal notranslate"><span class="pre">UDError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.base.UDSpan"><code class="docutils literal notranslate"><span class="pre">UDSpan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.base.UDWord"><code class="docutils literal notranslate"><span class="pre">UDWord</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.base.AlignmentWord"><code class="docutils literal notranslate"><span class="pre">AlignmentWord</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.base.Alignment"><code class="docutils literal notranslate"><span class="pre">Alignment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.base.Score"><code class="docutils literal notranslate"><span class="pre">Score</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html">Matching Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition"><code class="docutils literal notranslate"><span class="pre">Condition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.key"><code class="docutils literal notranslate"><span class="pre">Condition.key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.values"><code class="docutils literal notranslate"><span class="pre">Condition.values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.match_type"><code class="docutils literal notranslate"><span class="pre">Condition.match_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.match_any"><code class="docutils literal notranslate"><span class="pre">Condition.match_any</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.negate"><code class="docutils literal notranslate"><span class="pre">Condition.negate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.__init__"><code class="docutils literal notranslate"><span class="pre">Condition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.__repr__"><code class="docutils literal notranslate"><span class="pre">Condition.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.__str__"><code class="docutils literal notranslate"><span class="pre">Condition.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.explain"><code class="docutils literal notranslate"><span class="pre">Condition.explain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.is_container"><code class="docutils literal notranslate"><span class="pre">Condition.is_container</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.is_valid"><code class="docutils literal notranslate"><span class="pre">Condition.is_valid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.Condition.test"><code class="docutils literal notranslate"><span class="pre">Condition.test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult"><code class="docutils literal notranslate"><span class="pre">MatchResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.__init__"><code class="docutils literal notranslate"><span class="pre">MatchResult.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.__repr__"><code class="docutils literal notranslate"><span class="pre">MatchResult.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.__str__"><code class="docutils literal notranslate"><span class="pre">MatchResult.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.forms"><code class="docutils literal notranslate"><span class="pre">MatchResult.forms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.lemmata"><code class="docutils literal notranslate"><span class="pre">MatchResult.lemmata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.substring"><code class="docutils literal notranslate"><span class="pre">MatchResult.substring</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.pattern_name"><code class="docutils literal notranslate"><span class="pre">MatchResult.pattern_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.sentence_id"><code class="docutils literal notranslate"><span class="pre">MatchResult.sentence_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.MatchResult.tokens"><code class="docutils literal notranslate"><span class="pre">MatchResult.tokens</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern"><code class="docutils literal notranslate"><span class="pre">SentencePattern</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.name"><code class="docutils literal notranslate"><span class="pre">SentencePattern.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.pattern"><code class="docutils literal notranslate"><span class="pre">SentencePattern.pattern</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.__init__"><code class="docutils literal notranslate"><span class="pre">SentencePattern.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.__repr__"><code class="docutils literal notranslate"><span class="pre">SentencePattern.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.__str__"><code class="docutils literal notranslate"><span class="pre">SentencePattern.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.explain"><code class="docutils literal notranslate"><span class="pre">SentencePattern.explain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.match"><code class="docutils literal notranslate"><span class="pre">SentencePattern.match()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.SentencePattern.reset"><code class="docutils literal notranslate"><span class="pre">SentencePattern.reset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern"><code class="docutils literal notranslate"><span class="pre">TokenPattern</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.conditions"><code class="docutils literal notranslate"><span class="pre">TokenPattern.conditions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.negate"><code class="docutils literal notranslate"><span class="pre">TokenPattern.negate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.count"><code class="docutils literal notranslate"><span class="pre">TokenPattern.count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.min_count"><code class="docutils literal notranslate"><span class="pre">TokenPattern.min_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.max_count"><code class="docutils literal notranslate"><span class="pre">TokenPattern.max_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.match_multiple"><code class="docutils literal notranslate"><span class="pre">TokenPattern.match_multiple</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.__init__"><code class="docutils literal notranslate"><span class="pre">TokenPattern.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.__repr__"><code class="docutils literal notranslate"><span class="pre">TokenPattern.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.__str__"><code class="docutils literal notranslate"><span class="pre">TokenPattern.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.explain"><code class="docutils literal notranslate"><span class="pre">TokenPattern.explain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.is_exceeded"><code class="docutils literal notranslate"><span class="pre">TokenPattern.is_exceeded</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.is_satisfied"><code class="docutils literal notranslate"><span class="pre">TokenPattern.is_satisfied</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.is_valid"><code class="docutils literal notranslate"><span class="pre">TokenPattern.is_valid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#conllu_tools.matching.TokenPattern.test"><code class="docutils literal notranslate"><span class="pre">TokenPattern.test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#conllu_tools.matching.build_pattern"><code class="docutils literal notranslate"><span class="pre">build_pattern()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#conllu_tools.matching.find_in_corpus"><code class="docutils literal notranslate"><span class="pre">find_in_corpus()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Utils Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-conllu_tools.utils.upos">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.utils.upos.upos_to_perseus"><code class="docutils literal notranslate"><span class="pre">upos_to_perseus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.utils.upos.dalme_to_upos"><code class="docutils literal notranslate"><span class="pre">dalme_to_upos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-conllu_tools.utils.features">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.utils.features.feature_string_to_dict"><code class="docutils literal notranslate"><span class="pre">feature_string_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.utils.features.feature_dict_to_string"><code class="docutils literal notranslate"><span class="pre">feature_dict_to_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.utils.features.features_to_xpos"><code class="docutils literal notranslate"><span class="pre">features_to_xpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.utils.features.xpos_to_features"><code class="docutils literal notranslate"><span class="pre">xpos_to_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.utils.features.validate_features"><code class="docutils literal notranslate"><span class="pre">validate_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-conllu_tools.utils.xpos.format_xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-conllu_tools.utils.xpos.validate">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-conllu_tools.utils.xpos.ittb_converters">ITTB to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-conllu_tools.utils.xpos.proiel_converters">PROIEL to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-conllu_tools.utils.xpos.llct_converters">LLCT to Perseus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CoNLL-U Tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Utils Module</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/gpizzorno/conllu_tools/blob/main/docs/source/api_reference/utils.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utils-module">
+<h1>Utils Module<a class="headerlink" href="#utils-module" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">conllu_tools.utils</span></code> module provides utilities for working with different tagsets and formats.</p>
+<section id="normalize-morphology">
+<h2>Normalize Morphology<a class="headerlink" href="#normalize-morphology" title="Link to this heading"></a></h2>
+<p>Normalize morphological information including UPOS, XPOS, and FEATS to ensure consistency.</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.normalization.</span></span><span class="sig-name descname"><span class="pre">normalize_morphology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/normalization.html#normalize_morphology"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Normalize morphological information.</p>
+<p>Takes UPOS, XPOS, and FEATS, normalizes and validates them against
+a provided feature set, and reconciles with reference features if provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The Universal Part of Speech tag.</p></li>
+<li><p><strong>xpos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The language-specific Part of Speech tag.</p></li>
+<li><p><strong>feats</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A string or dictionary of features.</p></li>
+<li><p><strong>feature_set</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – A feature set dictionary defining valid features.</p></li>
+<li><p><strong>ref_features</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – A reference feature string or dictionary to reconcile with (optional).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing the normalized XPOS string and validated feature dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-conllu_tools.utils.upos">
+<span id="upos-utilities"></span><h2>UPOS Utilities<a class="headerlink" href="#module-conllu_tools.utils.upos" title="Link to this heading"></a></h2>
+<p>Convert from and to UPOS.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.upos.upos_to_perseus">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.upos.</span></span><span class="sig-name descname"><span class="pre">upos_to_perseus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos_tag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/upos.html#upos_to_perseus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.upos.upos_to_perseus" title="Link to this definition"></a></dt>
+<dd><p>Convert a UPOS tag to a Perseus XPOS tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.upos.dalme_to_upos">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.upos.</span></span><span class="sig-name descname"><span class="pre">dalme_to_upos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dalmepos_tag</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/upos.html#dalme_to_upos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.upos.dalme_to_upos" title="Link to this definition"></a></dt>
+<dd><p>Convert a DALME POS tag to a Universal POS tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-conllu_tools.utils.features">
+<span id="feature-utilities"></span><h2>Feature Utilities<a class="headerlink" href="#module-conllu_tools.utils.features" title="Link to this heading"></a></h2>
+<p>Feature string and dictionary conversion utilities.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.features.feature_string_to_dict">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.features.</span></span><span class="sig-name descname"><span class="pre">feature_string_to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feat_string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/features.html#feature_string_to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.features.feature_string_to_dict" title="Link to this definition"></a></dt>
+<dd><p>Convert a feature string to a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>feat_string</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – A feature string.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary of features.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.features.feature_dict_to_string">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.features.</span></span><span class="sig-name descname"><span class="pre">feature_dict_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feat_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/features.html#feature_dict_to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.features.feature_dict_to_string" title="Link to this definition"></a></dt>
+<dd><p>Convert a feature dictionary to a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>feat_dict</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – A dictionary of features.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A feature string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.features.features_to_xpos">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.features.</span></span><span class="sig-name descname"><span class="pre">features_to_xpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/features.html#features_to_xpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.features.features_to_xpos" title="Link to this definition"></a></dt>
+<dd><p>Convert features to XPOS in Perseus format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>feats</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A feature string or dictionary of features.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An XPOS string in Perseus format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.features.xpos_to_features">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.features.</span></span><span class="sig-name descname"><span class="pre">xpos_to_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/features.html#xpos_to_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.features.xpos_to_features" title="Link to this definition"></a></dt>
+<dd><p>Convert XPOS in Perseus format to features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xpos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – An XPOS string in Perseus format.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary of features.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.features.validate_features">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.features.</span></span><span class="sig-name descname"><span class="pre">validate_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feature_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/features.html#validate_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.features.validate_features" title="Link to this definition"></a></dt>
+<dd><p>Ensure features are valid for given UPOS based on feature set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The Universal Part of Speech tag.</p></li>
+<li><p><strong>feats</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A feature string or dictionary of features.</p></li>
+<li><p><strong>feature_set</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – A feature set dictionary defining valid features.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A validated feature dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="xpos-utilities">
+<h2>XPOS Utilities<a class="headerlink" href="#xpos-utilities" title="Link to this heading"></a></h2>
+<section id="module-conllu_tools.utils.xpos.format_xpos">
+<span id="format-xpos"></span><h3>Format XPOS<a class="headerlink" href="#module-conllu_tools.utils.xpos.format_xpos" title="Link to this heading"></a></h3>
+<p>Convert various XPOS formats to Perseus XPOS format.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.xpos.format_xpos.format_xpos">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.xpos.format_xpos.</span></span><span class="sig-name descname"><span class="pre">format_xpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/xpos/format_xpos.html#format_xpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.xpos.format_xpos.format_xpos" title="Link to this definition"></a></dt>
+<dd><p>Convert morphology data in various formats to Perseus XPOS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The Universal Part of Speech tag.</p></li>
+<li><p><strong>xpos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – XPOS string formatted in almost styles (LLCT, ITTB, PROIEL, Perseus, DALME, etc).</p></li>
+<li><p><strong>feats</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – A dictionary of features.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Perseus XPOS string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-conllu_tools.utils.xpos.validate">
+<span id="validate-xpos"></span><h3>Validate XPOS<a class="headerlink" href="#module-conllu_tools.utils.xpos.validate" title="Link to this heading"></a></h3>
+<p>XPOS validation.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.xpos.validate.validate_xpos">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.xpos.validate.</span></span><span class="sig-name descname"><span class="pre">validate_xpos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/xpos/validate.html#validate_xpos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.xpos.validate.validate_xpos" title="Link to this definition"></a></dt>
+<dd><p>Ensure XPOS are valid for given UPOS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The Universal Part of Speech tag.</p></li>
+<li><p><strong>xpos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The language-specific Part of Speech tag.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A validated XPOS string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-conllu_tools.utils.xpos.ittb_converters">
+<span id="ittb-to-perseus"></span><h3>ITTB to Perseus<a class="headerlink" href="#module-conllu_tools.utils.xpos.ittb_converters" title="Link to this heading"></a></h3>
+<p>Functions for converting between ITTB and Perseus XPOS tags.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.xpos.ittb_converters.ittb_to_perseus">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.xpos.ittb_converters.</span></span><span class="sig-name descname"><span class="pre">ittb_to_perseus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/xpos/ittb_converters.html#ittb_to_perseus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.xpos.ittb_converters.ittb_to_perseus" title="Link to this definition"></a></dt>
+<dd><p>Convert ITTB UPOS and XPOS to Perseus XPOS tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The Universal Part of Speech tag.</p></li>
+<li><p><strong>xpos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span>) – The ITTB XPOS tag.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Perseus XPOS string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-conllu_tools.utils.xpos.proiel_converters">
+<span id="proiel-to-perseus"></span><h3>PROIEL to Perseus<a class="headerlink" href="#module-conllu_tools.utils.xpos.proiel_converters" title="Link to this heading"></a></h3>
+<p>Functions for converting between PROIEL and Perseus XPOS tags.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.xpos.proiel_converters.proiel_to_perseus">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.xpos.proiel_converters.</span></span><span class="sig-name descname"><span class="pre">proiel_to_perseus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/xpos/proiel_converters.html#proiel_to_perseus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.xpos.proiel_converters.proiel_to_perseus" title="Link to this definition"></a></dt>
+<dd><p>Convert PROIEL UPOS and FEATS to Perseus XPOS tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The Universal Part of Speech tag.</p></li>
+<li><p><strong>feats</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A feature string or dictionary of features.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Perseus XPOS string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-conllu_tools.utils.xpos.llct_converters">
+<span id="llct-to-perseus"></span><h3>LLCT to Perseus<a class="headerlink" href="#module-conllu_tools.utils.xpos.llct_converters" title="Link to this heading"></a></h3>
+<p>Functions for converting between LLCT and Perseus XPOS tags.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="conllu_tools.utils.xpos.llct_converters.llct_to_perseus">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.utils.xpos.llct_converters.</span></span><span class="sig-name descname"><span class="pre">llct_to_perseus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">feats</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/utils/xpos/llct_converters.html#llct_to_perseus"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.utils.xpos.llct_converters.llct_to_perseus" title="Link to this definition"></a></dt>
+<dd><p>Convert LLCT UPOS, XPOS, and FEATS to Perseus XPOS tag.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The Universal Part of Speech tag.</p></li>
+<li><p><strong>xpos</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – An LLCT XPOS string.</p></li>
+<li><p><strong>feats</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – A feature string or dictionary of features.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A Perseus XPOS string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="matching.html" class="btn btn-neutral float-left" title="Matching Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Gabe Pizzorno.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,636 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluation Examples &mdash; CoNLL-U Tools v1.3.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1f29e9d3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Matching Examples" href="matching.html" />
+    <link rel="prev" title="Validation Examples" href="validation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CoNLL-U Tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#quick-install">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-requirements">System Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#other-installation-methods">Other Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-github-direct">From GitHub (Direct)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#specific-version">Specific Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#import-error-no-module-named-conllu-tools">Import Error: No module named ‘conllu_tools’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#version-conflicts">Version Conflicts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#permission-errors">Permission Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#conversion">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#conll-u-to-brat">CoNLL-U to brat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#brat-to-conll-u">brat to CoNLL-U</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validation">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-validation">Basic Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#evaluation">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-evaluation">Basic Evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#pattern-matching">Pattern Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#xpos-conversion">XPOS Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#feature-conversion">Feature Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#need-help">Need Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/conversion.html">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#conll-u-to-brat">CoNLL-U to Brat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#output-structure">Output Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#the-metadata-json-file">The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#brat-to-conll-u">Brat to CoNLL-U</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id2">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id3">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#using-metadata-json-for-automatic-configuration">Using metadata.json for Automatic Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-metadata-json">Missing metadata.json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id-mismatches">ID Mismatches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#token-mismatch-errors">Token Mismatch Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-features">Missing Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-output-file">Missing Output File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#encoding-issues">Encoding Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/validation.html">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#validation-levels">Validation Levels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-1-basic-format">Level 1: Basic Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-2-standard-validation-default">Level 2: Standard Validation (Default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-3-extended-validation">Level 3: Extended Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-4-language-specific-format">Level 4: Language-Specific Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-5-language-specific-content">Level 5: Language-Specific Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#custom-validator-configuration">Custom Validator Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#validating-string-content">Validating String Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#accessing-error-details">Accessing Error Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#common-validation-errors">Common Validation Errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#id-sequence-errors">ID Sequence Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#multi-word-token-errors">Multi-word Token Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#upos-deprel-compatibility">UPOS-DEPREL Compatibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#tree-structure-errors">Tree Structure Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/evaluation.html">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#understanding-metrics">Understanding Metrics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#unlabeled-attachment-score-uas">Unlabeled Attachment Score (UAS)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#labeled-attachment-score-las">Labeled Attachment Score (LAS)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#upos-accuracy">UPOS Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#xpos-accuracy">XPOS Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#features-accuracy">Features Accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#disabling-dependency-evaluation">Disabling Dependency Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#treebank-type-configuration">Treebank Type Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#accessing-score-details">Accessing Score Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#file-alignment">File Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#token-count-mismatch">Token Count Mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/matching.html">Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#building-patterns">Building Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#searching-a-corpus">Searching a Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#working-with-match-results">Working with Match Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#pattern-syntax">Pattern Syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#token-patterns">Token Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#sentence-patterns">Sentence Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#manual-pattern-construction">Manual Pattern Construction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#condition-types">Condition Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#nested-conditions">Nested Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-explanation">Pattern Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#matching-individual-sentences">Matching Individual Sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-not-matching">Pattern Not Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#empty-feature-handling">Empty Feature Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#quantifier-behavior">Quantifier Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/loading.html">Data Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#feature-set-loading">Feature Set Loading</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#basic-loading">Basic Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#understanding-the-feature-set-format">Understanding the Feature Set Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#custom-feature-sets">Custom Feature Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#loading-other-language-data">Loading Other Language Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/utils.html">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#quick-start">Quick Start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#with-reference-features">With Reference Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#what-gets-normalized">What Gets Normalized</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#dalme-to-upos">DALME to UPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#upos-to-perseus">UPOS to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-features-to-xpos">Convert Features to XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-xpos-to-features">Convert XPOS to Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-features">Validate Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#low-level-conversion-tools">Low-level Conversion Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="io.html">I/O Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="io.html#round-trip-conversion">Round-trip Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html#important-notes">Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#post-conversion-validation">Post-Conversion Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#batch-validation">Batch Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#integration-with-other-tools">Integration with Other Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#validate-before-evaluation">Validate Before Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#validate-after-conversion">Validate After Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Evaluation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parser-development">Parser Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cross-validation">Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#baseline-comparison">Baseline Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#evaluate-conversion-accuracy">Evaluate Conversion Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#export-results-to-json-csv">Export Results to JSON/CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html">Matching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#latin-linguistic-patterns">Latin Linguistic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#syntactic-patterns">Syntactic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#morphological-patterns">Morphological Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="normalization.html">Normalization Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#basic-normalization">Basic Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="normalization.html#example-1-verb-with-gerund-features">Example 1: VERB with Gerund Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="normalization.html#example-2-aux-with-finite-verb-features">Example 2: AUX with Finite Verb Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="normalization.html#example-3-adj-with-degree-reconciliation">Example 3: ADJ with Degree Reconciliation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="normalization.html#example-4-noun-with-xpos-upos-mismatch-correction">Example 4: NOUN with XPOS/UPOS Mismatch Correction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#normalization-workflows">Normalization Workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#normalizing-a-conll-u-file">Normalizing a CoNLL-U File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#cleaning-imported-annotations">Cleaning Imported Annotations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#validating-after-normalization">Validating After Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#batch-normalization">Batch Normalization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="normalization.html#handling-normalization-errors">Handling Normalization Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="normalization.html#safe-normalization-with-fallbacks">Safe Normalization with Fallbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="normalization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#convert-features-to-xpos">Convert Features to XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#complete-workflow">Complete Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#filling-partial-xpos">Filling Partial XPOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#format-xpos">Format XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#processing-mixed-formats">Processing Mixed Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/io.html">IO Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/io.html#conversion-functions">Conversion Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/io.html#module-conllu_tools.io">Data Loading Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#conllu_tools.io.brat_to_conllu"><code class="docutils literal notranslate"><span class="pre">brat_to_conllu()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#conllu_tools.io.conllu_to_brat"><code class="docutils literal notranslate"><span class="pre">conllu_to_brat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#conllu_tools.io.load_language_data"><code class="docutils literal notranslate"><span class="pre">load_language_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#conllu_tools.io.load_whitespace_exceptions"><code class="docutils literal notranslate"><span class="pre">load_whitespace_exceptions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/validation.html">Validation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/validation.html#module-conllu_tools.validation.validator">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conllu_tools.validation.validator.ConlluValidator"><code class="docutils literal notranslate"><span class="pre">ConlluValidator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conllu_tools.validation.error_reporter.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conllu_tools.validation.error_reporter.ErrorEntry"><code class="docutils literal notranslate"><span class="pre">ErrorEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conllu_tools.validation.error_reporter.ErrorReporter"><code class="docutils literal notranslate"><span class="pre">ErrorReporter</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/evaluation.html">Evaluation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/evaluation.html#module-conllu_tools.evaluation.evaluator">Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.evaluator.ConlluEvaluator"><code class="docutils literal notranslate"><span class="pre">ConlluEvaluator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.UDError"><code class="docutils literal notranslate"><span class="pre">UDError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.UDSpan"><code class="docutils literal notranslate"><span class="pre">UDSpan</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.UDWord"><code class="docutils literal notranslate"><span class="pre">UDWord</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.AlignmentWord"><code class="docutils literal notranslate"><span class="pre">AlignmentWord</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.Alignment"><code class="docutils literal notranslate"><span class="pre">Alignment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.Score"><code class="docutils literal notranslate"><span class="pre">Score</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/matching.html">Matching Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition"><code class="docutils literal notranslate"><span class="pre">Condition</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.key"><code class="docutils literal notranslate"><span class="pre">Condition.key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.values"><code class="docutils literal notranslate"><span class="pre">Condition.values</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.match_type"><code class="docutils literal notranslate"><span class="pre">Condition.match_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.match_any"><code class="docutils literal notranslate"><span class="pre">Condition.match_any</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.negate"><code class="docutils literal notranslate"><span class="pre">Condition.negate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.__init__"><code class="docutils literal notranslate"><span class="pre">Condition.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.__repr__"><code class="docutils literal notranslate"><span class="pre">Condition.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.__str__"><code class="docutils literal notranslate"><span class="pre">Condition.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.explain"><code class="docutils literal notranslate"><span class="pre">Condition.explain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.is_container"><code class="docutils literal notranslate"><span class="pre">Condition.is_container</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.is_valid"><code class="docutils literal notranslate"><span class="pre">Condition.is_valid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.Condition.test"><code class="docutils literal notranslate"><span class="pre">Condition.test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult"><code class="docutils literal notranslate"><span class="pre">MatchResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.__init__"><code class="docutils literal notranslate"><span class="pre">MatchResult.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.__repr__"><code class="docutils literal notranslate"><span class="pre">MatchResult.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.__str__"><code class="docutils literal notranslate"><span class="pre">MatchResult.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.forms"><code class="docutils literal notranslate"><span class="pre">MatchResult.forms</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.lemmata"><code class="docutils literal notranslate"><span class="pre">MatchResult.lemmata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.substring"><code class="docutils literal notranslate"><span class="pre">MatchResult.substring</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.pattern_name"><code class="docutils literal notranslate"><span class="pre">MatchResult.pattern_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.sentence_id"><code class="docutils literal notranslate"><span class="pre">MatchResult.sentence_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.MatchResult.tokens"><code class="docutils literal notranslate"><span class="pre">MatchResult.tokens</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern"><code class="docutils literal notranslate"><span class="pre">SentencePattern</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.name"><code class="docutils literal notranslate"><span class="pre">SentencePattern.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.pattern"><code class="docutils literal notranslate"><span class="pre">SentencePattern.pattern</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.__init__"><code class="docutils literal notranslate"><span class="pre">SentencePattern.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.__repr__"><code class="docutils literal notranslate"><span class="pre">SentencePattern.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.__str__"><code class="docutils literal notranslate"><span class="pre">SentencePattern.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.explain"><code class="docutils literal notranslate"><span class="pre">SentencePattern.explain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.match"><code class="docutils literal notranslate"><span class="pre">SentencePattern.match()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.SentencePattern.reset"><code class="docutils literal notranslate"><span class="pre">SentencePattern.reset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern"><code class="docutils literal notranslate"><span class="pre">TokenPattern</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.conditions"><code class="docutils literal notranslate"><span class="pre">TokenPattern.conditions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.negate"><code class="docutils literal notranslate"><span class="pre">TokenPattern.negate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.count"><code class="docutils literal notranslate"><span class="pre">TokenPattern.count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.min_count"><code class="docutils literal notranslate"><span class="pre">TokenPattern.min_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.max_count"><code class="docutils literal notranslate"><span class="pre">TokenPattern.max_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.match_multiple"><code class="docutils literal notranslate"><span class="pre">TokenPattern.match_multiple</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.__init__"><code class="docutils literal notranslate"><span class="pre">TokenPattern.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.__repr__"><code class="docutils literal notranslate"><span class="pre">TokenPattern.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.__str__"><code class="docutils literal notranslate"><span class="pre">TokenPattern.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.explain"><code class="docutils literal notranslate"><span class="pre">TokenPattern.explain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.is_exceeded"><code class="docutils literal notranslate"><span class="pre">TokenPattern.is_exceeded</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.is_satisfied"><code class="docutils literal notranslate"><span class="pre">TokenPattern.is_satisfied</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.is_valid"><code class="docutils literal notranslate"><span class="pre">TokenPattern.is_valid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.TokenPattern.test"><code class="docutils literal notranslate"><span class="pre">TokenPattern.test()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.build_pattern"><code class="docutils literal notranslate"><span class="pre">build_pattern()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#conllu_tools.matching.find_in_corpus"><code class="docutils literal notranslate"><span class="pre">find_in_corpus()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/utils.html">Utils Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#module-conllu_tools.utils.upos">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.upos.upos_to_perseus"><code class="docutils literal notranslate"><span class="pre">upos_to_perseus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.upos.dalme_to_upos"><code class="docutils literal notranslate"><span class="pre">dalme_to_upos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#module-conllu_tools.utils.features">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.feature_string_to_dict"><code class="docutils literal notranslate"><span class="pre">feature_string_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.feature_dict_to_string"><code class="docutils literal notranslate"><span class="pre">feature_dict_to_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.features_to_xpos"><code class="docutils literal notranslate"><span class="pre">features_to_xpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.xpos_to_features"><code class="docutils literal notranslate"><span class="pre">xpos_to_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.validate_features"><code class="docutils literal notranslate"><span class="pre">validate_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#module-conllu_tools.utils.xpos.format_xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#module-conllu_tools.utils.xpos.validate">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#module-conllu_tools.utils.xpos.ittb_converters">ITTB to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#module-conllu_tools.utils.xpos.proiel_converters">PROIEL to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#module-conllu_tools.utils.xpos.llct_converters">LLCT to Perseus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CoNLL-U Tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Usage Examples</a></li>
+      <li class="breadcrumb-item active">Evaluation Examples</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/gpizzorno/conllu_tools/blob/main/docs/source/examples/evaluation.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="evaluation-examples">
+<h1>Evaluation Examples<a class="headerlink" href="#evaluation-examples" title="Link to this heading"></a></h1>
+<p>Examples for evaluating parser output against gold-standard annotations.</p>
+<section id="parser-development">
+<h2>Parser Development<a class="headerlink" href="#parser-development" title="Link to this heading"></a></h2>
+<p>Track progress during parser development:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConlluEvaluator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">ConlluEvaluator</span><span class="p">()</span>
+<span class="n">dev_gold</span> <span class="o">=</span> <span class="s1">&#39;data/dev.conllu&#39;</span>
+
+<span class="c1"># Evaluate each parser iteration</span>
+<span class="k">for</span> <span class="n">model_file</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s1">&#39;models/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;iter_*.conllu&#39;</span><span class="p">)):</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_files</span><span class="p">(</span><span class="n">dev_gold</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_file</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_file</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  LAS: </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;LAS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  UAS: </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;UAS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="cross-validation">
+<h2>Cross-Validation<a class="headerlink" href="#cross-validation" title="Link to this heading"></a></h2>
+<p>Evaluate multiple folds:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConlluEvaluator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">ConlluEvaluator</span><span class="p">()</span>
+<span class="n">las_scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">uas_scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">fold</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="n">gold_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;fold_</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s1">_gold.conllu&#39;</span>
+    <span class="n">system_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;fold_</span><span class="si">{</span><span class="n">fold</span><span class="si">}</span><span class="s1">_system.conllu&#39;</span>
+
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_files</span><span class="p">(</span><span class="n">gold_file</span><span class="p">,</span> <span class="n">system_file</span><span class="p">)</span>
+
+    <span class="n">las_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;LAS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="p">)</span>
+    <span class="n">uas_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;UAS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean LAS: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">las_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> (±</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">las_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean UAS: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">uas_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> (±</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">uas_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="baseline-comparison">
+<h2>Baseline Comparison<a class="headerlink" href="#baseline-comparison" title="Link to this heading"></a></h2>
+<p>Compare multiple systems:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConlluEvaluator</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">ConlluEvaluator</span><span class="p">()</span>
+<span class="n">gold_file</span> <span class="o">=</span> <span class="s1">&#39;test.conllu&#39;</span>
+<span class="n">systems</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Baseline&#39;</span><span class="p">:</span> <span class="s1">&#39;baseline_output.conllu&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Model A&#39;</span><span class="p">:</span> <span class="s1">&#39;model_a_output.conllu&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Model B&#39;</span><span class="p">:</span> <span class="s1">&#39;model_b_output.conllu&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;System&#39;</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;UAS&#39;</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;LAS&#39;</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;UPOS&#39;</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">45</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">system_file</span> <span class="ow">in</span> <span class="n">systems</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_files</span><span class="p">(</span><span class="n">gold_file</span><span class="p">,</span> <span class="n">system_file</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;UAS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="si">:</span><span class="s2">&gt;7.2%</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;LAS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="si">:</span><span class="s2">&gt;7.2%</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;UPOS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="si">:</span><span class="s2">&gt;7.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-examples">
+<h2>Integration Examples<a class="headerlink" href="#integration-examples" title="Link to this heading"></a></h2>
+<section id="evaluate-conversion-accuracy">
+<h3>Evaluate Conversion Accuracy<a class="headerlink" href="#evaluate-conversion-accuracy" title="Link to this heading"></a></h3>
+<p>Measure how well a round-trip conversion preserved structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">brat_to_conllu</span><span class="p">,</span> <span class="n">load_language_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConlluEvaluator</span>
+
+<span class="c1"># Convert</span>
+<span class="n">feature_set</span> <span class="o">=</span> <span class="n">load_language_data</span><span class="p">(</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">)</span>
+<span class="n">brat_to_conllu</span><span class="p">(</span>
+    <span class="n">input_directory</span><span class="o">=</span><span class="s1">&#39;brat_files/&#39;</span><span class="p">,</span>
+    <span class="n">output_directory</span><span class="o">=</span><span class="s1">&#39;output/&#39;</span><span class="p">,</span>
+    <span class="n">ref_conllu</span><span class="o">=</span><span class="s1">&#39;original.conllu&#39;</span><span class="p">,</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span>
+<span class="p">)</span>
+
+<span class="c1"># Evaluate: how well did round-trip preserve structure?</span>
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">ConlluEvaluator</span><span class="p">()</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_files</span><span class="p">(</span><span class="s1">&#39;original.conllu&#39;</span><span class="p">,</span> <span class="s1">&#39;output/original-from_brat.conllu&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Round-trip preservation:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  LAS: </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;LAS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">f1</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2"> (should be ~100%)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="export-results-to-json-csv">
+<h3>Export Results to JSON/CSV<a class="headerlink" href="#export-results-to-json-csv" title="Link to this heading"></a></h3>
+<p>Save evaluation results for further analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConlluEvaluator</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">ConlluEvaluator</span><span class="p">()</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_files</span><span class="p">(</span><span class="s1">&#39;gold.conllu&#39;</span><span class="p">,</span> <span class="s1">&#39;system.conllu&#39;</span><span class="p">)</span>
+
+<span class="c1"># Save as JSON</span>
+<span class="n">results_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">metric</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="n">score</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
+        <span class="s1">&#39;recall&#39;</span><span class="p">:</span> <span class="n">score</span><span class="o">.</span><span class="n">recall</span><span class="p">,</span>
+        <span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="n">score</span><span class="o">.</span><span class="n">f1</span><span class="p">,</span>
+        <span class="s1">&#39;gold_total&#39;</span><span class="p">:</span> <span class="n">score</span><span class="o">.</span><span class="n">gold_total</span><span class="p">,</span>
+        <span class="s1">&#39;system_total&#39;</span><span class="p">:</span> <span class="n">score</span><span class="o">.</span><span class="n">system_total</span><span class="p">,</span>
+        <span class="s1">&#39;correct&#39;</span><span class="p">:</span> <span class="n">score</span><span class="o">.</span><span class="n">correct</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;eval_results.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">results_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Save as CSV for spreadsheet analysis</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;eval_results.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;Metric&#39;</span><span class="p">,</span> <span class="s1">&#39;Precision&#39;</span><span class="p">,</span> <span class="s1">&#39;Recall&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">metric</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">score</span><span class="o">.</span><span class="n">precision</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">score</span><span class="o">.</span><span class="n">recall</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">score</span><span class="o">.</span><span class="n">f1</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../user_guide/evaluation.html"><span class="std std-doc">Evaluation User Guide</span></a> for detailed documentation</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="validation.html" class="btn btn-neutral float-left" title="Validation Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="matching.html" class="btn btn-neutral float-right" title="Matching Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Gabe Pizzorno.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
