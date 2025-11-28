@@ -5,7 +5,8 @@ from __future__ import annotations
 from typing import Any
 
 import conllu
-from nlp_utilities.conllu.evaluators.base import Alignment, UDSpan, UDWord
+
+from conllu_tools.evaluation.base import Alignment, UDSpan, UDWord
 
 
 def create_test_udword(

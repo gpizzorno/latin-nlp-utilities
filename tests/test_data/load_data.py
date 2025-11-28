@@ -37,5 +37,8 @@ with (base_path / 'brat' / 'simple.conllu').open(encoding='utf-8') as file:
 with (base_path / 'brat' / 'multi.conllu').open(encoding='utf-8') as file:
     MULTI_CONLLU = file.read()
 
+with (base_path / 'sample.conllu').open(encoding='utf-8') as file:
+    SAMPLE_CONLLU = file.read()
+
 with (base_path / 'brat' / 'metadata.json').open(encoding='utf-8') as file:
     BRAT_METADATA = json.load(file)

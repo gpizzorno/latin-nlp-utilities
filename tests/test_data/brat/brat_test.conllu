@@ -63,7 +63,7 @@
 6	margaritis	margarita	NOUN	n-p---fd-	Case=Dat|Gender=Fem|Number=Plur	3	acl	3:acl	start_char=244|end_char=254
 7	que	qui	CCONJ	c--------	_	8	cc	8:cc	start_char=255|end_char=258
 8	habebat	habeo	VERB	v3siia---	Aspect=Imp|Mood=Ind|Number=Sing|Person=3|Tense=Past|VerbForm=Fin|Voice=Act	3	acl	3:acl	start_char=259|end_char=266
-9	vi	sex	NUM	m-s---mn-	Case=Nom|Number=Sing	10	nummod	10:nummod	start_char=267|end_char=269
+9	vi	sex	NUM	m-s---mn-	Case=Nom|Gender=Masc|Number=Sing	10	nummod	10:nummod	start_char=267|end_char=269
 10	cap	cap	NOUN	n-s---mn-	Case=Nom|Gender=Masc|Number=Sing	8	obl	8:obl	start_char=270|end_char=273
 11	de	de	ADP	r--------	AdpType=Prep	12	case	12:case	start_char=274|end_char=276
 12	margaritis	margarita	NOUN	n-p---fd-	Case=Dat|Gender=Fem|Number=Plur	10	nmod	10:nmod	start_char=277|end_char=287
@@ -213,7 +213,7 @@
 3	jarram	jarra	NOUN	n-s---fa-	Case=Acc|Gender=Fem|Number=Sing	0	root	_	start_char=792|end_char=798
 4	cum	cum	SCONJ	c--------	_	5	mark	5:mark	start_char=799|end_char=802
 5	sardellis	sardellus	NOUN	n-p---mb-	Case=Abl|Gender=Masc|Number=Plur	3	acl	3:acl	start_char=803|end_char=812
-6	salsis	salsus	ADJ	a-p---nb-	Case=Abl|Number=Plur	5	amod	5:amod	start_char=813|end_char=819
+6	salsis	salsus	ADJ	a-p---nb-	Case=Abl|Gender=Neut|Number=Plur	5	amod	5:amod	start_char=813|end_char=819
 7	.	.	PUNCT	u--------	_	3	punct	3:punct	start_char=820|end_char=821
 
 # text = Item duas tinas .
@@ -344,7 +344,7 @@
 10	penna	penna	NOUN	n-s---fn-	Case=Nom|Gender=Fem|Number=Sing	2	acl	2:acl	start_char=1348|end_char=1353
 11	varia	varius	ADJ	a-p---nnp	Case=Nom|Degree=Pos|Gender=Neut|Number=Plur	10	amod	10:amod	start_char=1354|end_char=1359
 12	in	in	ADP	r--------	AdpType=Prep	13	case	13:case	start_char=1360|end_char=1362
-13	clamide	clamis	NOUN	n-s------	_	10	conj	10:conj	start_char=1363|end_char=1370
+13	clamide	clamis	NOUN	n-s------	Number=Sing	10	conj	10:conj	start_char=1363|end_char=1370
 14	et	et	CCONJ	c--------	_	15	cc	15:cc	start_char=1371|end_char=1373
 15	scurolorum	scurolus	NOUN	n-p---ng-	Case=Gen|Gender=Neut|Number=Plur	13	conj	13:conj	start_char=1374|end_char=1384
 16	in	in	ADP	r--------	AdpType=Prep	17	case	17:case	start_char=1385|end_char=1387

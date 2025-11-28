@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from nlp_utilities.conllu.evaluators.base import Score
-from nlp_utilities.conllu.validators.error_reporter import ErrorReporter
+from conllu_tools.evaluation.base import Score
+from conllu_tools.validation.error_reporter import ErrorReporter
 
 
 def assert_error_contains(

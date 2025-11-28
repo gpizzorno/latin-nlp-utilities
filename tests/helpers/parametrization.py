@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import copy
 
-from nlp_utilities.constants import UNIVERSAL_DEPRELS, UPOS_TAGS
+from conllu_tools.constants import UNIVERSAL_DEPRELS, UPOS_TAGS
+
 from tests.test_data.load_data import UPOS_DEPREL_INVALID_PAIRS
 
 
