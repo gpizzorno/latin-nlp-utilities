@@ -233,4 +233,4 @@ if errors.get_error_count() > 0:
 
 - [Evaluation](evaluation.md) - Evaluating annotation accuracy
 - [Conversion](conversion.md) - Converting between formats
-- {ref}`api_reference/validation` - Detailed validation API
+- {doc}`../api_reference/validation` - Detailed validation API

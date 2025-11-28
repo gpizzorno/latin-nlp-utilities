@@ -43,7 +43,7 @@ Format XPOS
 Validate XPOS
 ~~~~~~~~~~~~~
 
-.. automodule:: conllu_tools.utils.xpos.validate_xpos
+.. automodule:: conllu_tools.utils.xpos.validate
    :members:
    :undoc-members:
    :show-inheritance:

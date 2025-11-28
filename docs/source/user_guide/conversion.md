@@ -273,5 +273,5 @@ If you see garbled characters:
 
 ## See Also
 
-- {ref}`api_reference/io` - Detailed API documentation
-- [Examples](examples/io.md) - Conversion examples
+- {doc}`../api_reference/io` - Detailed API documentation
+- [Examples](../examples/io.md) - Conversion examples

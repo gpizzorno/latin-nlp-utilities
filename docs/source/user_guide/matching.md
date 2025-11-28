@@ -102,7 +102,7 @@ for match in matches:
 
 The basic structure of a token pattern is:
 
-```regexp
+```
 UPOS:attribute=value
 ```
 
@@ -406,4 +406,4 @@ pattern = build_pattern('DET+ADJ{0,2}+NOUN')
 
 - [Loading](loading.md) - Loading CoNLL-U files
 - [Validation](validation.md) - Validating CoNLL-U files
-- {ref}`api_reference/matching` - Detailed matching API
+- {doc}`../api_reference/matching` - Detailed matching API

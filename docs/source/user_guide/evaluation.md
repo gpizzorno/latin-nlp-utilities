@@ -203,4 +203,4 @@ for idx, (gold_sent, sys_sent) in enumerate(zip(gold_sents, system_sents), 1):
 
 - [Validation](validation.md) - Validating CoNLL-U files
 - [Conversion](conversion.md) - Converting between formats
-- {ref}`api_reference/evaluation` - Detailed evaluation API
+- {doc}`../api_reference/evaluation` - Detailed evaluation API

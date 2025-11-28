@@ -9,14 +9,7 @@ import conllu
 
 @dataclass
 class MatchResult:
-    """A class to store match results.
-
-    Attributes:
-        pattern_name (str): The name of the matched pattern.
-        sentence_id (str): The ID of the sentence where the match was found.
-        tokens (list[conllu.Token]): The list of tokens that matched the pattern.
-
-    """
+    """A class to store match results."""
 
     pattern_name: str
     sentence_id: str
@@ -38,7 +31,7 @@ class MatchResult:
         return [token['form'] for token in self.tokens]
 
     def __repr__(self) -> str:
-        """Return a string representation of the MatchResult."""
+        """Return a representation of the MatchResult."""
         return (
             f"MatchResult(pattern_name='{self.pattern_name}', "
             f"sentence_id='{self.sentence_id}', "

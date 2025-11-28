@@ -220,7 +220,7 @@ Now that you’ve seen the basics, dive deeper:
 
 **User Guides**
 
-- [Conversion](user_guide/brat_conversion.md) - Conversion guide
+- [Conversion](user_guide/conversion.md) - Conversion guide
 - [Validation](user_guide/validation.md) - Validation guide
 - [Evaluation](user_guide/evaluation.md) - Detailed evaluation metrics
 - [Matching](user_guide/matching.md) - Pattern matching guide

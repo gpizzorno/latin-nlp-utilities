@@ -122,4 +122,4 @@ auxiliaries = load_language_data('auxiliaries', language='la')
 
 ## See Also
 
-- {ref}`api_reference/io` - Detailed API documentation
+- {doc}`../api_reference/io` - Detailed API documentation

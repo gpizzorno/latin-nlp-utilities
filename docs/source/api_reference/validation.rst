@@ -1,5 +1,5 @@
 Validation Module
-==============
+=================
 
 The ``validation`` module provides validation tools for CoNLL-U format files.
 
