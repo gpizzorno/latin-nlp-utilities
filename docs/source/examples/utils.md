@@ -44,7 +44,6 @@ for i, char in enumerate(xpos_from_feats):
 print(''.join(final_xpos))  # 'v3spia---' (combined)
 ```
 
-
 ## Format XPOS
 
 ### Processing Mixed Formats
@@ -75,4 +74,4 @@ for token in tokens:
 
 ## See Also
 
-- [Utilities User Guide](../user_guide/utils.md) for detailed documentation
+- {doc}`/user_guide/utils` for detailed documentation

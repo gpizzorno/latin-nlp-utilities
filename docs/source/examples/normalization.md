@@ -85,10 +85,9 @@ print(feats)
 # Output: {'Number': 'Sing'} (only Number is valid for NOUN)
 ```
 
-
 ## Normalization Workflows
 
-## Normalizing a CoNLL-U File
+### Normalizing a CoNLL-U File
 
 Process an entire CoNLL-U file to normalize all morphological annotations:
 
@@ -124,7 +123,7 @@ for sentence in sentences:
 
 ```
 
-## Cleaning Imported Annotations
+### Cleaning Imported Annotations
 
 Normalize annotations from external sources with ref_features:
 
@@ -171,7 +170,7 @@ for sentence, ref_sentence in zip(imported_sentences, reference_sentences):
             clean_annotation(token, feature_set, ref_token)
 ```
 
-## Validating After Normalization
+### Validating After Normalization
 
 Always validate after normalizing to ensure correctness:
 
@@ -196,7 +195,7 @@ else:
     print("All annotations normalized successfully!")
 ```
 
-## Batch Normalization
+### Batch Normalization
 
 Normalize multiple files in batch:
 
