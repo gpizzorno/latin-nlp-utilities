@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constants Module &mdash; CoNLL-U Tools v1.3.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1f29e9d3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Utils Module" href="utils.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CoNLL-U Tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#quick-install">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-requirements">System Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#other-installation-methods">Other Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-github-direct">From GitHub (Direct)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#specific-version">Specific Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#import-error-no-module-named-conllu-tools">Import Error: No module named ‘conllu_tools’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#version-conflicts">Version Conflicts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#permission-errors">Permission Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#conversion">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#conll-u-to-brat">CoNLL-U to brat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#brat-to-conll-u">brat to CoNLL-U</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#pattern-matching">Pattern Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-pattern-search">Basic Pattern Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#pattern-syntax-examples">Pattern Syntax Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#feature-conversion">Feature Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#xpos-conversion">XPOS Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#need-help">Need Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/conversion.html">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#conll-u-to-brat">CoNLL-U to Brat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#output-structure">Output Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#the-metadata-json-file">The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#brat-to-conll-u">Brat to CoNLL-U</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id2">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id3">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#using-metadata-json-for-automatic-configuration">Using metadata.json for Automatic Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-metadata-json">Missing metadata.json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id-mismatches">ID Mismatches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#token-mismatch-errors">Token Mismatch Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-features">Missing Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-output-file">Missing Output File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#encoding-issues">Encoding Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/validation.html">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#validation-levels">Validation Levels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-1-basic-format">Level 1: Basic Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-2-standard-validation-default">Level 2: Standard Validation (Default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-3-extended-validation">Level 3: Extended Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-4-language-specific-format">Level 4: Language-Specific Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-5-language-specific-content">Level 5: Language-Specific Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#custom-validator-configuration">Custom Validator Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#validating-string-content">Validating String Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#accessing-error-details">Accessing Error Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#common-validation-errors">Common Validation Errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#id-sequence-errors">ID Sequence Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#multi-word-token-errors">Multi-word Token Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#upos-deprel-compatibility">UPOS-DEPREL Compatibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#tree-structure-errors">Tree Structure Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/evaluation.html">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#disabling-dependency-evaluation">Disabling Dependency Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#treebank-type-configuration">Treebank Type Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#accessing-score-details">Accessing Score Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#file-alignment">File Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#token-count-mismatch">Token Count Mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/matching.html">Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#building-patterns">Building Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#searching-a-corpus">Searching a Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#working-with-match-results">Working with Match Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#pattern-syntax">Pattern Syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#token-patterns">Token Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#sentence-patterns">Sentence Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#manual-pattern-construction">Manual Pattern Construction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#condition-types">Condition Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#nested-conditions">Nested Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-explanation">Pattern Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#matching-individual-sentences">Matching Individual Sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-not-matching">Pattern Not Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#empty-feature-handling">Empty Feature Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#quantifier-behavior">Quantifier Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/loading.html">Data Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#feature-set-loading">Feature Set Loading</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#basic-loading">Basic Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#understanding-the-feature-set-format">Understanding the Feature Set Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#custom-feature-sets">Custom Feature Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#loading-other-language-data">Loading Other Language Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/utils.html">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#quick-start">Quick Start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#with-reference-features">With Reference Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#what-gets-normalized">What Gets Normalized</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#dalme-to-upos">DALME to UPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#upos-to-perseus">UPOS to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-features-to-xpos">Convert Features to XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-xpos-to-features">Convert XPOS to Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-features">Validate Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#low-level-conversion-tools">Low-level Conversion Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/io.html">I/O Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#round-trip-conversion">Round-trip Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#important-notes">Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/validation.html">Validation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#post-conversion-validation">Post-Conversion Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#batch-validation">Batch Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#integration-with-other-tools">Integration with Other Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-before-evaluation">Validate Before Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-after-conversion">Validate After Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/evaluation.html">Evaluation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#parser-development">Parser Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#cross-validation">Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#baseline-comparison">Baseline Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#evaluate-conversion-accuracy">Evaluate Conversion Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#export-results-to-json-csv">Export Results to JSON/CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/matching.html">Matching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#linguistic-patterns">Linguistic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#syntactic-patterns">Syntactic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#morphological-patterns">Morphological Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/normalization.html">Normalization Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#basic-normalization">Basic Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-1-verb-with-gerund-features">Example 1: VERB with Gerund Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-2-aux-with-finite-verb-features">Example 2: AUX with Finite Verb Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-3-adj-with-degree-reconciliation">Example 3: ADJ with Degree Reconciliation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-4-noun-with-xpos-upos-mismatch-correction">Example 4: NOUN with XPOS/UPOS Mismatch Correction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#normalization-workflows">Normalization Workflows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#normalizing-a-conll-u-file">Normalizing a CoNLL-U File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#cleaning-imported-annotations">Cleaning Imported Annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#validating-after-normalization">Validating After Normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#batch-normalization">Batch Normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#handling-normalization-errors">Handling Normalization Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#safe-normalization-with-fallbacks">Safe Normalization with Fallbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/utils.html">Utilities Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#convert-features-to-xpos">Convert Features to XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#complete-workflow">Complete Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#filling-partial-xpos">Filling Partial XPOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#format-xpos">Format XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#processing-mixed-formats">Processing Mixed Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="io.html">IO Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="io.html#conversion-functions">Conversion Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="io.html#conllu-to-brat">conllu_to_brat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="io.html#brat-to-conllu">brat_to_conllu</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="io.html#data-loading-functions">Data Loading Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="io.html#load-language-data">load_language_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="io.html#load-whitespace-exceptions">load_whitespace_exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conlluvalidator">ConlluValidator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#errorreporter">ErrorReporter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#errorentry">ErrorEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conllu_tools.validation.error_reporter.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#validation-mixins">Validation Mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation.html">Evaluation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#evaluator">Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#score">Score</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#supporting-classes">Supporting Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#udword">UDWord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#udspan">UDSpan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#alignment">Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#alignmentword">AlignmentWord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#conllu_tools.evaluation.base.UDError"><code class="docutils literal notranslate"><span class="pre">UDError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html">Matching Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#quick-example">Quick Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#build-pattern">build_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#find-in-corpus">find_in_corpus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#pattern-classes">Pattern Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#sentencepattern">SentencePattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#tokenpattern">TokenPattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#condition">Condition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#result-classes">Result Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#matchresult">MatchResult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utils Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.normalization.normalize_morphology"><code class="docutils literal notranslate"><span class="pre">normalize_morphology()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.upos.upos_to_perseus"><code class="docutils literal notranslate"><span class="pre">upos_to_perseus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.upos.dalme_to_upos"><code class="docutils literal notranslate"><span class="pre">dalme_to_upos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.feature_string_to_dict"><code class="docutils literal notranslate"><span class="pre">feature_string_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.feature_dict_to_string"><code class="docutils literal notranslate"><span class="pre">feature_dict_to_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.features_to_xpos"><code class="docutils literal notranslate"><span class="pre">features_to_xpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.xpos_to_features"><code class="docutils literal notranslate"><span class="pre">xpos_to_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.validate_features"><code class="docutils literal notranslate"><span class="pre">validate_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#ittb-to-perseus">ITTB to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#proiel-to-perseus">PROIEL to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#llct-to-perseus">LLCT to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#brat-utilities">brat Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.type_to_safe_type"><code class="docutils literal notranslate"><span class="pre">type_to_safe_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.safe_type_to_type"><code class="docutils literal notranslate"><span class="pre">safe_type_to_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.parse_annotation_line"><code class="docutils literal notranslate"><span class="pre">parse_annotation_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.format_annotation"><code class="docutils literal notranslate"><span class="pre">format_annotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.read_annotations"><code class="docutils literal notranslate"><span class="pre">read_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.read_text_lines"><code class="docutils literal notranslate"><span class="pre">read_text_lines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.sort_annotations_set"><code class="docutils literal notranslate"><span class="pre">sort_annotations_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.sort_annotations"><code class="docutils literal notranslate"><span class="pre">sort_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.write_annotations"><code class="docutils literal notranslate"><span class="pre">write_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.write_text"><code class="docutils literal notranslate"><span class="pre">write_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.write_auxiliary_files"><code class="docutils literal notranslate"><span class="pre">write_auxiliary_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.get_next_id_number"><code class="docutils literal notranslate"><span class="pre">get_next_id_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Constants Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#universal-dependencies-tags">Universal Dependencies Tags</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#upos-tags">UPOS Tags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#universal-dependency-relations">Universal Dependency Relations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#universal-features">Universal Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#relation-categories">Relation Categories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.CONTENT_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.CONTENT_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.FUNCTIONAL_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FUNCTIONAL_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conll-u-token-structure">CoNLL-U Token Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.TOKEN_KEYS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.TOKEN_KEYS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xpos-mappings">XPOS Mappings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.UPOS_TO_PERSEUS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.UPOS_TO_PERSEUS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.FEATS_TO_XPOS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FEATS_TO_XPOS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.XPOS_TO_FEATS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.XPOS_TO_FEATS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.VALIDITY_BY_POS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.VALIDITY_BY_POS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#treebank-concordances">Treebank Concordances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.ITTB_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.ITTB_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.PROIEL_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.PROIEL_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.LLCT_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LLCT_CONCORDANCES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#misc-column">MISC Column</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.constants.MISC_ATTRIBUTES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.MISC_ATTRIBUTES</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CoNLL-U Tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Constants Module</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/gpizzorno/conllu_tools/blob/main/docs/source/api_reference/constants.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="constants-module">
+<h1>Constants Module<a class="headerlink" href="#constants-module" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">conllu_tools.constants</span></code> module provides reference data for Universal Dependencies
+annotations, including valid tags, relations, features, and mappings between different
+annotation schemes.</p>
+<p>These constants are used internally by the validation and utility functions, but are
+also available for direct use in custom processing pipelines.</p>
+<section id="universal-dependencies-tags">
+<h2>Universal Dependencies Tags<a class="headerlink" href="#universal-dependencies-tags" title="Link to this heading"></a></h2>
+<section id="upos-tags">
+<h3>UPOS Tags<a class="headerlink" href="#upos-tags" title="Link to this heading"></a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.UPOS_TAGS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">UPOS_TAGS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.UPOS_TAGS" title="Link to this definition"></a></dt>
+<dd><p>List of valid Universal Part-of-Speech tags.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">UPOS_TAGS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;ADJ&#39;</span><span class="p">,</span> <span class="s1">&#39;ADP&#39;</span><span class="p">,</span> <span class="s1">&#39;ADV&#39;</span><span class="p">,</span> <span class="s1">&#39;AUX&#39;</span><span class="p">,</span> <span class="s1">&#39;CCONJ&#39;</span><span class="p">,</span> <span class="s1">&#39;DET&#39;</span><span class="p">,</span> <span class="s1">&#39;INTJ&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="s1">&#39;NUM&#39;</span><span class="p">,</span> <span class="s1">&#39;PART&#39;</span><span class="p">,</span> <span class="s1">&#39;PRON&#39;</span><span class="p">,</span> <span class="s1">&#39;PROPN&#39;</span><span class="p">,</span> <span class="s1">&#39;PUNCT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SCONJ&#39;</span><span class="p">,</span> <span class="s1">&#39;SYM&#39;</span><span class="p">,</span> <span class="s1">&#39;VERB&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="universal-dependency-relations">
+<h3>Universal Dependency Relations<a class="headerlink" href="#universal-dependency-relations" title="Link to this heading"></a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.UNIVERSAL_DEPRELS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">UNIVERSAL_DEPRELS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.UNIVERSAL_DEPRELS" title="Link to this definition"></a></dt>
+<dd><p>Set of valid Universal Dependency relations.</p>
+<p>Includes: <code class="docutils literal notranslate"><span class="pre">acl</span></code>, <code class="docutils literal notranslate"><span class="pre">advcl</span></code>, <code class="docutils literal notranslate"><span class="pre">advmod</span></code>, <code class="docutils literal notranslate"><span class="pre">amod</span></code>, <code class="docutils literal notranslate"><span class="pre">appos</span></code>, <code class="docutils literal notranslate"><span class="pre">aux</span></code>,
+<code class="docutils literal notranslate"><span class="pre">case</span></code>, <code class="docutils literal notranslate"><span class="pre">cc</span></code>, <code class="docutils literal notranslate"><span class="pre">ccomp</span></code>, <code class="docutils literal notranslate"><span class="pre">clf</span></code>, <code class="docutils literal notranslate"><span class="pre">compound</span></code>, <code class="docutils literal notranslate"><span class="pre">conj</span></code>, <code class="docutils literal notranslate"><span class="pre">cop</span></code>,
+<code class="docutils literal notranslate"><span class="pre">csubj</span></code>, <code class="docutils literal notranslate"><span class="pre">dep</span></code>, <code class="docutils literal notranslate"><span class="pre">det</span></code>, <code class="docutils literal notranslate"><span class="pre">discourse</span></code>, <code class="docutils literal notranslate"><span class="pre">dislocated</span></code>, <code class="docutils literal notranslate"><span class="pre">expl</span></code>,
+<code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">flat</span></code>, <code class="docutils literal notranslate"><span class="pre">goeswith</span></code>, <code class="docutils literal notranslate"><span class="pre">iobj</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, <code class="docutils literal notranslate"><span class="pre">mark</span></code>, <code class="docutils literal notranslate"><span class="pre">nmod</span></code>,
+<code class="docutils literal notranslate"><span class="pre">nsubj</span></code>, <code class="docutils literal notranslate"><span class="pre">nummod</span></code>, <code class="docutils literal notranslate"><span class="pre">obj</span></code>, <code class="docutils literal notranslate"><span class="pre">obl</span></code>, <code class="docutils literal notranslate"><span class="pre">orphan</span></code>, <code class="docutils literal notranslate"><span class="pre">parataxis</span></code>,
+<code class="docutils literal notranslate"><span class="pre">punct</span></code>, <code class="docutils literal notranslate"><span class="pre">reparandum</span></code>, <code class="docutils literal notranslate"><span class="pre">root</span></code>, <code class="docutils literal notranslate"><span class="pre">vocative</span></code>, <code class="docutils literal notranslate"><span class="pre">xcomp</span></code></p>
+</dd></dl>
+
+</section>
+<section id="universal-features">
+<h3>Universal Features<a class="headerlink" href="#universal-features" title="Link to this heading"></a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.UNIVERSAL_FEATURES">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">UNIVERSAL_FEATURES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.UNIVERSAL_FEATURES" title="Link to this definition"></a></dt>
+<dd><p>Set of Universal Dependencies morphological feature names.</p>
+<p>Includes: <code class="docutils literal notranslate"><span class="pre">Abbr</span></code>, <code class="docutils literal notranslate"><span class="pre">Animacy</span></code>, <code class="docutils literal notranslate"><span class="pre">Aspect</span></code>, <code class="docutils literal notranslate"><span class="pre">Case</span></code>, <code class="docutils literal notranslate"><span class="pre">Definite</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Degree</span></code>, <code class="docutils literal notranslate"><span class="pre">Evident</span></code>, <code class="docutils literal notranslate"><span class="pre">Foreign</span></code>, <code class="docutils literal notranslate"><span class="pre">Gender</span></code>, <code class="docutils literal notranslate"><span class="pre">Mood</span></code>, <code class="docutils literal notranslate"><span class="pre">NumType</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Number</span></code>, <code class="docutils literal notranslate"><span class="pre">Person</span></code>, <code class="docutils literal notranslate"><span class="pre">Polarity</span></code>, <code class="docutils literal notranslate"><span class="pre">Polite</span></code>, <code class="docutils literal notranslate"><span class="pre">Poss</span></code>, <code class="docutils literal notranslate"><span class="pre">PronType</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Reflex</span></code>, <code class="docutils literal notranslate"><span class="pre">Tense</span></code>, <code class="docutils literal notranslate"><span class="pre">VerbForm</span></code>, <code class="docutils literal notranslate"><span class="pre">Voice</span></code></p>
+</dd></dl>
+
+</section>
+</section>
+<section id="relation-categories">
+<h2>Relation Categories<a class="headerlink" href="#relation-categories" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.CONTENT_DEPRELS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">CONTENT_DEPRELS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.CONTENT_DEPRELS" title="Link to this definition"></a></dt>
+<dd><p>Set of content (non-functional) dependency relations.</p>
+<p>Content relations attach content words that contribute semantic meaning.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.FUNCTIONAL_DEPRELS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">FUNCTIONAL_DEPRELS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.FUNCTIONAL_DEPRELS" title="Link to this definition"></a></dt>
+<dd><p>Set of functional dependency relations.</p>
+<p>Functional relations attach function words (<code class="docutils literal notranslate"><span class="pre">aux</span></code>, <code class="docutils literal notranslate"><span class="pre">cop</span></code>, <code class="docutils literal notranslate"><span class="pre">mark</span></code>,
+<code class="docutils literal notranslate"><span class="pre">det</span></code>, <code class="docutils literal notranslate"><span class="pre">clf</span></code>, <code class="docutils literal notranslate"><span class="pre">case</span></code>, <code class="docutils literal notranslate"><span class="pre">cc</span></code>).</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">LEFT_TO_RIGHT_RELATIONS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS" title="Link to this definition"></a></dt>
+<dd><p>Relations that must always attach left-to-right in the sentence.</p>
+<p>Includes: <code class="docutils literal notranslate"><span class="pre">conj</span></code>, <code class="docutils literal notranslate"><span class="pre">fixed</span></code>, <code class="docutils literal notranslate"><span class="pre">flat</span></code>, <code class="docutils literal notranslate"><span class="pre">goeswith</span></code>, <code class="docutils literal notranslate"><span class="pre">appos</span></code></p>
+</dd></dl>
+
+</section>
+<section id="conll-u-token-structure">
+<h2>CoNLL-U Token Structure<a class="headerlink" href="#conll-u-token-structure" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.TOKEN_KEYS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">TOKEN_KEYS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.TOKEN_KEYS" title="Link to this definition"></a></dt>
+<dd><p>Mapping of CoNLL-U column names to their expected types.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TOKEN_KEYS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;lemma&#39;</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;upos&#39;</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;xpos&#39;</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;feats&#39;</span><span class="p">:</span> <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;head&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;deprel&#39;</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;deps&#39;</span><span class="p">:</span> <span class="s1">&#39;list&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;misc&#39;</span><span class="p">:</span> <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="xpos-mappings">
+<h2>XPOS Mappings<a class="headerlink" href="#xpos-mappings" title="Link to this heading"></a></h2>
+<p>These mappings are used for converting between morphological features and
+Perseus-format XPOS tags.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.UPOS_TO_PERSEUS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">UPOS_TO_PERSEUS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.UPOS_TO_PERSEUS" title="Link to this definition"></a></dt>
+<dd><p>Mapping from UPOS tags to Perseus XPOS first-position codes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">UPOS_TO_PERSEUS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;ADJ&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;ADP&#39;</span><span class="p">:</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;ADV&#39;</span><span class="p">:</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;AUX&#39;</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CCONJ&#39;</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;DET&#39;</span><span class="p">:</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;NOUN&#39;</span><span class="p">:</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;NUM&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PART&#39;</span><span class="p">:</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;PRON&#39;</span><span class="p">:</span> <span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="s1">&#39;PROPN&#39;</span><span class="p">:</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;PUNCT&#39;</span><span class="p">:</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SCONJ&#39;</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;VERB&#39;</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">:</span> <span class="s1">&#39;-&#39;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.FEATS_TO_XPOS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">FEATS_TO_XPOS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.FEATS_TO_XPOS" title="Link to this definition"></a></dt>
+<dd><p>Mapping from (feature, value) pairs to (position, character) in Perseus XPOS.</p>
+<p>See <a class="reference internal" href="../user_guide/utils.html"><span class="doc">Utils</span></a> for the complete mapping table.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.XPOS_TO_FEATS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">XPOS_TO_FEATS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.XPOS_TO_FEATS" title="Link to this definition"></a></dt>
+<dd><p>Inverse mapping from (position, character) to (feature, value).</p>
+<p>This is the inverse of <code class="docutils literal notranslate"><span class="pre">FEATS_TO_XPOS</span></code>.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.VALIDITY_BY_POS">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">VALIDITY_BY_POS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.VALIDITY_BY_POS" title="Link to this definition"></a></dt>
+<dd><p>Defines which XPOS positions are valid for which POS categories.</p>
+<p>Used by <a class="reference internal" href="utils.html#conllu_tools.utils.xpos.validate.validate_xpos" title="conllu_tools.utils.xpos.validate.validate_xpos"><code class="xref py py-func docutils literal notranslate"><span class="pre">validate_xpos()</span></code></a> to check
+position validity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">VALIDITY_BY_POS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span>       <span class="c1"># Position 2 (person): only valid for verbs</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;nvapm&#39;</span><span class="p">,</span>   <span class="c1"># Position 3 (number): nouns, verbs, adj, pron, num</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span>       <span class="c1"># Position 4 (tense): only verbs</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span>       <span class="c1"># Position 5 (mood/verbform): only verbs</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span>       <span class="c1"># Position 6 (voice): only verbs</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s1">&#39;nvapm&#39;</span><span class="p">,</span>   <span class="c1"># Position 7 (gender): nouns, verbs, adj, pron, num</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s1">&#39;nvapm&#39;</span><span class="p">,</span>   <span class="c1"># Position 8 (case): nouns, verbs, adj, pron, num</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span>       <span class="c1"># Position 9 (degree): only adjectives</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="treebank-concordances">
+<h2>Treebank Concordances<a class="headerlink" href="#treebank-concordances" title="Link to this heading"></a></h2>
+<p>These dictionaries define mappings for converting XPOS formats from specific
+Latin treebanks to the Perseus standard format.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.ITTB_CONCORDANCES">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">ITTB_CONCORDANCES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></em><a class="headerlink" href="#conllu_tools.constants.ITTB_CONCORDANCES" title="Link to this definition"></a></dt>
+<dd><p>Mappings for Index Thomisticus Treebank XPOS conversion.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.PROIEL_CONCORDANCES">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">PROIEL_CONCORDANCES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></em><a class="headerlink" href="#conllu_tools.constants.PROIEL_CONCORDANCES" title="Link to this definition"></a></dt>
+<dd><p>Mappings for PROIEL Treebank XPOS conversion.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.LLCT_CONCORDANCES">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">LLCT_CONCORDANCES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a></em><a class="headerlink" href="#conllu_tools.constants.LLCT_CONCORDANCES" title="Link to this definition"></a></dt>
+<dd><p>Mappings for Late Latin Charter Treebank XPOS conversion.</p>
+</dd></dl>
+
+</section>
+<section id="misc-column">
+<h2>MISC Column<a class="headerlink" href="#misc-column" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="conllu_tools.constants.MISC_ATTRIBUTES">
+<span class="sig-prename descclassname"><span class="pre">conllu_tools.constants.</span></span><span class="sig-name descname"><span class="pre">MISC_ATTRIBUTES</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><span class="pre">set</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#conllu_tools.constants.MISC_ATTRIBUTES" title="Link to this definition"></a></dt>
+<dd><p>Known/standard attributes for the MISC column.</p>
+<p>Includes: <code class="docutils literal notranslate"><span class="pre">SpaceAfter</span></code>, <code class="docutils literal notranslate"><span class="pre">Lang</span></code>, <code class="docutils literal notranslate"><span class="pre">Translit</span></code>, <code class="docutils literal notranslate"><span class="pre">LTranslit</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Gloss</span></code>, <code class="docutils literal notranslate"><span class="pre">LId</span></code>, <code class="docutils literal notranslate"><span class="pre">LDeriv</span></code></p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="utils.html" class="btn btn-neutral float-left" title="Utils Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Gabe Pizzorno.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

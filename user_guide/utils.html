@@ -1,0 +1,983 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utils &mdash; CoNLL-U Tools v1.3.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1f29e9d3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Usage Examples" href="../examples/index.html" />
+    <link rel="prev" title="Data Loading" href="loading.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CoNLL-U Tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#quick-install">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-requirements">System Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#other-installation-methods">Other Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-github-direct">From GitHub (Direct)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#specific-version">Specific Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#import-error-no-module-named-conllu-tools">Import Error: No module named ‘conllu_tools’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#version-conflicts">Version Conflicts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#permission-errors">Permission Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#conversion">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#conll-u-to-brat">CoNLL-U to brat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#brat-to-conll-u">brat to CoNLL-U</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#pattern-matching">Pattern Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-pattern-search">Basic Pattern Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#pattern-syntax-examples">Pattern Syntax Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#feature-conversion">Feature Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#xpos-conversion">XPOS Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#need-help">Need Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="conversion.html">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#conll-u-to-brat">CoNLL-U to Brat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#output-structure">Output Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#the-metadata-json-file">The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#brat-to-conll-u">Brat to CoNLL-U</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id2">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id3">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#using-metadata-json-for-automatic-configuration">Using metadata.json for Automatic Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#missing-metadata-json">Missing metadata.json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id-mismatches">ID Mismatches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#token-mismatch-errors">Token Mismatch Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#missing-features">Missing Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#missing-output-file">Missing Output File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#encoding-issues">Encoding Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#validation-levels">Validation Levels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-1-basic-format">Level 1: Basic Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-2-standard-validation-default">Level 2: Standard Validation (Default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-3-extended-validation">Level 3: Extended Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-4-language-specific-format">Level 4: Language-Specific Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-5-language-specific-content">Level 5: Language-Specific Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#custom-validator-configuration">Custom Validator Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#validating-string-content">Validating String Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#accessing-error-details">Accessing Error Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#common-validation-errors">Common Validation Errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#id-sequence-errors">ID Sequence Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#multi-word-token-errors">Multi-word Token Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#upos-deprel-compatibility">UPOS-DEPREL Compatibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#tree-structure-errors">Tree Structure Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation.html">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#disabling-dependency-evaluation">Disabling Dependency Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#treebank-type-configuration">Treebank Type Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#accessing-score-details">Accessing Score Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#file-alignment">File Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#token-count-mismatch">Token Count Mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html">Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#building-patterns">Building Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#searching-a-corpus">Searching a Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#working-with-match-results">Working with Match Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#pattern-syntax">Pattern Syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#token-patterns">Token Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#sentence-patterns">Sentence Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#manual-pattern-construction">Manual Pattern Construction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#condition-types">Condition Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#nested-conditions">Nested Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#pattern-explanation">Pattern Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#matching-individual-sentences">Matching Individual Sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#pattern-not-matching">Pattern Not Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#empty-feature-handling">Empty Feature Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#quantifier-behavior">Quantifier Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="loading.html">Data Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loading.html#feature-set-loading">Feature Set Loading</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loading.html#basic-loading">Basic Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loading.html#understanding-the-feature-set-format">Understanding the Feature Set Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loading.html#custom-feature-sets">Custom Feature Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loading.html#loading-other-language-data">Loading Other Language Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="loading.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#with-reference-features">With Reference Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#what-gets-normalized">What Gets Normalized</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dalme-to-upos">DALME to UPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upos-to-perseus">UPOS to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#convert-features-to-xpos">Convert Features to XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#convert-xpos-to-features">Convert XPOS to Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validate-features">Validate Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#low-level-conversion-tools">Low-level Conversion Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/io.html">I/O Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#round-trip-conversion">Round-trip Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#important-notes">Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/validation.html">Validation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#post-conversion-validation">Post-Conversion Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#batch-validation">Batch Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#integration-with-other-tools">Integration with Other Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-before-evaluation">Validate Before Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-after-conversion">Validate After Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/evaluation.html">Evaluation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#parser-development">Parser Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#cross-validation">Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#baseline-comparison">Baseline Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#evaluate-conversion-accuracy">Evaluate Conversion Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#export-results-to-json-csv">Export Results to JSON/CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/matching.html">Matching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#linguistic-patterns">Linguistic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#syntactic-patterns">Syntactic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#morphological-patterns">Morphological Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/normalization.html">Normalization Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#basic-normalization">Basic Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-1-verb-with-gerund-features">Example 1: VERB with Gerund Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-2-aux-with-finite-verb-features">Example 2: AUX with Finite Verb Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-3-adj-with-degree-reconciliation">Example 3: ADJ with Degree Reconciliation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-4-noun-with-xpos-upos-mismatch-correction">Example 4: NOUN with XPOS/UPOS Mismatch Correction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#normalization-workflows">Normalization Workflows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#normalizing-a-conll-u-file">Normalizing a CoNLL-U File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#cleaning-imported-annotations">Cleaning Imported Annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#validating-after-normalization">Validating After Normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#batch-normalization">Batch Normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#handling-normalization-errors">Handling Normalization Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#safe-normalization-with-fallbacks">Safe Normalization with Fallbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/utils.html">Utilities Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#convert-features-to-xpos">Convert Features to XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#complete-workflow">Complete Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#filling-partial-xpos">Filling Partial XPOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#format-xpos">Format XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#processing-mixed-formats">Processing Mixed Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/io.html">IO Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/io.html#conversion-functions">Conversion Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#conllu-to-brat">conllu_to_brat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#brat-to-conllu">brat_to_conllu</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/io.html#data-loading-functions">Data Loading Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#load-language-data">load_language_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#load-whitespace-exceptions">load_whitespace_exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/validation.html">Validation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/validation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conlluvalidator">ConlluValidator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#errorreporter">ErrorReporter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#errorentry">ErrorEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/validation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conllu_tools.validation.error_reporter.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/validation.html#validation-mixins">Validation Mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/evaluation.html">Evaluation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/evaluation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#evaluator">Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#score">Score</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/evaluation.html#supporting-classes">Supporting Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#udword">UDWord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#udspan">UDSpan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#alignment">Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#alignmentword">AlignmentWord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/evaluation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.UDError"><code class="docutils literal notranslate"><span class="pre">UDError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/matching.html">Matching Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#quick-example">Quick Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#build-pattern">build_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#find-in-corpus">find_in_corpus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#pattern-classes">Pattern Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#sentencepattern">SentencePattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#tokenpattern">TokenPattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#condition">Condition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#result-classes">Result Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#matchresult">MatchResult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/utils.html">Utils Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.normalization.normalize_morphology"><code class="docutils literal notranslate"><span class="pre">normalize_morphology()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.upos.upos_to_perseus"><code class="docutils literal notranslate"><span class="pre">upos_to_perseus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.upos.dalme_to_upos"><code class="docutils literal notranslate"><span class="pre">dalme_to_upos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.feature_string_to_dict"><code class="docutils literal notranslate"><span class="pre">feature_string_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.feature_dict_to_string"><code class="docutils literal notranslate"><span class="pre">feature_dict_to_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.features_to_xpos"><code class="docutils literal notranslate"><span class="pre">features_to_xpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.xpos_to_features"><code class="docutils literal notranslate"><span class="pre">xpos_to_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.validate_features"><code class="docutils literal notranslate"><span class="pre">validate_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#ittb-to-perseus">ITTB to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#proiel-to-perseus">PROIEL to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#llct-to-perseus">LLCT to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#brat-utilities">brat Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.type_to_safe_type"><code class="docutils literal notranslate"><span class="pre">type_to_safe_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.safe_type_to_type"><code class="docutils literal notranslate"><span class="pre">safe_type_to_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.parse_annotation_line"><code class="docutils literal notranslate"><span class="pre">parse_annotation_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.format_annotation"><code class="docutils literal notranslate"><span class="pre">format_annotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.read_annotations"><code class="docutils literal notranslate"><span class="pre">read_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.read_text_lines"><code class="docutils literal notranslate"><span class="pre">read_text_lines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.sort_annotations_set"><code class="docutils literal notranslate"><span class="pre">sort_annotations_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.sort_annotations"><code class="docutils literal notranslate"><span class="pre">sort_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.write_annotations"><code class="docutils literal notranslate"><span class="pre">write_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.write_text"><code class="docutils literal notranslate"><span class="pre">write_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.write_auxiliary_files"><code class="docutils literal notranslate"><span class="pre">write_auxiliary_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.get_next_id_number"><code class="docutils literal notranslate"><span class="pre">get_next_id_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/constants.html">Constants Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#universal-dependencies-tags">Universal Dependencies Tags</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#upos-tags">UPOS Tags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#universal-dependency-relations">Universal Dependency Relations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#universal-features">Universal Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#relation-categories">Relation Categories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.CONTENT_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.CONTENT_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.FUNCTIONAL_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FUNCTIONAL_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#conll-u-token-structure">CoNLL-U Token Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.TOKEN_KEYS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.TOKEN_KEYS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#xpos-mappings">XPOS Mappings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.UPOS_TO_PERSEUS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.UPOS_TO_PERSEUS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.FEATS_TO_XPOS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FEATS_TO_XPOS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.XPOS_TO_FEATS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.XPOS_TO_FEATS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.VALIDITY_BY_POS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.VALIDITY_BY_POS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#treebank-concordances">Treebank Concordances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.ITTB_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.ITTB_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.PROIEL_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.PROIEL_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.LLCT_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LLCT_CONCORDANCES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#misc-column">MISC Column</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.MISC_ATTRIBUTES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.MISC_ATTRIBUTES</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CoNLL-U Tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User Guide</a></li>
+      <li class="breadcrumb-item active">Utils</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/gpizzorno/conllu_tools/blob/main/docs/source/user_guide/utils.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="utils">
+<h1>Utils<a class="headerlink" href="#utils" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">conllu_tools.utils</span></code> module provides utilities for working with morphological annotations, including XPOS format conversion, feature validation, and UPOS tag mapping. These tools are particularly useful for harmonizing annotations from different Latin treebanks (Perseus, PROIEL, ITTB, LLCT) into a common format.</p>
+<section id="morphology-normalization">
+<h2>Morphology Normalization<a class="headerlink" href="#morphology-normalization" title="Link to this heading"></a></h2>
+<p>Normalizes XPOS and FEATS together, with automatic format detection and validation.</p>
+<section id="quick-start">
+<h3>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h3>
+<p>Normalizing morphological annotations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.normalization</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize_morphology</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_language_data</span>
+
+<span class="c1"># Load feature set for Latin</span>
+<span class="n">feature_set</span> <span class="o">=</span> <span class="n">load_language_data</span><span class="p">(</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">)</span>
+
+<span class="c1"># Normalize XPOS and FEATS together</span>
+<span class="n">xpos</span><span class="p">,</span> <span class="n">feats</span> <span class="o">=</span> <span class="n">normalize_morphology</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;v-s-ga-g-&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|Voice=Act&#39;</span><span class="p">,</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span><span class="p">,</span>
+    <span class="n">ref_features</span><span class="o">=</span><span class="s1">&#39;VerbForm=Ger&#39;</span>  <span class="c1"># Missing feature added from reference</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>
+<span class="c1"># Output: &#39;v-stga-g-&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;Aspect&#39;: &#39;Perf&#39;, &#39;Case&#39;: &#39;Gen&#39;, &#39;Degree&#39;: &#39;Pos&#39;, &#39;Number&#39;: &#39;Sing&#39;, &#39;VerbForm&#39;: &#39;Ger&#39;, &#39;Voice&#39;: &#39;Act&#39;}</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-usage">
+<h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.normalization</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize_morphology</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_language_data</span>
+
+<span class="n">feature_set</span> <span class="o">=</span> <span class="n">load_language_data</span><span class="p">(</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">)</span>
+
+<span class="c1"># Basic normalization</span>
+<span class="n">xpos</span><span class="p">,</span> <span class="n">feats</span> <span class="o">=</span> <span class="n">normalize_morphology</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;n-s---mn-&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Case=Nom|Gender=Masc|Number=Sing&#39;</span><span class="p">,</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;n-s---mn-&#39; (validated)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>  <span class="c1"># {&#39;Case&#39;: &#39;Nom&#39;, &#39;Gender&#39;: &#39;Masc&#39;, &#39;Number&#39;: &#39;Sing&#39;}</span>
+</pre></div>
+</div>
+</section>
+<section id="with-reference-features">
+<h3>With Reference Features<a class="headerlink" href="#with-reference-features" title="Link to this heading"></a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">ref_features</span></code> to fill in missing features from a reference source:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Features are incomplete - missing NumForm</span>
+<span class="n">xpos</span><span class="p">,</span> <span class="n">feats</span> <span class="o">=</span> <span class="n">normalize_morphology</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;NUM&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;m-p---fa-&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Case=Acc|Gender=Fem|Number=Plur&#39;</span><span class="p">,</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span><span class="p">,</span>
+    <span class="n">ref_features</span><span class="o">=</span><span class="s1">&#39;NumForm=Word&#39;</span>  <span class="c1"># Will be added</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;Case&#39;: &#39;Acc&#39;, &#39;Gender&#39;: &#39;Fem&#39;, &#39;NumForm&#39;: &#39;Word&#39;, &#39;Number&#39;: &#39;Plur&#39;}</span>
+</pre></div>
+</div>
+</section>
+<section id="what-gets-normalized">
+<h3>What Gets Normalized<a class="headerlink" href="#what-gets-normalized" title="Link to this heading"></a></h3>
+<p>The normalizer performs these operations:</p>
+<ol class="arabic simple">
+<li><p><strong>Formats XPOS</strong>: Auto-detects and converts LLCT, ITTB, PROIEL formats to Perseus</p></li>
+<li><p><strong>Validates XPOS</strong>: Checks each position against UPOS-specific validity rules</p></li>
+<li><p><strong>Reconciles features</strong>: Merges feats with ref_features (feats take precedence)</p></li>
+<li><p><strong>Validates features</strong>: Filters out features invalid for the given UPOS</p></li>
+<li><p><strong>Generates XPOS from features</strong>: Creates XPOS positions from validated features</p></li>
+<li><p><strong>Reconciles XPOS</strong>: Merges provided and generated XPOS (provided takes precedence)</p></li>
+<li><p><strong>Returns tuple</strong>: (normalized_xpos, validated_features)</p></li>
+</ol>
+</section>
+</section>
+<section id="upos-utilities">
+<h2>UPOS Utilities<a class="headerlink" href="#upos-utilities" title="Link to this heading"></a></h2>
+<p>Convert language-specific POS tags to Universal POS tags.</p>
+<section id="dalme-to-upos">
+<h3>DALME to UPOS<a class="headerlink" href="#dalme-to-upos" title="Link to this heading"></a></h3>
+<p>Convert DALME project tags to Universal POS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.upos</span><span class="w"> </span><span class="kn">import</span> <span class="n">dalme_to_upos</span>
+
+<span class="n">dalme_tag</span> <span class="o">=</span> <span class="s1">&#39;coordinating conjunction&#39;</span>
+<span class="n">upos_tag</span> <span class="o">=</span> <span class="n">dalme_to_upos</span><span class="p">(</span><span class="n">dalme_tag</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">upos_tag</span><span class="p">)</span>  <span class="c1"># &#39;CCONJ&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="upos-to-perseus">
+<h3>UPOS to Perseus<a class="headerlink" href="#upos-to-perseus" title="Link to this heading"></a></h3>
+<p>Convert a UPOS tag to a Perseus XPOS tag:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.upos</span><span class="w"> </span><span class="kn">import</span> <span class="n">upos_to_perseus</span>
+
+<span class="n">upos</span> <span class="o">=</span> <span class="s2">&quot;NOUN&quot;</span>
+<span class="n">perseus_tag</span> <span class="o">=</span> <span class="n">upos_to_perseus</span><span class="p">(</span><span class="n">upos</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">perseus_tag</span><span class="p">)</span>  <span class="c1"># &#39;n&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="feature-utilities">
+<h2>Feature Utilities<a class="headerlink" href="#feature-utilities" title="Link to this heading"></a></h2>
+<section id="convert-features-to-xpos">
+<h3>Convert Features to XPOS<a class="headerlink" href="#convert-features-to-xpos" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">features_to_xpos</span></code> function creates Perseus XPOS positions from feature dictionaries:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.features</span><span class="w"> </span><span class="kn">import</span> <span class="n">features_to_xpos</span>
+
+<span class="c1"># Generate XPOS from features</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">features_to_xpos</span><span class="p">(</span><span class="s1">&#39;Case=Nom|Gender=Masc|Number=Sing&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;-----mn-&#39; (positions 7,8 filled)</span>
+
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">features_to_xpos</span><span class="p">(</span><span class="s1">&#39;Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;-3spia---&#39; (verb positions filled)</span>
+
+<span class="c1"># Works with dictionaries too</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">features_to_xpos</span><span class="p">({</span><span class="s1">&#39;Case&#39;</span><span class="p">:</span> <span class="s1">&#39;Acc&#39;</span><span class="p">,</span> <span class="s1">&#39;Gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Fem&#39;</span><span class="p">,</span> <span class="s1">&#39;Number&#39;</span><span class="p">:</span> <span class="s1">&#39;Plur&#39;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;-p---fa-&#39; (positions 3,7,8 filled)</span>
+
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">features_to_xpos</span><span class="p">({</span><span class="s1">&#39;Degree&#39;</span><span class="p">:</span> <span class="s1">&#39;Sup&#39;</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;--------s&#39; (position 9 filled - superlative adjective)</span>
+</pre></div>
+</div>
+<p><strong>Feature-to-Position Mapping:</strong></p>
+<p>The function uses the <code class="docutils literal notranslate"><span class="pre">FEATS_TO_XPOS</span></code> mapping constant:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example mappings (feature, value) → (position, character)</span>
+<span class="n">FEATS_TO_XPOS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">),</span>  <span class="c1"># First person</span>
+    <span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">),</span>  <span class="c1"># Second person</span>
+    <span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">),</span>  <span class="c1"># Third person</span>
+    <span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Sing&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">),</span>  <span class="c1"># Singular</span>
+    <span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Plur&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">),</span>  <span class="c1"># Plural</span>
+    <span class="p">(</span><span class="s1">&#39;Aspect&#39;</span><span class="p">,</span> <span class="s1">&#39;Imp&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">),</span>  <span class="c1"># Imperfect</span>
+    <span class="p">(</span><span class="s1">&#39;Aspect&#39;</span><span class="p">,</span> <span class="s1">&#39;Perf&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">),</span>  <span class="c1"># Future Perfect</span>
+    <span class="p">(</span><span class="s1">&#39;Tense&#39;</span><span class="p">,</span> <span class="s1">&#39;Pres&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">),</span>  <span class="c1"># Present</span>
+    <span class="p">(</span><span class="s1">&#39;Tense&#39;</span><span class="p">,</span> <span class="s1">&#39;Past&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">),</span>  <span class="c1"># Perfect</span>
+    <span class="p">(</span><span class="s1">&#39;Tense&#39;</span><span class="p">,</span> <span class="s1">&#39;Pqp&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">),</span>  <span class="c1"># Pluperfect</span>
+    <span class="p">(</span><span class="s1">&#39;Tense&#39;</span><span class="p">,</span> <span class="s1">&#39;Fut&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">),</span>  <span class="c1"># Future</span>
+    <span class="p">(</span><span class="s1">&#39;VerbForm&#39;</span><span class="p">,</span> <span class="s1">&#39;Inf&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">),</span>  <span class="c1"># Infinitive</span>
+    <span class="p">(</span><span class="s1">&#39;VerbForm&#39;</span><span class="p">,</span> <span class="s1">&#39;Part&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">),</span>  <span class="c1"># Participle</span>
+    <span class="p">(</span><span class="s1">&#39;VerbForm&#39;</span><span class="p">,</span> <span class="s1">&#39;Ger&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>  <span class="c1"># Gerund</span>
+    <span class="p">(</span><span class="s1">&#39;VerbForm&#39;</span><span class="p">,</span> <span class="s1">&#39;Gdv&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>  <span class="c1"># Gerundive</span>
+    <span class="p">(</span><span class="s1">&#39;VerbForm&#39;</span><span class="p">,</span> <span class="s1">&#39;Sup&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">),</span>  <span class="c1"># Supine</span>
+    <span class="p">(</span><span class="s1">&#39;Mood&#39;</span><span class="p">,</span> <span class="s1">&#39;Ind&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">),</span>  <span class="c1"># Indicative</span>
+    <span class="p">(</span><span class="s1">&#39;Mood&#39;</span><span class="p">,</span> <span class="s1">&#39;Sub&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">),</span>  <span class="c1"># Subjunctive</span>
+    <span class="p">(</span><span class="s1">&#39;Mood&#39;</span><span class="p">,</span> <span class="s1">&#39;Imp&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span>  <span class="c1"># Imperative</span>
+    <span class="p">(</span><span class="s1">&#39;Voice&#39;</span><span class="p">,</span> <span class="s1">&#39;Act&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>  <span class="c1"># Active</span>
+    <span class="p">(</span><span class="s1">&#39;Voice&#39;</span><span class="p">,</span> <span class="s1">&#39;Pass&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">),</span>  <span class="c1"># Passive</span>
+    <span class="p">(</span><span class="s1">&#39;VerbType&#39;</span><span class="p">,</span> <span class="s1">&#39;Deponent&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>  <span class="c1"># Deponent</span>
+    <span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Fem&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">),</span>  <span class="c1"># Feminine</span>
+    <span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Masc&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">),</span>  <span class="c1"># Masculine</span>
+    <span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Neut&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">),</span>  <span class="c1"># Neuter</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Abl&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">),</span>  <span class="c1"># Ablative</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Acc&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>  <span class="c1"># Accusative</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Dat&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">),</span>  <span class="c1"># Dative</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Gen&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">),</span>  <span class="c1"># Genitive</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Nom&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">),</span>  <span class="c1"># Nominative</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Voc&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">),</span>  <span class="c1"># Vocative</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Loc&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">),</span>  <span class="c1"># Locative</span>
+    <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Ins&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">),</span>  <span class="c1"># Instrumental</span>
+    <span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Cmp&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">),</span>  <span class="c1"># Comparative</span>
+    <span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Pos&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">),</span>  <span class="c1"># Positive</span>
+    <span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Sup&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">),</span>  <span class="c1"># Superlative</span>
+    <span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Abs&#39;</span><span class="p">):</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">),</span>  <span class="c1"># Absolute</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Use cases:</strong></p>
+<ul class="simple">
+<li><p>Generating XPOS when only morphological features are available</p></li>
+<li><p>Filling missing XPOS positions from features</p></li>
+<li><p>Creating initial tags for new annotations</p></li>
+<li><p>Component of <code class="docutils literal notranslate"><span class="pre">normalize_morphology</span></code> function</p></li>
+</ul>
+</section>
+<section id="convert-xpos-to-features">
+<h3>Convert XPOS to Features<a class="headerlink" href="#convert-xpos-to-features" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">xpos_to_features</span></code> function extracts morphological features from a Perseus-format XPOS string:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.features</span><span class="w"> </span><span class="kn">import</span> <span class="n">xpos_to_features</span>
+
+<span class="c1"># Extract features from verb XPOS</span>
+<span class="n">feats</span> <span class="o">=</span> <span class="n">xpos_to_features</span><span class="p">(</span><span class="s1">&#39;v3spia---&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;Person&#39;: &#39;3&#39;, &#39;Number&#39;: &#39;Sing&#39;, &#39;Tense&#39;: &#39;Pres&#39;, &#39;Mood&#39;: &#39;Ind&#39;, &#39;Voice&#39;: &#39;Act&#39;}</span>
+
+<span class="c1"># Extract features from noun XPOS</span>
+<span class="n">feats</span> <span class="o">=</span> <span class="n">xpos_to_features</span><span class="p">(</span><span class="s1">&#39;n-s---mn-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;Number&#39;: &#39;Sing&#39;, &#39;Gender&#39;: &#39;Masc&#39;, &#39;Case&#39;: &#39;Nom&#39;}</span>
+
+<span class="c1"># Extract features from adjective XPOS</span>
+<span class="n">feats</span> <span class="o">=</span> <span class="n">xpos_to_features</span><span class="p">(</span><span class="s1">&#39;a-p---fgs&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;Number&#39;: &#39;Plur&#39;, &#39;Gender&#39;: &#39;Fem&#39;, &#39;Case&#39;: &#39;Gen&#39;, &#39;Degree&#39;: &#39;Sup&#39;}</span>
+
+<span class="c1"># Positions with &#39;-&#39; are skipped</span>
+<span class="n">feats</span> <span class="o">=</span> <span class="n">xpos_to_features</span><span class="p">(</span><span class="s1">&#39;---------&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+<span class="c1"># Output: {}</span>
+</pre></div>
+</div>
+<p><strong>Position-to-Feature Mapping:</strong></p>
+<p>The function uses the <code class="docutils literal notranslate"><span class="pre">XPOS_TO_FEATS</span></code> mapping constant (inverse of <code class="docutils literal notranslate"><span class="pre">FEATS_TO_XPOS</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example mappings (position, character) → (feature, value)</span>
+<span class="n">XPOS_TO_FEATS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">),</span>   <span class="c1"># First person</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">),</span>   <span class="c1"># Second person</span>
+    <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">),</span>   <span class="c1"># Third person</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Sing&#39;</span><span class="p">),</span> <span class="c1"># Singular</span>
+    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Plur&#39;</span><span class="p">),</span> <span class="c1"># Plural</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Tense&#39;</span><span class="p">,</span> <span class="s1">&#39;Pres&#39;</span><span class="p">),</span>  <span class="c1"># Present</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Tense&#39;</span><span class="p">,</span> <span class="s1">&#39;Past&#39;</span><span class="p">),</span>  <span class="c1"># Perfect</span>
+    <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Aspect&#39;</span><span class="p">,</span> <span class="s1">&#39;Imp&#39;</span><span class="p">),</span>  <span class="c1"># Imperfect</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Mood&#39;</span><span class="p">,</span> <span class="s1">&#39;Ind&#39;</span><span class="p">),</span>    <span class="c1"># Indicative</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Mood&#39;</span><span class="p">,</span> <span class="s1">&#39;Sub&#39;</span><span class="p">),</span>    <span class="c1"># Subjunctive</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;VerbForm&#39;</span><span class="p">,</span> <span class="s1">&#39;Inf&#39;</span><span class="p">),</span> <span class="c1"># Infinitive</span>
+    <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;VerbForm&#39;</span><span class="p">,</span> <span class="s1">&#39;Part&#39;</span><span class="p">),</span> <span class="c1"># Participle</span>
+    <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Voice&#39;</span><span class="p">,</span> <span class="s1">&#39;Act&#39;</span><span class="p">),</span>   <span class="c1"># Active</span>
+    <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Voice&#39;</span><span class="p">,</span> <span class="s1">&#39;Pass&#39;</span><span class="p">),</span>  <span class="c1"># Passive</span>
+    <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Masc&#39;</span><span class="p">),</span> <span class="c1"># Masculine</span>
+    <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Fem&#39;</span><span class="p">),</span>  <span class="c1"># Feminine</span>
+    <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Gender&#39;</span><span class="p">,</span> <span class="s1">&#39;Neut&#39;</span><span class="p">),</span> <span class="c1"># Neuter</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Nom&#39;</span><span class="p">),</span>    <span class="c1"># Nominative</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Gen&#39;</span><span class="p">),</span>    <span class="c1"># Genitive</span>
+    <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="s1">&#39;Acc&#39;</span><span class="p">),</span>    <span class="c1"># Accusative</span>
+    <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Pos&#39;</span><span class="p">),</span>  <span class="c1"># Positive</span>
+    <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Cmp&#39;</span><span class="p">),</span>  <span class="c1"># Comparative</span>
+    <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">):</span> <span class="p">(</span><span class="s1">&#39;Degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Sup&#39;</span><span class="p">),</span>  <span class="c1"># Superlative</span>
+    <span class="c1"># ... and more</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Use cases:</strong></p>
+<ul class="simple">
+<li><p>Extracting features from XPOS when FEATS column is empty or incomplete</p></li>
+<li><p>Verifying consistency between XPOS and FEATS</p></li>
+<li><p>Converting legacy annotations that only have XPOS</p></li>
+<li><p>Component of <code class="docutils literal notranslate"><span class="pre">normalize_morphology</span></code> function</p></li>
+</ul>
+</section>
+<section id="validate-features">
+<h3>Validate Features<a class="headerlink" href="#validate-features" title="Link to this heading"></a></h3>
+<p>Filter features to ensure they are valid for a given UPOS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.features</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_features</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_language_data</span>
+
+<span class="c1"># Load feature set</span>
+<span class="n">feature_set</span> <span class="o">=</span> <span class="n">load_language_data</span><span class="p">(</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">)</span>
+
+<span class="c1"># Validate features - invalid ones will be filtered out</span>
+<span class="n">validated</span> <span class="o">=</span> <span class="n">validate_features</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Case=Nom|Gender=Fem|Number=Sing|Mood=Ind&#39;</span><span class="p">,</span>  <span class="c1"># Mood invalid for NOUN</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">validated</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;Case&#39;: &#39;Nom&#39;, &#39;Gender&#39;: &#39;Fem&#39;, &#39;Number&#39;: &#39;Sing&#39;}</span>
+<span class="c1"># Note: Mood=Ind removed (not valid for NOUN)</span>
+
+<span class="c1"># Works with dictionaries too</span>
+<span class="n">validated</span> <span class="o">=</span> <span class="n">validate_features</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Mood&#39;</span><span class="p">:</span> <span class="s1">&#39;Ind&#39;</span><span class="p">,</span> <span class="s1">&#39;Case&#39;</span><span class="p">:</span> <span class="s1">&#39;Nom&#39;</span><span class="p">,</span> <span class="s1">&#39;Tense&#39;</span><span class="p">:</span> <span class="s1">&#39;Pres&#39;</span><span class="p">},</span>  <span class="c1"># Case invalid for most verbs</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">validated</span><span class="p">)</span>
+<span class="c1"># Output: {&#39;Mood&#39;: &#39;Ind&#39;, &#39;Tense&#39;: &#39;Pres&#39;}</span>
+<span class="c1"># Note: Case=Nom removed (typically invalid for finite verbs)</span>
+</pre></div>
+</div>
+<p><strong>What it does:</strong></p>
+<ul class="simple">
+<li><p>Checks if each feature is valid for the given UPOS</p></li>
+<li><p>Removes features marked as invalid (0) in the feature set</p></li>
+<li><p>Removes unknown features not in the feature set</p></li>
+<li><p>Normalizes feature names (case-insensitive matching)</p></li>
+<li><p>Returns only valid features as a dictionary</p></li>
+</ul>
+<p><strong>Use cases:</strong></p>
+<ul class="simple">
+<li><p>Pre-validation before file-level validation</p></li>
+<li><p>Checking which features are compatible with a UPOS</p></li>
+<li><p>Cleaning annotations during conversion</p></li>
+<li><p>Component of <code class="docutils literal notranslate"><span class="pre">normalize_morphology</span></code> function</p></li>
+</ul>
+</section>
+</section>
+<section id="xpos-utilities">
+<h2>XPOS Utilities<a class="headerlink" href="#xpos-utilities" title="Link to this heading"></a></h2>
+<section id="format-xpos">
+<h3>Format XPOS<a class="headerlink" href="#format-xpos" title="Link to this heading"></a></h3>
+<p>Auto-detect and convert XPOS formats to Perseus standard.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">format_xpos</span></code> function automatically detects the input XPOS format and converts it to Perseus:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.xpos</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_xpos</span>
+
+<span class="c1"># LLCT format (pipe-separated, 10 parts)</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">format_xpos</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;v|v|3|s|p|i|a|-|-|-&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act&#39;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;v3spia---&#39;</span>
+
+<span class="c1"># ITTB format (pipe-separated features like &#39;gen4|tem1|mod1&#39;)</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">format_xpos</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;gen4|tem1|mod1&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Mood=Ind|Tense=Pres|Voice=Pass&#39;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;v--pip---&#39;</span>
+
+<span class="c1"># PROIEL format (minimal codes, relies on FEATS)</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">format_xpos</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;Nb&#39;</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Case=Acc|Gender=Neut|Number=Sing&#39;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;n-s---na-&#39;</span>
+
+<span class="c1"># Perseus format (already correct, just validates UPOS)</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">format_xpos</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;a-s---fn-&#39;</span><span class="p">,</span>  <span class="c1"># Wrong first character</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Case=Nom|Gender=Fem|Number=Sing&#39;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;n-s---fn-&#39; (UPOS character corrected)</span>
+
+<span class="c1"># Unknown/None - generates default</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="n">format_xpos</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;ADJ&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Case=Nom|Gender=Masc|Number=Sing&#39;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>  <span class="c1"># &#39;a--------&#39; (default for ADJ)</span>
+</pre></div>
+</div>
+<p><strong>Format Detection:</strong></p>
+<p>The function uses regex patterns to detect input format:</p>
+<ul class="simple">
+<li><p><strong>PERSEUS_XPOS_MATCHER</strong>: <code class="docutils literal notranslate"><span class="pre">[nvapmdcrileugt-]{9}</span></code> - 9-character Perseus format</p></li>
+<li><p><strong>LLCT_XPOS_MATCHER</strong>: Pipe-separated 10-part format</p></li>
+<li><p><strong>ITTB_XPOS_MATCHER</strong>: Pipe-separated with feature codes (e.g., <code class="docutils literal notranslate"><span class="pre">gen4|tem1</span></code>)</p></li>
+<li><p><strong>PROIEL_XPOS_MATCHER</strong>: Single or double character codes</p></li>
+</ul>
+<p><strong>Use cases:</strong></p>
+<ul class="simple">
+<li><p>Harmonizing annotations from different treebanks</p></li>
+<li><p>Converting legacy annotations to standard format</p></li>
+<li><p>Processing mixed-format corpora</p></li>
+<li><p>Component of <code class="docutils literal notranslate"><span class="pre">normalize_morphology</span></code> function</p></li>
+</ul>
+</section>
+<section id="validate-xpos">
+<h3>Validate XPOS<a class="headerlink" href="#validate-xpos" title="Link to this heading"></a></h3>
+<p>Ensure XPOS positions are valid for the given UPOS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.xpos</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_xpos</span>
+
+<span class="c1"># Remove invalid positions for UPOS</span>
+<span class="n">validated</span> <span class="o">=</span> <span class="n">validate_xpos</span><span class="p">(</span><span class="n">upos</span><span class="o">=</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;n1s---mn-&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">validated</span><span class="p">)</span>
+<span class="c1"># Output: &#39;n-s---mn-&#39; (position 2 cleared - only valid for verbs)</span>
+
+<span class="c1"># Validate verb XPOS</span>
+<span class="n">validated</span> <span class="o">=</span> <span class="n">validate_xpos</span><span class="p">(</span><span class="n">upos</span><span class="o">=</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;v3spia---&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">validated</span><span class="p">)</span>
+<span class="c1"># Output: &#39;v3spia---&#39; (all positions valid for verbs)</span>
+
+<span class="c1"># Handle short or malformed XPOS - returns default with UPOS code</span>
+<span class="n">validated</span> <span class="o">=</span> <span class="n">validate_xpos</span><span class="p">(</span><span class="n">upos</span><span class="o">=</span><span class="s1">&#39;ADJ&#39;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">validated</span><span class="p">)</span>
+<span class="c1"># Output: &#39;a--------&#39; (returns default since length != 9)</span>
+
+<span class="c1"># Handle None XPOS</span>
+<span class="n">validated</span> <span class="o">=</span> <span class="n">validate_xpos</span><span class="p">(</span><span class="n">upos</span><span class="o">=</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="n">xpos</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">validated</span><span class="p">)</span>
+<span class="c1"># Output: &#39;n--------&#39; (default for NOUN)</span>
+</pre></div>
+</div>
+<p><strong>Position validity rules (Perseus format):</strong></p>
+<ul class="simple">
+<li><p><strong>Position 1</strong>: Should match UPOS (set by caller or <code class="docutils literal notranslate"><span class="pre">format_xpos</span></code>)</p></li>
+<li><p><strong>Position 2</strong>: Only valid for ‘v’ (verbs)</p></li>
+<li><p><strong>Position 3</strong>: Valid for n, v, a, p, m (nouns, verbs, adjectives, pronouns, numerals)</p></li>
+<li><p><strong>Positions 4-6</strong>: Only valid for ‘v’ (verbs)</p></li>
+<li><p><strong>Positions 7-8</strong>: Valid for n, v, a, p, m</p></li>
+<li><p><strong>Position 9</strong>: Only valid for ‘a’ (adjectives)</p></li>
+</ul>
+<p><strong>What it does:</strong></p>
+<ul class="simple">
+<li><p>Validates each position (2-9) against UPOS-specific rules</p></li>
+<li><p>Replaces invalid positions with ‘-’</p></li>
+<li><p>Returns default XPOS if input is None or not exactly 9 characters</p></li>
+<li><p>Returns validated Perseus-format XPOS string</p></li>
+</ul>
+<p><strong>Use cases:</strong></p>
+<ul class="simple">
+<li><p>Correcting UPOS/XPOS mismatches</p></li>
+<li><p>Validating positional tag structure</p></li>
+<li><p>Cleaning imported tags</p></li>
+<li><p>Component of <code class="docutils literal notranslate"><span class="pre">normalize_morphology</span></code> function</p></li>
+</ul>
+</section>
+<section id="low-level-conversion-tools">
+<h3>Low-level Conversion Tools<a class="headerlink" href="#low-level-conversion-tools" title="Link to this heading"></a></h3>
+<p>The XPOS converters normalize language-specific POS tags from different treebanks to a
+common Perseus-style format.</p>
+<p>These are used by the higher level functions described above.</p>
+<p><strong>Supported Treebanks</strong></p>
+<ul class="simple">
+<li><p><strong>PROIEL</strong>: e.g., <code class="docutils literal notranslate"><span class="pre">Pp</span></code></p></li>
+<li><p><strong>ITTB</strong>: e.g., <code class="docutils literal notranslate"><span class="pre">J3|modJ|tem3|gen6</span></code></p></li>
+<li><p><strong>LLCT</strong>: e.g., <code class="docutils literal notranslate"><span class="pre">v|v|1|s|r|i|a|-|-|-</span></code></p></li>
+<li><p><strong>Perseus</strong>: Target format (e.g., <code class="docutils literal notranslate"><span class="pre">v3spia---</span></code>)</p></li>
+</ul>
+<p><strong>ITTB to Perseus</strong></p>
+<p>The ITTB converter takes UPOS and XPOS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.xpos</span><span class="w"> </span><span class="kn">import</span> <span class="n">ittb_to_perseus</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ittb_to_perseus</span><span class="p">(</span><span class="s1">&#39;ADJ&#39;</span><span class="p">,</span> <span class="s1">&#39;gen2|casB|grp3&#39;</span><span class="p">))</span>
+<span class="c1"># Returns &#39;a-s---fgs&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ittb_to_perseus</span><span class="p">(</span><span class="s1">&#39;ADJ&#39;</span><span class="p">,</span> <span class="s1">&#39;gen1|casA|grn2&#39;</span><span class="p">))</span>
+<span class="c1"># Returns &#39;a-s---mnc&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">ittb_to_perseus</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="s1">&#39;gen1|casA&#39;</span><span class="p">))</span>
+<span class="c1"># Returns &#39;n-s---mn-&#39;</span>
+</pre></div>
+</div>
+<p><strong>PROIEL to Perseus</strong></p>
+<p>The PROIEL converter takes UPOS and FEATS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.xpos</span><span class="w"> </span><span class="kn">import</span> <span class="n">proiel_to_perseus</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">proiel_to_perseus</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="s1">&#39;Case=Nom|Gender=Masc|Number=Sing&#39;</span><span class="p">))</span>
+<span class="c1"># Returns &#39;n-s---mn-&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">proiel_to_perseus</span><span class="p">(</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span> <span class="s1">&#39;Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Pass&#39;</span><span class="p">))</span>
+<span class="c1"># Returns &#39;v3spip---&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">proiel_to_perseus</span><span class="p">(</span><span class="s1">&#39;PRON&#39;</span><span class="p">,</span> <span class="s1">&#39;Case=Dat|Number=Sing|Person=1&#39;</span><span class="p">))</span>
+<span class="c1"># Returns &#39;p1s----d-&#39;</span>
+</pre></div>
+</div>
+<p><strong>LLCT to Perseus</strong></p>
+<p>LLCT uses a pipe-separated format that combines UPOS, XPOS, and FEATS information. The converter needs all three columns to generate standard XPOS:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils.xpos</span><span class="w"> </span><span class="kn">import</span> <span class="n">llct_to_perseus</span>
+
+<span class="c1"># LLCT format: requires UPOS, XPOS (10-part pipe-separated), and FEATS</span>
+<span class="n">upos</span> <span class="o">=</span> <span class="s1">&#39;VERB&#39;</span>
+<span class="n">xpos</span> <span class="o">=</span> <span class="s1">&#39;v|v|3|s|p|i|a|-|-|-&#39;</span>  <span class="c1"># POS|POS_repeat|person|number|tense|mood|voice|gender|case|degree</span>
+<span class="n">feats</span> <span class="o">=</span> <span class="s1">&#39;Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act&#39;</span>
+
+<span class="n">new_xpos</span> <span class="o">=</span> <span class="n">llct_to_perseus</span><span class="p">(</span><span class="n">upos</span><span class="p">,</span> <span class="n">xpos</span><span class="p">,</span> <span class="n">feats</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">new_xpos</span><span class="p">)</span>  <span class="c1"># &quot;v3spia---&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loading.html" class="btn btn-neutral float-left" title="Data Loading" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/index.html" class="btn btn-neutral float-right" title="Usage Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Gabe Pizzorno.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

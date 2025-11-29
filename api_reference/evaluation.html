@@ -1,0 +1,804 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluation Module &mdash; CoNLL-U Tools v1.3.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1f29e9d3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Matching Module" href="matching.html" />
+    <link rel="prev" title="Validation Module" href="validation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CoNLL-U Tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#quick-install">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-requirements">System Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#other-installation-methods">Other Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-github-direct">From GitHub (Direct)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#specific-version">Specific Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#import-error-no-module-named-conllu-tools">Import Error: No module named ‘conllu_tools’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#version-conflicts">Version Conflicts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#permission-errors">Permission Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#conversion">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#conll-u-to-brat">CoNLL-U to brat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#brat-to-conll-u">brat to CoNLL-U</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#pattern-matching">Pattern Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-pattern-search">Basic Pattern Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#pattern-syntax-examples">Pattern Syntax Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#feature-conversion">Feature Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#xpos-conversion">XPOS Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#need-help">Need Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user_guide/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/conversion.html">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#conll-u-to-brat">CoNLL-U to Brat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#output-structure">Output Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#the-metadata-json-file">The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#brat-to-conll-u">Brat to CoNLL-U</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id2">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id3">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#using-metadata-json-for-automatic-configuration">Using metadata.json for Automatic Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-metadata-json">Missing metadata.json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#id-mismatches">ID Mismatches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#token-mismatch-errors">Token Mismatch Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-features">Missing Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#missing-output-file">Missing Output File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/conversion.html#encoding-issues">Encoding Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/conversion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/validation.html">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#validation-levels">Validation Levels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-1-basic-format">Level 1: Basic Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-2-standard-validation-default">Level 2: Standard Validation (Default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-3-extended-validation">Level 3: Extended Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-4-language-specific-format">Level 4: Language-Specific Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#level-5-language-specific-content">Level 5: Language-Specific Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#custom-validator-configuration">Custom Validator Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#validating-string-content">Validating String Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#accessing-error-details">Accessing Error Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#common-validation-errors">Common Validation Errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#id-sequence-errors">ID Sequence Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#multi-word-token-errors">Multi-word Token Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#upos-deprel-compatibility">UPOS-DEPREL Compatibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/validation.html#tree-structure-errors">Tree Structure Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/evaluation.html">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#disabling-dependency-evaluation">Disabling Dependency Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#treebank-type-configuration">Treebank Type Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#accessing-score-details">Accessing Score Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#file-alignment">File Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/evaluation.html#token-count-mismatch">Token Count Mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/matching.html">Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#building-patterns">Building Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#searching-a-corpus">Searching a Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#working-with-match-results">Working with Match Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#pattern-syntax">Pattern Syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#token-patterns">Token Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#sentence-patterns">Sentence Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#manual-pattern-construction">Manual Pattern Construction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#condition-types">Condition Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#nested-conditions">Nested Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-explanation">Pattern Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#matching-individual-sentences">Matching Individual Sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#pattern-not-matching">Pattern Not Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#empty-feature-handling">Empty Feature Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/matching.html#quantifier-behavior">Quantifier Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/loading.html">Data Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#feature-set-loading">Feature Set Loading</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#basic-loading">Basic Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#understanding-the-feature-set-format">Understanding the Feature Set Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/loading.html#custom-feature-sets">Custom Feature Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#loading-other-language-data">Loading Other Language Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/loading.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../user_guide/utils.html">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#quick-start">Quick Start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#with-reference-features">With Reference Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#what-gets-normalized">What Gets Normalized</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#dalme-to-upos">DALME to UPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#upos-to-perseus">UPOS to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-features-to-xpos">Convert Features to XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#convert-xpos-to-features">Convert XPOS to Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-features">Validate Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../user_guide/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../user_guide/utils.html#low-level-conversion-tools">Low-level Conversion Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/io.html">I/O Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#round-trip-conversion">Round-trip Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#important-notes">Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/validation.html">Validation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#post-conversion-validation">Post-Conversion Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#batch-validation">Batch Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#integration-with-other-tools">Integration with Other Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-before-evaluation">Validate Before Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-after-conversion">Validate After Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/evaluation.html">Evaluation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#parser-development">Parser Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#cross-validation">Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#baseline-comparison">Baseline Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#evaluate-conversion-accuracy">Evaluate Conversion Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#export-results-to-json-csv">Export Results to JSON/CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/matching.html">Matching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#linguistic-patterns">Linguistic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#syntactic-patterns">Syntactic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#morphological-patterns">Morphological Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/normalization.html">Normalization Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#basic-normalization">Basic Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-1-verb-with-gerund-features">Example 1: VERB with Gerund Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-2-aux-with-finite-verb-features">Example 2: AUX with Finite Verb Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-3-adj-with-degree-reconciliation">Example 3: ADJ with Degree Reconciliation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-4-noun-with-xpos-upos-mismatch-correction">Example 4: NOUN with XPOS/UPOS Mismatch Correction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#normalization-workflows">Normalization Workflows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#normalizing-a-conll-u-file">Normalizing a CoNLL-U File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#cleaning-imported-annotations">Cleaning Imported Annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#validating-after-normalization">Validating After Normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#batch-normalization">Batch Normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#handling-normalization-errors">Handling Normalization Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#safe-normalization-with-fallbacks">Safe Normalization with Fallbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/utils.html">Utilities Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#convert-features-to-xpos">Convert Features to XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#complete-workflow">Complete Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#filling-partial-xpos">Filling Partial XPOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#format-xpos">Format XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#processing-mixed-formats">Processing Mixed Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="io.html">IO Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="io.html#conversion-functions">Conversion Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="io.html#conllu-to-brat">conllu_to_brat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="io.html#brat-to-conllu">brat_to_conllu</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="io.html#data-loading-functions">Data Loading Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="io.html#load-language-data">load_language_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="io.html#load-whitespace-exceptions">load_whitespace_exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conlluvalidator">ConlluValidator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#errorreporter">ErrorReporter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#errorentry">ErrorEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#conllu_tools.validation.error_reporter.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#validation-mixins">Validation Mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Evaluation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#evaluator">Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#score">Score</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#supporting-classes">Supporting Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#udword">UDWord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#udspan">UDSpan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alignment">Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alignmentword">AlignmentWord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conllu_tools.evaluation.base.UDError"><code class="docutils literal notranslate"><span class="pre">UDError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="matching.html">Matching Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#quick-example">Quick Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#build-pattern">build_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#find-in-corpus">find_in_corpus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#pattern-classes">Pattern Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#sentencepattern">SentencePattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#tokenpattern">TokenPattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#condition">Condition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="matching.html#result-classes">Result Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="matching.html#matchresult">MatchResult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utils Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.normalization.normalize_morphology"><code class="docutils literal notranslate"><span class="pre">normalize_morphology()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.upos.upos_to_perseus"><code class="docutils literal notranslate"><span class="pre">upos_to_perseus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.upos.dalme_to_upos"><code class="docutils literal notranslate"><span class="pre">dalme_to_upos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.feature_string_to_dict"><code class="docutils literal notranslate"><span class="pre">feature_string_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.feature_dict_to_string"><code class="docutils literal notranslate"><span class="pre">feature_dict_to_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.features_to_xpos"><code class="docutils literal notranslate"><span class="pre">features_to_xpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.xpos_to_features"><code class="docutils literal notranslate"><span class="pre">xpos_to_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.features.validate_features"><code class="docutils literal notranslate"><span class="pre">validate_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#ittb-to-perseus">ITTB to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#proiel-to-perseus">PROIEL to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#llct-to-perseus">LLCT to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#brat-utilities">brat Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.type_to_safe_type"><code class="docutils literal notranslate"><span class="pre">type_to_safe_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.safe_type_to_type"><code class="docutils literal notranslate"><span class="pre">safe_type_to_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.parse_annotation_line"><code class="docutils literal notranslate"><span class="pre">parse_annotation_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.format_annotation"><code class="docutils literal notranslate"><span class="pre">format_annotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.read_annotations"><code class="docutils literal notranslate"><span class="pre">read_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.read_text_lines"><code class="docutils literal notranslate"><span class="pre">read_text_lines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.sort_annotations_set"><code class="docutils literal notranslate"><span class="pre">sort_annotations_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.sort_annotations"><code class="docutils literal notranslate"><span class="pre">sort_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.write_annotations"><code class="docutils literal notranslate"><span class="pre">write_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.write_text"><code class="docutils literal notranslate"><span class="pre">write_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.write_auxiliary_files"><code class="docutils literal notranslate"><span class="pre">write_auxiliary_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#conllu_tools.utils.brat.get_next_id_number"><code class="docutils literal notranslate"><span class="pre">get_next_id_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="constants.html#universal-dependencies-tags">Universal Dependencies Tags</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#upos-tags">UPOS Tags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#universal-dependency-relations">Universal Dependency Relations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#universal-features">Universal Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="constants.html#relation-categories">Relation Categories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.CONTENT_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.CONTENT_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.FUNCTIONAL_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FUNCTIONAL_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="constants.html#conll-u-token-structure">CoNLL-U Token Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.TOKEN_KEYS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.TOKEN_KEYS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="constants.html#xpos-mappings">XPOS Mappings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.UPOS_TO_PERSEUS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.UPOS_TO_PERSEUS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.FEATS_TO_XPOS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FEATS_TO_XPOS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.XPOS_TO_FEATS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.XPOS_TO_FEATS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.VALIDITY_BY_POS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.VALIDITY_BY_POS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="constants.html#treebank-concordances">Treebank Concordances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.ITTB_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.ITTB_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.PROIEL_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.PROIEL_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.LLCT_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LLCT_CONCORDANCES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="constants.html#misc-column">MISC Column</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="constants.html#conllu_tools.constants.MISC_ATTRIBUTES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.MISC_ATTRIBUTES</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CoNLL-U Tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Evaluation Module</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/gpizzorno/conllu_tools/blob/main/docs/source/api_reference/evaluation.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="evaluation-module">
+<h1>Evaluation Module<a class="headerlink" href="#evaluation-module" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">conllu_tools.evaluation</span></code> module provides tools for evaluating CoNLL-U format annotations,
+including computing precision, recall, and F1 scores for various annotation layers.</p>
+<p>The evaluation framework is based on the official CoNLL shared task evaluation scripts,
+with support for all standard UD evaluation metrics.</p>
+<section id="main-classes">
+<h2>Main Classes<a class="headerlink" href="#main-classes" title="Link to this heading"></a></h2>
+<section id="evaluator">
+<h3>Evaluator<a class="headerlink" href="#evaluator" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.evaluator.ConlluEvaluator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">conllu_tools.evaluation.evaluator.</span></span><span class="sig-name descname"><span class="pre">ConlluEvaluator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_deprels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treebank_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/evaluator.html#ConlluEvaluator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.evaluator.ConlluEvaluator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">WordProcessingMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">TreeValidationMixin</span></code></p>
+<p>Evaluator for Universal Dependencies CoNLL-U files.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.evaluator.ConlluEvaluator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_deprels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">treebank_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/evaluator.html#ConlluEvaluator.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.evaluator.ConlluEvaluator.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the evaluator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eval_deprels</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to evaluate dependency relations</p></li>
+<li><p><strong>treebank_type</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – String indicating which enhancement types to disable (e.g., ‘12’ disables 1 and 2)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.evaluator.ConlluEvaluator.evaluate_files">
+<span class="sig-name descname"><span class="pre">evaluate_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/evaluator.html#ConlluEvaluator.evaluate_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.evaluator.ConlluEvaluator.evaluate_files" title="Link to this definition"></a></dt>
+<dd><p>Evaluate system file against gold file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gold_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span>) – Path to gold standard file</p></li>
+<li><p><strong>system_path</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span>) – Path to system output file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="#conllu_tools.evaluation.base.Score" title="conllu_tools.evaluation.base.Score"><code class="xref py py-class docutils literal notranslate"><span class="pre">Score</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dictionary of metric names to Score objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="score">
+<h3>Score<a class="headerlink" href="#score" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">conllu_tools.evaluation.base.</span></span><span class="sig-name descname"><span class="pre">Score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aligned_total</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#Score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.Score" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents evaluation scores for a particular metric.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.gold_total">
+<span class="sig-name descname"><span class="pre">gold_total</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> <span class="pre">|</span> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.gold_total" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.system_total">
+<span class="sig-name descname"><span class="pre">system_total</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> <span class="pre">|</span> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.system_total" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.correct">
+<span class="sig-name descname"><span class="pre">correct</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> <span class="pre">|</span> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.correct" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.aligned_total">
+<span class="sig-name descname"><span class="pre">aligned_total</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> <span class="pre">|</span> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.aligned_total" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.precision">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">precision</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.precision" title="Link to this definition"></a></dt>
+<dd><p>Calculate precision.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.recall">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">recall</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.recall" title="Link to this definition"></a></dt>
+<dd><p>Calculate recall.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.f1">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">f1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.f1" title="Link to this definition"></a></dt>
+<dd><p>Calculate F1 score.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.aligned_accuracy">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aligned_accuracy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.Score.aligned_accuracy" title="Link to this definition"></a></dt>
+<dd><p>Calculate aligned accuracy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Score.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aligned_total</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conllu_tools.evaluation.base.Score.__init__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="supporting-classes">
+<h2>Supporting Classes<a class="headerlink" href="#supporting-classes" title="Link to this heading"></a></h2>
+<p>These classes are used internally by the evaluator but may be useful for advanced use cases.</p>
+<section id="udword">
+<h3>UDWord<a class="headerlink" href="#udword" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">conllu_tools.evaluation.base.</span></span><span class="sig-name descname"><span class="pre">UDWord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_multiword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enhanced_deps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional_children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#UDWord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents a word with its span and CoNLL-U token.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord.span">
+<span class="sig-name descname"><span class="pre">span</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#conllu_tools.evaluation.base.UDSpan" title="conllu_tools.evaluation.base.UDSpan"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDSpan</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord.span" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord.token">
+<span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">Token</span></code></em><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord.token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord.is_multiword">
+<span class="sig-name descname"><span class="pre">is_multiword</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord.is_multiword" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord.enhanced_deps">
+<span class="sig-name descname"><span class="pre">enhanced_deps</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> <span class="pre">|</span> <a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a><span class="pre">,</span> <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a><span class="pre">]]]</span> <span class="pre">|</span> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord.enhanced_deps" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord.functional_children">
+<span class="sig-name descname"><span class="pre">functional_children</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a><span class="pre">[</span><a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a><span class="pre">]</span> <span class="pre">|</span> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord.functional_children" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#UDWord.__hash__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord.__hash__" title="Link to this definition"></a></dt>
+<dd><p>Make UDWord hashable for use in dictionaries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDWord.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_multiword</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enhanced_deps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functional_children</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conllu_tools.evaluation.base.UDWord.__init__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="udspan">
+<h3>UDSpan<a class="headerlink" href="#udspan" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDSpan">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">conllu_tools.evaluation.base.</span></span><span class="sig-name descname"><span class="pre">UDSpan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#UDSpan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.UDSpan" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents a span (start and end position) in the character array.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDSpan.start">
+<span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.UDSpan.start" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDSpan.end">
+<span class="sig-name descname"><span class="pre">end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.UDSpan.end" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDSpan.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conllu_tools.evaluation.base.UDSpan.__init__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="alignment">
+<h3>Alignment<a class="headerlink" href="#alignment" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Alignment">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">conllu_tools.evaluation.base.</span></span><span class="sig-name descname"><span class="pre">Alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_words</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#Alignment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.Alignment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents the alignment between gold and system words.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Alignment.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_words</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_words</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#Alignment.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.Alignment.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize alignment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gold_words</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a>]</span>) – List of gold words</p></li>
+<li><p><strong>system_words</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a>]</span>) – List of system words</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.Alignment.append_aligned_words">
+<span class="sig-name descname"><span class="pre">append_aligned_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#Alignment.append_aligned_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.Alignment.append_aligned_words" title="Link to this definition"></a></dt>
+<dd><p>Add an aligned word pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gold_word</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a></span>) – Gold word</p></li>
+<li><p><strong>system_word</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a></span>) – System word</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="alignmentword">
+<h3>AlignmentWord<a class="headerlink" href="#alignmentword" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.AlignmentWord">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">conllu_tools.evaluation.base.</span></span><span class="sig-name descname"><span class="pre">AlignmentWord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_word</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#AlignmentWord"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.AlignmentWord" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Represents an aligned pair of gold and system words.</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.AlignmentWord.gold_word">
+<span class="sig-name descname"><span class="pre">gold_word</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.AlignmentWord.gold_word" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.AlignmentWord.system_word">
+<span class="sig-name descname"><span class="pre">system_word</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#conllu_tools.evaluation.base.UDWord" title="conllu_tools.evaluation.base.UDWord"><code class="xref py py-class docutils literal notranslate"><span class="pre">UDWord</span></code></a></em><a class="headerlink" href="#conllu_tools.evaluation.base.AlignmentWord.system_word" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.AlignmentWord.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gold_word</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_word</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conllu_tools.evaluation.base.AlignmentWord.__init__" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="conllu_tools.evaluation.base.UDError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">conllu_tools.evaluation.base.</span></span><span class="sig-name descname"><span class="pre">UDError</span></span><a class="reference internal" href="../_modules/conllu_tools/evaluation/base.html#UDError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#conllu_tools.evaluation.base.UDError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raised when there is an error in the UD data or evaluation process.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="validation.html" class="btn btn-neutral float-left" title="Validation Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="matching.html" class="btn btn-neutral float-right" title="Matching Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Gabe Pizzorno.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

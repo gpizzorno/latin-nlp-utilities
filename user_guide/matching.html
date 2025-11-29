@@ -1,0 +1,909 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matching &mdash; CoNLL-U Tools v1.3.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=1f29e9d3"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Loading" href="loading.html" />
+    <link rel="prev" title="Evaluation" href="evaluation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CoNLL-U Tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#quick-install">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#system-requirements">System Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#other-installation-methods">Other Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#from-github-direct">From GitHub (Direct)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#specific-version">Specific Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#import-error-no-module-named-conllu-tools">Import Error: No module named ‘conllu_tools’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#version-conflicts">Version Conflicts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html#permission-errors">Permission Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#conversion">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#conll-u-to-brat">CoNLL-U to brat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#brat-to-conll-u">brat to CoNLL-U</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#pattern-matching">Pattern Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#basic-pattern-search">Basic Pattern Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#pattern-syntax-examples">Pattern Syntax Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#feature-conversion">Feature Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html#xpos-conversion">XPOS Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#need-help">Need Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="conversion.html">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#conll-u-to-brat">CoNLL-U to Brat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#output-structure">Output Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#the-metadata-json-file">The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#brat-to-conll-u">Brat to CoNLL-U</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id2">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id3">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#using-metadata-json-for-automatic-configuration">Using metadata.json for Automatic Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#missing-metadata-json">Missing metadata.json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#id-mismatches">ID Mismatches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#token-mismatch-errors">Token Mismatch Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#missing-features">Missing Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#missing-output-file">Missing Output File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conversion.html#encoding-issues">Encoding Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conversion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="validation.html">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#validation-levels">Validation Levels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-1-basic-format">Level 1: Basic Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-2-standard-validation-default">Level 2: Standard Validation (Default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-3-extended-validation">Level 3: Extended Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-4-language-specific-format">Level 4: Language-Specific Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#level-5-language-specific-content">Level 5: Language-Specific Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#custom-validator-configuration">Custom Validator Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#validating-string-content">Validating String Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#accessing-error-details">Accessing Error Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#common-validation-errors">Common Validation Errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#id-sequence-errors">ID Sequence Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#multi-word-token-errors">Multi-word Token Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#upos-deprel-compatibility">UPOS-DEPREL Compatibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="validation.html#tree-structure-errors">Tree Structure Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation.html">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#disabling-dependency-evaluation">Disabling Dependency Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#treebank-type-configuration">Treebank Type Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#accessing-score-details">Accessing Score Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#file-alignment">File Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="evaluation.html#token-count-mismatch">Token Count Mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#building-patterns">Building Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searching-a-corpus">Searching a Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#working-with-match-results">Working with Match Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pattern-syntax">Pattern Syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#token-patterns">Token Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sentence-patterns">Sentence Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#manual-pattern-construction">Manual Pattern Construction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#condition-types">Condition Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nested-conditions">Nested Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pattern-explanation">Pattern Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#matching-individual-sentences">Matching Individual Sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pattern-not-matching">Pattern Not Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#empty-feature-handling">Empty Feature Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quantifier-behavior">Quantifier Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="loading.html">Data Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="loading.html#feature-set-loading">Feature Set Loading</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="loading.html#basic-loading">Basic Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loading.html#understanding-the-feature-set-format">Understanding the Feature Set Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loading.html#custom-feature-sets">Custom Feature Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="loading.html#loading-other-language-data">Loading Other Language Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="loading.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#quick-start">Quick Start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#with-reference-features">With Reference Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#what-gets-normalized">What Gets Normalized</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#dalme-to-upos">DALME to UPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#upos-to-perseus">UPOS to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#convert-features-to-xpos">Convert Features to XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#convert-xpos-to-features">Convert XPOS to Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#validate-features">Validate Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#low-level-conversion-tools">Low-level Conversion Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/io.html">I/O Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#round-trip-conversion">Round-trip Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#important-notes">Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/validation.html">Validation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#post-conversion-validation">Post-Conversion Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#batch-validation">Batch Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#integration-with-other-tools">Integration with Other Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-before-evaluation">Validate Before Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/validation.html#validate-after-conversion">Validate After Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/evaluation.html">Evaluation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#parser-development">Parser Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#cross-validation">Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#baseline-comparison">Baseline Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#evaluate-conversion-accuracy">Evaluate Conversion Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/evaluation.html#export-results-to-json-csv">Export Results to JSON/CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/matching.html">Matching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#linguistic-patterns">Linguistic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#syntactic-patterns">Syntactic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#morphological-patterns">Morphological Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/normalization.html">Normalization Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#basic-normalization">Basic Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-1-verb-with-gerund-features">Example 1: VERB with Gerund Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-2-aux-with-finite-verb-features">Example 2: AUX with Finite Verb Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-3-adj-with-degree-reconciliation">Example 3: ADJ with Degree Reconciliation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#example-4-noun-with-xpos-upos-mismatch-correction">Example 4: NOUN with XPOS/UPOS Mismatch Correction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#normalization-workflows">Normalization Workflows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#normalizing-a-conll-u-file">Normalizing a CoNLL-U File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#cleaning-imported-annotations">Cleaning Imported Annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#validating-after-normalization">Validating After Normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#batch-normalization">Batch Normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#handling-normalization-errors">Handling Normalization Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/normalization.html#safe-normalization-with-fallbacks">Safe Normalization with Fallbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/normalization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/utils.html">Utilities Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#convert-features-to-xpos">Convert Features to XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#complete-workflow">Complete Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#filling-partial-xpos">Filling Partial XPOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#format-xpos">Format XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../examples/utils.html#processing-mixed-formats">Processing Mixed Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../examples/utils.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/io.html">IO Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/io.html#conversion-functions">Conversion Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#conllu-to-brat">conllu_to_brat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#brat-to-conllu">brat_to_conllu</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/io.html#data-loading-functions">Data Loading Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#load-language-data">load_language_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/io.html#load-whitespace-exceptions">load_whitespace_exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/validation.html">Validation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/validation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conlluvalidator">ConlluValidator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#errorreporter">ErrorReporter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#errorentry">ErrorEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/validation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/validation.html#conllu_tools.validation.error_reporter.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/validation.html#validation-mixins">Validation Mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/evaluation.html">Evaluation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/evaluation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#evaluator">Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#score">Score</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/evaluation.html#supporting-classes">Supporting Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#udword">UDWord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#udspan">UDSpan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#alignment">Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#alignmentword">AlignmentWord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/evaluation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/evaluation.html#conllu_tools.evaluation.base.UDError"><code class="docutils literal notranslate"><span class="pre">UDError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/matching.html">Matching Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#quick-example">Quick Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#build-pattern">build_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#find-in-corpus">find_in_corpus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#pattern-classes">Pattern Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#sentencepattern">SentencePattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#tokenpattern">TokenPattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#condition">Condition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/matching.html#result-classes">Result Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/matching.html#matchresult">MatchResult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/utils.html">Utils Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.normalization.normalize_morphology"><code class="docutils literal notranslate"><span class="pre">normalize_morphology()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.upos.upos_to_perseus"><code class="docutils literal notranslate"><span class="pre">upos_to_perseus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.upos.dalme_to_upos"><code class="docutils literal notranslate"><span class="pre">dalme_to_upos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.feature_string_to_dict"><code class="docutils literal notranslate"><span class="pre">feature_string_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.feature_dict_to_string"><code class="docutils literal notranslate"><span class="pre">feature_dict_to_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.features_to_xpos"><code class="docutils literal notranslate"><span class="pre">features_to_xpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.xpos_to_features"><code class="docutils literal notranslate"><span class="pre">xpos_to_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.features.validate_features"><code class="docutils literal notranslate"><span class="pre">validate_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#ittb-to-perseus">ITTB to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#proiel-to-perseus">PROIEL to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#llct-to-perseus">LLCT to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/utils.html#brat-utilities">brat Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.type_to_safe_type"><code class="docutils literal notranslate"><span class="pre">type_to_safe_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.safe_type_to_type"><code class="docutils literal notranslate"><span class="pre">safe_type_to_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.parse_annotation_line"><code class="docutils literal notranslate"><span class="pre">parse_annotation_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.format_annotation"><code class="docutils literal notranslate"><span class="pre">format_annotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.read_annotations"><code class="docutils literal notranslate"><span class="pre">read_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.read_text_lines"><code class="docutils literal notranslate"><span class="pre">read_text_lines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.sort_annotations_set"><code class="docutils literal notranslate"><span class="pre">sort_annotations_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.sort_annotations"><code class="docutils literal notranslate"><span class="pre">sort_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.write_annotations"><code class="docutils literal notranslate"><span class="pre">write_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.write_text"><code class="docutils literal notranslate"><span class="pre">write_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.write_auxiliary_files"><code class="docutils literal notranslate"><span class="pre">write_auxiliary_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/utils.html#conllu_tools.utils.brat.get_next_id_number"><code class="docutils literal notranslate"><span class="pre">get_next_id_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api_reference/constants.html">Constants Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#universal-dependencies-tags">Universal Dependencies Tags</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#upos-tags">UPOS Tags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#universal-dependency-relations">Universal Dependency Relations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#universal-features">Universal Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#relation-categories">Relation Categories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.CONTENT_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.CONTENT_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.FUNCTIONAL_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FUNCTIONAL_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#conll-u-token-structure">CoNLL-U Token Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.TOKEN_KEYS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.TOKEN_KEYS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#xpos-mappings">XPOS Mappings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.UPOS_TO_PERSEUS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.UPOS_TO_PERSEUS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.FEATS_TO_XPOS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FEATS_TO_XPOS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.XPOS_TO_FEATS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.XPOS_TO_FEATS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.VALIDITY_BY_POS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.VALIDITY_BY_POS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#treebank-concordances">Treebank Concordances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.ITTB_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.ITTB_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.PROIEL_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.PROIEL_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.LLCT_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LLCT_CONCORDANCES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../api_reference/constants.html#misc-column">MISC Column</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../api_reference/constants.html#conllu_tools.constants.MISC_ATTRIBUTES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.MISC_ATTRIBUTES</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CoNLL-U Tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">User Guide</a></li>
+      <li class="breadcrumb-item active">Matching</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/gpizzorno/conllu_tools/blob/main/docs/source/user_guide/matching.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="matching">
+<h1>Matching<a class="headerlink" href="#matching" title="Link to this heading"></a></h1>
+<p>This guide covers pattern matching for finding linguistic structures in CoNLL-U annotated corpora.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The matching module provides a pattern language for searching CoNLL-U data. You can find:</p>
+<ul class="simple">
+<li><p>Tokens matching specific POS tags, lemmas, or morphological features</p></li>
+<li><p>Sequential patterns of tokens (e.g., DET + ADJ + NOUN)</p></li>
+<li><p>Complex linguistic constructions with quantifiers and negation</p></li>
+<li><p>Matches based on substring patterns (contains, starts with, ends with)</p></li>
+</ul>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<p>Find all nouns followed by a verb in a corpus:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">conllu</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_pattern</span><span class="p">,</span> <span class="n">find_in_corpus</span>
+
+<span class="c1"># Load corpus</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;corpus.conllu&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">corpus</span> <span class="o">=</span> <span class="n">conllu</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="c1"># Build and search for pattern</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN+VERB&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;noun-verb&#39;</span><span class="p">)</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">find_in_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="p">[</span><span class="n">pattern</span><span class="p">])</span>
+
+<span class="c1"># Print results</span>
+<span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">sentence_id</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">substring</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Lemmata: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">lemmata</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<section id="building-patterns">
+<h3>Building Patterns<a class="headerlink" href="#building-patterns" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">build_pattern()</span></code> function parses a pattern string into a <code class="docutils literal notranslate"><span class="pre">SentencePattern</span></code> object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_pattern</span>
+
+<span class="c1"># Simple UPOS pattern</span>
+<span class="n">noun_pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">)</span>
+
+<span class="c1"># Pattern with conditions</span>
+<span class="n">ablative_noun</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Abl)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Multi-token sequence</span>
+<span class="n">det_noun</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;DET+NOUN&#39;</span><span class="p">)</span>
+
+<span class="c1"># Named pattern for identification</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN+VERB&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;subject-verb&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="searching-a-corpus">
+<h3>Searching a Corpus<a class="headerlink" href="#searching-a-corpus" title="Link to this heading"></a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">find_in_corpus()</span></code> to search for patterns across all sentences:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_pattern</span><span class="p">,</span> <span class="n">find_in_corpus</span>
+
+<span class="c1"># Create multiple patterns</span>
+<span class="n">patterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN+VERB&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;noun-verb&#39;</span><span class="p">),</span>
+    <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;DET+NOUN&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;det-noun&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Search corpus</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">find_in_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">patterns</span><span class="p">)</span>
+
+<span class="c1"># Group results by pattern</span>
+<span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pattern &#39;</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">pattern_name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">substring</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="working-with-match-results">
+<h3>Working with Match Results<a class="headerlink" href="#working-with-match-results" title="Link to this heading"></a></h3>
+<p>Each <code class="docutils literal notranslate"><span class="pre">MatchResult</span></code> provides access to matched content:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+    <span class="c1"># Pattern identification</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pattern: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">pattern_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sentence: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">sentence_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Matched text</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Text: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">substring</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>      <span class="c1"># &quot;una scala&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forms: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">forms</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>          <span class="c1"># [&#39;una&#39;, &#39;scala&#39;]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Lemmata: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">lemmata</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>      <span class="c1"># [&#39;unus&#39;, &#39;scalae&#39;]</span>
+    
+    <span class="c1"># Access individual tokens</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;upos&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pattern-syntax">
+<h2>Pattern Syntax<a class="headerlink" href="#pattern-syntax" title="Link to this heading"></a></h2>
+<section id="token-patterns">
+<h3>Token Patterns<a class="headerlink" href="#token-patterns" title="Link to this heading"></a></h3>
+<p>The basic structure of a token pattern is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">UPOS</span><span class="p">:</span><span class="n">attribute</span><span class="o">=</span><span class="n">value</span>
+</pre></div>
+</div>
+<p>The UPOS tag comes first, followed by optional attribute conditions separated by colons.</p>
+<section id="upos-matching">
+<h4>UPOS Matching<a class="headerlink" href="#upos-matching" title="Link to this heading"></a></h4>
+<p>Match tokens by their universal part-of-speech tag:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single UPOS</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">)</span>
+
+<span class="c1"># Multiple UPOS options (OR)</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN|VERB&#39;</span><span class="p">)</span>
+
+<span class="c1"># Any UPOS (wildcard)</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Valid UPOS tags: <code class="docutils literal notranslate"><span class="pre">ADJ</span></code>, <code class="docutils literal notranslate"><span class="pre">ADP</span></code>, <code class="docutils literal notranslate"><span class="pre">ADV</span></code>, <code class="docutils literal notranslate"><span class="pre">AUX</span></code>, <code class="docutils literal notranslate"><span class="pre">CCONJ</span></code>, <code class="docutils literal notranslate"><span class="pre">DET</span></code>, <code class="docutils literal notranslate"><span class="pre">INTJ</span></code>, <code class="docutils literal notranslate"><span class="pre">NOUN</span></code>, <code class="docutils literal notranslate"><span class="pre">NUM</span></code>, <code class="docutils literal notranslate"><span class="pre">PART</span></code>, <code class="docutils literal notranslate"><span class="pre">PRON</span></code>, <code class="docutils literal notranslate"><span class="pre">PROPN</span></code>, <code class="docutils literal notranslate"><span class="pre">PUNCT</span></code>, <code class="docutils literal notranslate"><span class="pre">SCONJ</span></code>, <code class="docutils literal notranslate"><span class="pre">SYM</span></code>, <code class="docutils literal notranslate"><span class="pre">VERB</span></code>, <code class="docutils literal notranslate"><span class="pre">X</span></code></p>
+</section>
+<section id="attribute-conditions">
+<h4>Attribute Conditions<a class="headerlink" href="#attribute-conditions" title="Link to this heading"></a></h4>
+<p>Add conditions on token attributes using UD/CoNLL-U field names:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Match by lemma</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:lemma=rex&#39;</span><span class="p">)</span>
+
+<span class="c1"># Match by form</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;VERB:form=est&#39;</span><span class="p">)</span>
+
+<span class="c1"># Match by head</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:head=0&#39;</span><span class="p">)</span>  <span class="c1"># Root nouns</span>
+
+<span class="c1"># Match by dependency relation</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;*:deprel=nsubj&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Available attributes: <code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">form</span></code>, <code class="docutils literal notranslate"><span class="pre">lemma</span></code>, <code class="docutils literal notranslate"><span class="pre">xpos</span></code>, <code class="docutils literal notranslate"><span class="pre">feats</span></code>, <code class="docutils literal notranslate"><span class="pre">head</span></code>, <code class="docutils literal notranslate"><span class="pre">deprel</span></code>, <code class="docutils literal notranslate"><span class="pre">deps</span></code>, <code class="docutils literal notranslate"><span class="pre">misc</span></code></p>
+</section>
+<section id="multiple-values-or">
+<h4>Multiple Values (OR)<a class="headerlink" href="#multiple-values-or" title="Link to this heading"></a></h4>
+<p>Use pipes to match any of several values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lemma is either &#39;rex&#39; or &#39;regina&#39;</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:lemma=rex|regina&#39;</span><span class="p">)</span>
+
+<span class="c1"># UPOS is NOUN or PROPN</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN|PROPN&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="morphological-features">
+<h4>Morphological Features<a class="headerlink" href="#morphological-features" title="Link to this heading"></a></h4>
+<p>Match on the <code class="docutils literal notranslate"><span class="pre">feats</span></code> column using parentheses with comma-separated conditions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Singular ablative noun</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Number=Sing,Case=Abl)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Ablative or dative noun</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Abl|Dat)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Multiple feature conditions</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;VERB:feats=(Mood=Sub,Tense=Pres)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="match-type-modifiers">
+<h4>Match Type Modifiers<a class="headerlink" href="#match-type-modifiers" title="Link to this heading"></a></h4>
+<p>Control how string values are matched using <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Exact match (default)</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:form=a&#39;</span><span class="p">)</span>
+
+<span class="c1"># Contains</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:form=&lt;ae&gt;&#39;</span><span class="p">)</span>   <span class="c1"># Form contains &#39;ae&#39;</span>
+
+<span class="c1"># Starts with</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:form=&lt;ab&#39;</span><span class="p">)</span>    <span class="c1"># Form starts with &#39;ab&#39;</span>
+
+<span class="c1"># Ends with  </span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:form=um&gt;&#39;</span><span class="p">)</span>    <span class="c1"># Form ends with &#39;um&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="negation">
+<h4>Negation<a class="headerlink" href="#negation" title="Link to this heading"></a></h4>
+<p>Use <code class="docutils literal notranslate"><span class="pre">!</span></code> to negate conditions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Not a noun</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;!NOUN&#39;</span><span class="p">)</span>
+
+<span class="c1"># Noun not in singular</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Number=!Sing)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Form does not contain &#39;ae&#39;</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;*:form=!&lt;ae&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="quantifiers">
+<h4>Quantifiers<a class="headerlink" href="#quantifiers" title="Link to this heading"></a></h4>
+<p>Use regex-style quantifiers to match multiple consecutive tokens:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Match exactly 2 adjectives</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;ADJ</span><span class="si">{2}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Match 0-3 tokens of any type (optional sequence)</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;*{0,3}&#39;</span><span class="p">)</span>
+
+<span class="c1"># Match 1-5 adjectives</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;ADJ{1,5}&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="sentence-patterns">
+<h3>Sentence Patterns<a class="headerlink" href="#sentence-patterns" title="Link to this heading"></a></h3>
+<p>Combine token patterns with <code class="docutils literal notranslate"><span class="pre">+</span></code> to match sequences:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Determiner followed by noun</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;DET+NOUN&#39;</span><span class="p">)</span>
+
+<span class="c1"># Preposition phrase: ADP + accusative noun</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;ADP+NOUN:feats=(Case=Acc)&#39;</span><span class="p">)</span>
+
+<span class="c1"># Subject-verb-object with gaps</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;*:deprel=nsubj+*{0,10}+VERB:deprel=root+*{0,10}+*:deprel=obj&#39;</span><span class="p">)</span>
+
+<span class="c1"># Noun phrase with optional adjectives</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;DET+ADJ{0,2}+NOUN&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading"></a></h2>
+<section id="manual-pattern-construction">
+<h3>Manual Pattern Construction<a class="headerlink" href="#manual-pattern-construction" title="Link to this heading"></a></h3>
+<p>For complex patterns, construct objects directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">Condition</span><span class="p">,</span> <span class="n">TokenPattern</span><span class="p">,</span> <span class="n">SentencePattern</span>
+
+<span class="c1"># Create conditions</span>
+<span class="n">case_nom</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Nom&#39;</span><span class="p">])</span>
+<span class="n">case_acc</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Acc&#39;</span><span class="p">])</span>
+<span class="n">feats_cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">case_nom</span><span class="p">,</span> <span class="n">case_acc</span><span class="p">],</span> <span class="n">match_any</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">upos_cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;upos&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;NOUN&#39;</span><span class="p">])</span>
+
+<span class="c1"># Create token pattern</span>
+<span class="n">noun_pattern</span> <span class="o">=</span> <span class="n">TokenPattern</span><span class="p">(</span><span class="n">conditions</span><span class="o">=</span><span class="p">[</span><span class="n">upos_cond</span><span class="p">,</span> <span class="n">feats_cond</span><span class="p">])</span>
+
+<span class="c1"># Create sentence pattern</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">SentencePattern</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="p">[</span><span class="n">noun_pattern</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;nom-or-acc-noun&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="condition-types">
+<h3>Condition Types<a class="headerlink" href="#condition-types" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Condition</span></code> class supports various match types:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">Condition</span>
+
+<span class="c1"># Exact match (default)</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;lemma&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rex&#39;</span><span class="p">])</span>
+
+<span class="c1"># Contains</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;form&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ae&#39;</span><span class="p">],</span> <span class="n">match_type</span><span class="o">=</span><span class="s1">&#39;contains&#39;</span><span class="p">)</span>
+
+<span class="c1"># Starts with</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;form&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ab&#39;</span><span class="p">],</span> <span class="n">match_type</span><span class="o">=</span><span class="s1">&#39;startswith&#39;</span><span class="p">)</span>
+
+<span class="c1"># Ends with</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;form&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;um&#39;</span><span class="p">],</span> <span class="n">match_type</span><span class="o">=</span><span class="s1">&#39;endswith&#39;</span><span class="p">)</span>
+
+<span class="c1"># Negation</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;upos&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;NOUN&#39;</span><span class="p">],</span> <span class="n">negate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Match any of multiple values</span>
+<span class="n">cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;lemma&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;rex&#39;</span><span class="p">,</span> <span class="s1">&#39;regina&#39;</span><span class="p">],</span> <span class="n">match_any</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="nested-conditions">
+<h3>Nested Conditions<a class="headerlink" href="#nested-conditions" title="Link to this heading"></a></h3>
+<p>For dictionary-type attributes like <code class="docutils literal notranslate"><span class="pre">feats</span></code>, use nested conditions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">Condition</span>
+
+<span class="c1"># Nested conditions for features</span>
+<span class="n">case_cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;Case&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Abl&#39;</span><span class="p">])</span>
+<span class="n">number_cond</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;Number&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Sing&#39;</span><span class="p">])</span>
+
+<span class="c1"># All conditions must match</span>
+<span class="n">feats_all</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">case_cond</span><span class="p">,</span> <span class="n">number_cond</span><span class="p">],</span> <span class="n">match_any</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Any condition matches</span>
+<span class="n">feats_any</span> <span class="o">=</span> <span class="n">Condition</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="n">case_cond</span><span class="p">,</span> <span class="n">number_cond</span><span class="p">],</span> <span class="n">match_any</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pattern-explanation">
+<h3>Pattern Explanation<a class="headerlink" href="#pattern-explanation" title="Link to this heading"></a></h3>
+<p>Get a human-readable explanation of a pattern:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Abl,Number=Sing)+VERB&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">explain</span><span class="p">())</span>
+<span class="c1"># Output:</span>
+<span class="c1"># This pattern matches a sequence of the following token patterns:</span>
+<span class="c1">#   Token Pattern 1: Matches a token when &#39;upos&#39; equals NOUN and ...</span>
+<span class="c1">#   Token Pattern 2: Matches a token when &#39;upos&#39; equals VERB</span>
+</pre></div>
+</div>
+</section>
+<section id="matching-individual-sentences">
+<h3>Matching Individual Sentences<a class="headerlink" href="#matching-individual-sentences" title="Link to this heading"></a></h3>
+<p>Apply patterns to single sentences:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">conllu</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_pattern</span>
+
+<span class="n">conllu_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;# sent_id = example-1</span>
+<span class="s2"># text = Rex magnam urbem videt.</span>
+<span class="s2">1	Rex	rex	NOUN	_	Case=Nom|Gender=Masc|Number=Sing	4	nsubj	_	_</span>
+<span class="s2">2	magnam	magnus	ADJ	_	Case=Acc|Gender=Fem|Number=Sing	3	amod	_	_</span>
+<span class="s2">3	urbem	urbs	NOUN	_	Case=Acc|Gender=Fem|Number=Sing	4	obj	_	_</span>
+<span class="s2">4	videt	video	VERB	_	Mood=Ind|Number=Sing|Person=3|Tense=Pres	0	root	_	_</span>
+<span class="s2">5	.	.	PUNCT	_	_	4	punct	_	_</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">sentence</span> <span class="o">=</span> <span class="n">conllu</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">conllu_text</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;ADJ+NOUN&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;adj-noun&#39;</span><span class="p">)</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">substring</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># &quot;magnam urbem&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="common-issues">
+<h2>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h2>
+<section id="pattern-not-matching">
+<h3>Pattern Not Matching<a class="headerlink" href="#pattern-not-matching" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: Pattern doesn’t find expected matches.</p>
+<p><strong>Solutions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Check UPOS tags match your corpus annotation:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Debug: print actual UPOS values</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;upos&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Verify feature names and values:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Debug: print actual features</span>
+<span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;form&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">token</span><span class="p">[</span><span class="s1">&#39;feats&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Test simpler patterns first:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start simple</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">)</span>  <span class="c1"># Does this match?</span>
+<span class="c1"># Then add conditions</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Abl)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="empty-feature-handling">
+<h3>Empty Feature Handling<a class="headerlink" href="#empty-feature-handling" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: Tokens with empty features (<code class="docutils literal notranslate"><span class="pre">_</span></code>) don’t match feature conditions.</p>
+<p><strong>Solution</strong>: Feature conditions only match when features exist:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This won&#39;t match tokens with feats=_</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Nom)&#39;</span><span class="p">)</span>
+
+<span class="c1"># To also find nouns regardless of features, use alternation or separate patterns</span>
+<span class="n">nouns</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;all-nouns&#39;</span><span class="p">)</span>
+<span class="n">nom_nouns</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Nom)&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;nominative-nouns&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="quantifier-behavior">
+<h3>Quantifier Behavior<a class="headerlink" href="#quantifier-behavior" title="Link to this heading"></a></h3>
+<p><strong>Problem</strong>: Quantified patterns match more or fewer tokens than expected.</p>
+<p><strong>Solution</strong>: Quantifiers apply to the preceding token pattern only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Matches: DET + (0-2 ADJ) + NOUN</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;DET+ADJ{0,2}+NOUN&#39;</span><span class="p">)</span>
+
+<span class="c1"># NOT: (DET + ADJ){0,2} + NOUN</span>
+<span class="c1"># Each token pattern is separate</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="loading.html"><span class="std std-doc">Loading</span></a> - Loading CoNLL-U files</p></li>
+<li><p><a class="reference internal" href="validation.html"><span class="std std-doc">Validation</span></a> - Validating CoNLL-U files</p></li>
+<li><p><a class="reference internal" href="../api_reference/matching.html"><span class="doc">Matching Module</span></a> - Detailed matching API</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="evaluation.html" class="btn btn-neutral float-left" title="Evaluation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="loading.html" class="btn btn-neutral float-right" title="Data Loading" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Gabe Pizzorno.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

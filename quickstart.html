@@ -1,0 +1,767 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Start Guide &mdash; CoNLL-U Tools v1.3.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=1f29e9d3"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User Guide" href="user_guide/index.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CoNLL-U Tools
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#quick-install">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#system-requirements">System Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#other-installation-methods">Other Installation Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#from-source">From Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#from-github-direct">From GitHub (Direct)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#specific-version">Specific Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#upgrade">Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#import-error-no-module-named-conllu-tools">Import Error: No module named ‘conllu_tools’</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#version-conflicts">Version Conflicts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#permission-errors">Permission Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conversion">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#conll-u-to-brat">CoNLL-U to brat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#brat-to-conll-u">brat to CoNLL-U</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#validation">Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluation">Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pattern-matching">Pattern Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-pattern-search">Basic Pattern Search</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pattern-syntax-examples">Pattern Syntax Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utils">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#normalize-morphology">Normalize Morphology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#feature-conversion">Feature Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#xpos-conversion">XPOS Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#need-help">Need Help?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/index.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/conversion.html">Conversion</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/conversion.html#conll-u-to-brat">CoNLL-U to Brat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#parameters">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#output-structure">Output Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#features">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#the-metadata-json-file">The <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> File</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/conversion.html#brat-to-conll-u">Brat to CoNLL-U</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#id1">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#id2">Parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#id3">Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#using-metadata-json-for-automatic-configuration">Using metadata.json for Automatic Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/conversion.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#missing-metadata-json">Missing metadata.json</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#id-mismatches">ID Mismatches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#token-mismatch-errors">Token Mismatch Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#missing-features">Missing Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#missing-output-file">Missing Output File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/conversion.html#encoding-issues">Encoding Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/conversion.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/validation.html">Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/validation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/validation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/validation.html#validation-levels">Validation Levels</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#level-1-basic-format">Level 1: Basic Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#level-2-standard-validation-default">Level 2: Standard Validation (Default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#level-3-extended-validation">Level 3: Extended Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#level-4-language-specific-format">Level 4: Language-Specific Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#level-5-language-specific-content">Level 5: Language-Specific Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/validation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#custom-validator-configuration">Custom Validator Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#validating-string-content">Validating String Content</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#accessing-error-details">Accessing Error Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/validation.html#common-validation-errors">Common Validation Errors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#id-sequence-errors">ID Sequence Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#multi-word-token-errors">Multi-word Token Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#upos-deprel-compatibility">UPOS-DEPREL Compatibility</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/validation.html#tree-structure-errors">Tree Structure Errors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/evaluation.html">Evaluation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/evaluation.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/evaluation.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/evaluation.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/evaluation.html#disabling-dependency-evaluation">Disabling Dependency Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/evaluation.html#treebank-type-configuration">Treebank Type Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/evaluation.html#accessing-score-details">Accessing Score Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/evaluation.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/evaluation.html#file-alignment">File Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/evaluation.html#token-count-mismatch">Token Count Mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/matching.html">Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/matching.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/matching.html#quick-start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/matching.html#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#building-patterns">Building Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#searching-a-corpus">Searching a Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#working-with-match-results">Working with Match Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/matching.html#pattern-syntax">Pattern Syntax</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#token-patterns">Token Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#sentence-patterns">Sentence Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/matching.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#manual-pattern-construction">Manual Pattern Construction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#condition-types">Condition Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#nested-conditions">Nested Conditions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#pattern-explanation">Pattern Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#matching-individual-sentences">Matching Individual Sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/matching.html#common-issues">Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#pattern-not-matching">Pattern Not Matching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#empty-feature-handling">Empty Feature Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/matching.html#quantifier-behavior">Quantifier Behavior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/loading.html">Data Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/loading.html#feature-set-loading">Feature Set Loading</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/loading.html#basic-loading">Basic Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/loading.html#understanding-the-feature-set-format">Understanding the Feature Set Format</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/loading.html#custom-feature-sets">Custom Feature Sets</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/loading.html#loading-other-language-data">Loading Other Language Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/loading.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_guide/utils.html">Utils</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#quick-start">Quick Start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#with-reference-features">With Reference Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#what-gets-normalized">What Gets Normalized</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#dalme-to-upos">DALME to UPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#upos-to-perseus">UPOS to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#convert-features-to-xpos">Convert Features to XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#convert-xpos-to-features">Convert XPOS to Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#validate-features">Validate Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="user_guide/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="user_guide/utils.html#low-level-conversion-tools">Low-level Conversion Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/io.html">I/O Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/io.html#round-trip-conversion">Round-trip Conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/io.html#important-notes">Important Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/io.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/validation.html">Validation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/validation.html#post-conversion-validation">Post-Conversion Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/validation.html#batch-validation">Batch Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/validation.html#integration-with-other-tools">Integration with Other Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/validation.html#validate-before-evaluation">Validate Before Evaluation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/validation.html#validate-after-conversion">Validate After Conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/validation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/evaluation.html">Evaluation Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/evaluation.html#parser-development">Parser Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/evaluation.html#cross-validation">Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/evaluation.html#baseline-comparison">Baseline Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/evaluation.html#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/evaluation.html#evaluate-conversion-accuracy">Evaluate Conversion Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/evaluation.html#export-results-to-json-csv">Export Results to JSON/CSV</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/evaluation.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/matching.html">Matching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/matching.html#linguistic-patterns">Linguistic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/matching.html#syntactic-patterns">Syntactic Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/matching.html#morphological-patterns">Morphological Patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/matching.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/normalization.html">Normalization Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/normalization.html#basic-normalization">Basic Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#example-1-verb-with-gerund-features">Example 1: VERB with Gerund Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#example-2-aux-with-finite-verb-features">Example 2: AUX with Finite Verb Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#example-3-adj-with-degree-reconciliation">Example 3: ADJ with Degree Reconciliation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#example-4-noun-with-xpos-upos-mismatch-correction">Example 4: NOUN with XPOS/UPOS Mismatch Correction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/normalization.html#normalization-workflows">Normalization Workflows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#normalizing-a-conll-u-file">Normalizing a CoNLL-U File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#cleaning-imported-annotations">Cleaning Imported Annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#validating-after-normalization">Validating After Normalization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#batch-normalization">Batch Normalization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/normalization.html#error-handling">Error Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#handling-normalization-errors">Handling Normalization Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/normalization.html#safe-normalization-with-fallbacks">Safe Normalization with Fallbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/normalization.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="examples/utils.html">Utilities Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/utils.html#convert-features-to-xpos">Convert Features to XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/utils.html#complete-workflow">Complete Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/utils.html#filling-partial-xpos">Filling Partial XPOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/utils.html#format-xpos">Format XPOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/utils.html#processing-mixed-formats">Processing Mixed Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="examples/utils.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/io.html">IO Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/io.html#conversion-functions">Conversion Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/io.html#conllu-to-brat">conllu_to_brat</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/io.html#brat-to-conllu">brat_to_conllu</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/io.html#data-loading-functions">Data Loading Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/io.html#load-language-data">load_language_data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/io.html#load-whitespace-exceptions">load_whitespace_exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/validation.html">Validation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/validation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/validation.html#conlluvalidator">ConlluValidator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/validation.html#errorreporter">ErrorReporter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/validation.html#errorentry">ErrorEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/validation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/validation.html#conllu_tools.validation.error_reporter.ValidationError"><code class="docutils literal notranslate"><span class="pre">ValidationError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/validation.html#validation-mixins">Validation Mixins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/evaluation.html">Evaluation Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/evaluation.html#main-classes">Main Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/evaluation.html#evaluator">Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/evaluation.html#score">Score</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/evaluation.html#supporting-classes">Supporting Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/evaluation.html#udword">UDWord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/evaluation.html#udspan">UDSpan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/evaluation.html#alignment">Alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/evaluation.html#alignmentword">AlignmentWord</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/evaluation.html#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/evaluation.html#conllu_tools.evaluation.base.UDError"><code class="docutils literal notranslate"><span class="pre">UDError</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/matching.html">Matching Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/matching.html#quick-example">Quick Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/matching.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/matching.html#build-pattern">build_pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/matching.html#find-in-corpus">find_in_corpus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/matching.html#pattern-classes">Pattern Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/matching.html#sentencepattern">SentencePattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/matching.html#tokenpattern">TokenPattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/matching.html#condition">Condition</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/matching.html#result-classes">Result Classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/matching.html#matchresult">MatchResult</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/utils.html">Utils Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/utils.html#morphology-normalization">Morphology Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.normalization.normalize_morphology"><code class="docutils literal notranslate"><span class="pre">normalize_morphology()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/utils.html#upos-utilities">UPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.upos.upos_to_perseus"><code class="docutils literal notranslate"><span class="pre">upos_to_perseus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.upos.dalme_to_upos"><code class="docutils literal notranslate"><span class="pre">dalme_to_upos()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/utils.html#feature-utilities">Feature Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.features.feature_string_to_dict"><code class="docutils literal notranslate"><span class="pre">feature_string_to_dict()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.features.feature_dict_to_string"><code class="docutils literal notranslate"><span class="pre">feature_dict_to_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.features.features_to_xpos"><code class="docutils literal notranslate"><span class="pre">features_to_xpos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.features.xpos_to_features"><code class="docutils literal notranslate"><span class="pre">xpos_to_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.features.validate_features"><code class="docutils literal notranslate"><span class="pre">validate_features()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/utils.html#xpos-utilities">XPOS Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#format-xpos">Format XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#validate-xpos">Validate XPOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#ittb-to-perseus">ITTB to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#proiel-to-perseus">PROIEL to Perseus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#llct-to-perseus">LLCT to Perseus</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/utils.html#brat-utilities">brat Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.type_to_safe_type"><code class="docutils literal notranslate"><span class="pre">type_to_safe_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.safe_type_to_type"><code class="docutils literal notranslate"><span class="pre">safe_type_to_type()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.parse_annotation_line"><code class="docutils literal notranslate"><span class="pre">parse_annotation_line()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.format_annotation"><code class="docutils literal notranslate"><span class="pre">format_annotation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.read_annotations"><code class="docutils literal notranslate"><span class="pre">read_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.read_text_lines"><code class="docutils literal notranslate"><span class="pre">read_text_lines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.sort_annotations_set"><code class="docutils literal notranslate"><span class="pre">sort_annotations_set()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.sort_annotations"><code class="docutils literal notranslate"><span class="pre">sort_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.write_annotations"><code class="docutils literal notranslate"><span class="pre">write_annotations()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.write_text"><code class="docutils literal notranslate"><span class="pre">write_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.write_auxiliary_files"><code class="docutils literal notranslate"><span class="pre">write_auxiliary_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/utils.html#conllu_tools.utils.brat.get_next_id_number"><code class="docutils literal notranslate"><span class="pre">get_next_id_number()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference/constants.html">Constants Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/constants.html#universal-dependencies-tags">Universal Dependencies Tags</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#upos-tags">UPOS Tags</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#universal-dependency-relations">Universal Dependency Relations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#universal-features">Universal Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/constants.html#relation-categories">Relation Categories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.CONTENT_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.CONTENT_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.FUNCTIONAL_DEPRELS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FUNCTIONAL_DEPRELS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LEFT_TO_RIGHT_RELATIONS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/constants.html#conll-u-token-structure">CoNLL-U Token Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.TOKEN_KEYS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.TOKEN_KEYS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/constants.html#xpos-mappings">XPOS Mappings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.UPOS_TO_PERSEUS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.UPOS_TO_PERSEUS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.FEATS_TO_XPOS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.FEATS_TO_XPOS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.XPOS_TO_FEATS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.XPOS_TO_FEATS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.VALIDITY_BY_POS"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.VALIDITY_BY_POS</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/constants.html#treebank-concordances">Treebank Concordances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.ITTB_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.ITTB_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.PROIEL_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.PROIEL_CONCORDANCES</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.LLCT_CONCORDANCES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.LLCT_CONCORDANCES</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api_reference/constants.html#misc-column">MISC Column</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api_reference/constants.html#conllu_tools.constants.MISC_ATTRIBUTES"><code class="docutils literal notranslate"><span class="pre">conllu_tools.constants.MISC_ATTRIBUTES</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #2980B9" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CoNLL-U Tools</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quick Start Guide</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/gpizzorno/conllu_tools/blob/main/docs/source/quickstart.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="quick-start-guide">
+<span id="quickstart"></span><h1>Quick Start Guide<a class="headerlink" href="#quick-start-guide" title="Link to this heading"></a></h1>
+<p>This guide will get you up and running with CoNLL-U Tools in minutes.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>First, install the package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>conllu_tools
+</pre></div>
+</div>
+<p>Verify the installation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import conllu_tools; print(&#39;Ready to go!&#39;)&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="conversion">
+<h2>Conversion<a class="headerlink" href="#conversion" title="Link to this heading"></a></h2>
+<p>Let’s convert a CoNLL-U file to brat format for visual annotation.</p>
+<section id="conll-u-to-brat">
+<h3>CoNLL-U to brat<a class="headerlink" href="#conll-u-to-brat" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">conllu_to_brat</span>
+
+<span class="c1"># Convert CoNLL-U to brat format</span>
+<span class="n">conllu_to_brat</span><span class="p">(</span>
+    <span class="n">conllu_filename</span><span class="o">=</span><span class="s1">&#39;my_corpus.conllu&#39;</span><span class="p">,</span>
+    <span class="n">output_directory</span><span class="o">=</span><span class="s1">&#39;brat_annotations/&#39;</span><span class="p">,</span>
+    <span class="n">output_root</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Show ROOT nodes</span>
+    <span class="n">sents_per_doc</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># 10 sentences per document</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conversion complete! Check brat_annotations directory&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>What happens:</strong></p>
+<ul class="simple">
+<li><p>Creates <code class="docutils literal notranslate"><span class="pre">.txt</span></code> files with raw text</p></li>
+<li><p>Creates <code class="docutils literal notranslate"><span class="pre">.ann</span></code> files with standoff annotations</p></li>
+<li><p>Adds configuration files for brat visualization</p></li>
+<li><p>Adds <code class="docutils literal notranslate"><span class="pre">metadata.json</span></code> with information about the conversion parameters (used by <code class="docutils literal notranslate"><span class="pre">brat_to_conllu</span></code>)</p></li>
+<li><p>Splits long files into manageable documents</p></li>
+</ul>
+</section>
+<section id="brat-to-conll-u">
+<h3>brat to CoNLL-U<a class="headerlink" href="#brat-to-conll-u" title="Link to this heading"></a></h3>
+<p>After annotating in brat, convert back to CoNLL-U:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">brat_to_conllu</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_language_data</span>
+
+<span class="c1"># Load feature set for validation</span>
+<span class="n">feature_set</span> <span class="o">=</span> <span class="n">load_language_data</span><span class="p">(</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">)</span>
+
+<span class="c1"># Convert back to CoNLL-U</span>
+<span class="n">brat_to_conllu</span><span class="p">(</span>
+    <span class="n">input_directory</span><span class="o">=</span><span class="s1">&#39;brat_annotations/&#39;</span><span class="p">,</span>
+    <span class="n">output_directory</span><span class="o">=</span><span class="s1">&#39;updated_conllu/&#39;</span><span class="p">,</span>
+    <span class="n">ref_conllu</span><span class="o">=</span><span class="s1">&#39;my_corpus.conllu&#39;</span><span class="p">,</span>  <span class="c1"># Original for features</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converted back to CoNLL-U!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading"></a></h2>
+<p>Validate CoNLL-U files for format and linguistic correctness:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConlluValidator</span>
+
+<span class="c1"># Create validator</span>
+<span class="n">validator</span> <span class="o">=</span> <span class="n">ConlluValidator</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Run validation checks</span>
+<span class="n">reporter</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate_file</span><span class="p">(</span><span class="s1">&#39;path/to/yourfile.conllu&#39;</span><span class="p">)</span>
+
+<span class="c1"># Print error count</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Errors found: </span><span class="si">{</span><span class="n">reporter</span><span class="o">.</span><span class="n">get_error_count</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Inspect first error</span>
+<span class="n">sent_id</span><span class="p">,</span> <span class="n">order</span><span class="p">,</span> <span class="n">testlevel</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">reporter</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sentence ID: </span><span class="si">{</span><span class="n">sent_id</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># e.g. 34</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Testing at level: </span><span class="si">{</span><span class="n">testlevel</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># e.g. 2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error test level: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">testlevel</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># e.g. 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error type: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">error_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># e.g. &quot;Metadata&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Test ID: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">testid</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># e.g. &quot;text-mismatch&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Error message: </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">msg</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># Full error message (see below)</span>
+
+<span class="c1"># Print all errors formatted as strings</span>
+<span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">reporter</span><span class="o">.</span><span class="n">format_errors</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+<span class="c1"># Example output:</span>
+<span class="c1"># Sentence 34:</span>
+<span class="c1"># [L2 Metadata text-mismatch] The text attribute does not match the text </span>
+<span class="c1"># implied by the FORM and SpaceAfter=No values. Expected: &#39;Una scala....&#39; </span>
+<span class="c1"># Reconstructed: &#39;Una scala ....&#39; (first diff at position 9)</span>
+</pre></div>
+</div>
+</section>
+<section id="evaluation">
+<h2>Evaluation<a class="headerlink" href="#evaluation" title="Link to this heading"></a></h2>
+<p>Evaluate parser output against gold standard:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConlluEvaluator</span>
+
+<span class="c1"># Compare gold standard with system output</span>
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">ConlluEvaluator</span><span class="p">(</span><span class="n">eval_deprels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">treebank_type</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="p">)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate_files</span><span class="p">(</span>
+    <span class="n">gold_path</span><span class="o">=</span><span class="s1">&#39;path/to/gold_standard.conllu&#39;</span><span class="p">,</span>
+    <span class="n">system_path</span><span class="o">=</span><span class="s1">&#39;path/to/parser_output.conllu&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Print scores</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unlabeled Attachment Score (UAS): </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;UAS&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Labeled Attachment Score (LAS): </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="s1">&#39;LAS&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pattern-matching">
+<h2>Pattern Matching<a class="headerlink" href="#pattern-matching" title="Link to this heading"></a></h2>
+<p>Find linguistic patterns in your CoNLL-U corpus.</p>
+<section id="basic-pattern-search">
+<h3>Basic Pattern Search<a class="headerlink" href="#basic-pattern-search" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">conllu</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.matching</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_pattern</span><span class="p">,</span> <span class="n">find_in_corpus</span>
+
+<span class="c1"># Load corpus</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;corpus.conllu&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">corpus</span> <span class="o">=</span> <span class="n">conllu</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="c1"># Find all adjective + noun sequences</span>
+<span class="n">pattern</span> <span class="o">=</span> <span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;ADJ+NOUN&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;adj-noun&#39;</span><span class="p">)</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">find_in_corpus</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="p">[</span><span class="n">pattern</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">sentence_id</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">substring</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Forms: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">forms</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Lemmata: </span><span class="si">{</span><span class="n">match</span><span class="o">.</span><span class="n">lemmata</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="pattern-syntax-examples">
+<h3>Pattern Syntax Examples<a class="headerlink" href="#pattern-syntax-examples" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Match by UPOS</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">)</span>              <span class="c1"># Any noun</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN|VERB&#39;</span><span class="p">)</span>         <span class="c1"># Noun or verb</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>                 <span class="c1"># Any token</span>
+
+<span class="c1"># Match with conditions</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:lemma=rex&#39;</span><span class="p">)</span>                    <span class="c1"># Noun with lemma &#39;rex&#39;</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Abl)&#39;</span><span class="p">)</span>             <span class="c1"># Ablative noun</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:feats=(Case=Nom,Number=Sing)&#39;</span><span class="p">)</span> <span class="c1"># Singular nominative</span>
+
+<span class="c1"># Multi-token sequences</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;DET+NOUN&#39;</span><span class="p">)</span>                  <span class="c1"># Determiner + noun</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;ADP+NOUN:feats=(Case=Acc)&#39;</span><span class="p">)</span> <span class="c1"># Preposition + accusative noun</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;DET+ADJ{0,2}+NOUN&#39;</span><span class="p">)</span>         <span class="c1"># Det + 0-2 adjectives + noun</span>
+
+<span class="c1"># Negation and substring matching</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;!PUNCT&#39;</span><span class="p">)</span>              <span class="c1"># Not punctuation</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;*:form=&lt;ae&gt;&#39;</span><span class="p">)</span>         <span class="c1"># Form contains &#39;ae&#39;</span>
+<span class="n">build_pattern</span><span class="p">(</span><span class="s1">&#39;NOUN:form=um&gt;&#39;</span><span class="p">)</span>       <span class="c1"># Noun ending in &#39;um&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utils">
+<h2>Utils<a class="headerlink" href="#utils" title="Link to this heading"></a></h2>
+<p>Utilities for tagset conversion, morphology normalization, and feature validation.</p>
+<section id="normalize-morphology">
+<h3>Normalize Morphology<a class="headerlink" href="#normalize-morphology" title="Link to this heading"></a></h3>
+<p>The main utility function for harmonizing morphological annotations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_language_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">normalize_morphology</span>
+
+<span class="n">feature_set</span> <span class="o">=</span> <span class="n">load_language_data</span><span class="p">(</span><span class="s1">&#39;feats&#39;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s1">&#39;la&#39;</span><span class="p">)</span>
+
+<span class="n">xpos</span><span class="p">,</span> <span class="n">feats</span> <span class="o">=</span> <span class="n">normalize_morphology</span><span class="p">(</span>
+    <span class="n">upos</span><span class="o">=</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span>
+    <span class="n">xpos</span><span class="o">=</span><span class="s1">&#39;v|v|3|s|p|i|a|-|-|-&#39;</span><span class="p">,</span>  <span class="c1"># LLCT format (auto-detected)</span>
+    <span class="n">feats</span><span class="o">=</span><span class="s1">&#39;Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act&#39;</span><span class="p">,</span>
+    <span class="n">feature_set</span><span class="o">=</span><span class="n">feature_set</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">xpos</span><span class="p">)</span>   <span class="c1"># &#39;v3spia---&#39; (converted to Perseus format)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>  <span class="c1"># {&#39;Mood&#39;: &#39;Ind&#39;, &#39;Number&#39;: &#39;Sing&#39;, &#39;Person&#39;: &#39;3&#39;, ...}</span>
+</pre></div>
+</div>
+<p><strong>What it does:</strong> Auto-detects XPOS format (LLCT, ITTB, PROIEL) → converts to Perseus → validates against UPOS → reconciles features.</p>
+</section>
+<section id="feature-conversion">
+<h3>Feature Conversion<a class="headerlink" href="#feature-conversion" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">feature_string_to_dict</span><span class="p">,</span> <span class="n">feature_dict_to_string</span>
+
+<span class="c1"># String ↔ dictionary conversion</span>
+<span class="n">feat_dict</span> <span class="o">=</span> <span class="n">feature_string_to_dict</span><span class="p">(</span><span class="s2">&quot;Case=Nom|Gender=Masc|Number=Sing&quot;</span><span class="p">)</span>
+<span class="c1"># {&#39;Case&#39;: &#39;Nom&#39;, &#39;Gender&#39;: &#39;Masc&#39;, &#39;Number&#39;: &#39;Sing&#39;}</span>
+
+<span class="n">feat_str</span> <span class="o">=</span> <span class="n">feature_dict_to_string</span><span class="p">({</span><span class="s1">&#39;Number&#39;</span><span class="p">:</span> <span class="s1">&#39;Sing&#39;</span><span class="p">,</span> <span class="s1">&#39;Case&#39;</span><span class="p">:</span> <span class="s1">&#39;Gen&#39;</span><span class="p">})</span>
+<span class="c1"># &#39;Case=Gen|Number=Sing&#39; (sorted alphabetically)</span>
+</pre></div>
+</div>
+</section>
+<section id="xpos-conversion">
+<h3>XPOS Conversion<a class="headerlink" href="#xpos-conversion" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">conllu_tools.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">format_xpos</span><span class="p">,</span> <span class="n">upos_to_perseus</span>
+
+<span class="c1"># Convert UPOS to Perseus code</span>
+<span class="n">upos_to_perseus</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">)</span>  <span class="c1"># &#39;n&#39;</span>
+
+<span class="c1"># Auto-detect and convert any XPOS format to Perseus</span>
+<span class="n">format_xpos</span><span class="p">(</span><span class="s1">&#39;VERB&#39;</span><span class="p">,</span> <span class="s1">&#39;v|v|3|s|p|i|a|-|-|-&#39;</span><span class="p">,</span> <span class="n">feats</span><span class="p">)</span>  <span class="c1"># LLCT → &#39;v3spia---&#39;</span>
+<span class="n">format_xpos</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="s1">&#39;gen2|casA&#39;</span><span class="p">,</span> <span class="n">feats</span><span class="p">)</span>             <span class="c1"># ITTB → &#39;n-s---fn-&#39;</span>
+<span class="n">format_xpos</span><span class="p">(</span><span class="s1">&#39;NOUN&#39;</span><span class="p">,</span> <span class="s1">&#39;Nb&#39;</span><span class="p">,</span> <span class="n">feats</span><span class="p">)</span>                    <span class="c1"># PROIEL → &#39;n-s---na-&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>Now that you’ve seen the basics, dive deeper:</p>
+<p><strong>User Guides</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="user_guide/conversion.html"><span class="doc">Conversion</span></a> - Detailed conversion workflows</p></li>
+<li><p><a class="reference internal" href="user_guide/validation.html"><span class="doc">Validation</span></a> - Comprehensive validation guide</p></li>
+<li><p><a class="reference internal" href="user_guide/evaluation.html"><span class="doc">Evaluation</span></a> - Advanced evaluation metrics</p></li>
+<li><p><a class="reference internal" href="user_guide/matching.html"><span class="doc">Matching</span></a> - Pattern matching patterns</p></li>
+<li><p><a class="reference internal" href="user_guide/utils.html"><span class="doc">Utils</span></a> - Utility functions guide</p></li>
+</ul>
+<p><strong>Examples</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="examples/io.html"><span class="doc">I/O Examples</span></a> - I/O examples</p></li>
+<li><p><a class="reference internal" href="examples/validation.html"><span class="doc">Validation Examples</span></a> - Validation examples</p></li>
+<li><p><a class="reference internal" href="examples/evaluation.html"><span class="doc">Evaluation Examples</span></a> - Evaluation examples</p></li>
+<li><p><a class="reference internal" href="examples/normalization.html"><span class="doc">Normalization Examples</span></a> - Normalization examples</p></li>
+</ul>
+<p><strong>API Reference</strong></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api_reference/io.html"><span class="doc">IO Module</span></a> - I/O and conversion API</p></li>
+<li><p><a class="reference internal" href="api_reference/validation.html"><span class="doc">Validation Module</span></a> - Validation API</p></li>
+<li><p><a class="reference internal" href="api_reference/evaluation.html"><span class="doc">Evaluation Module</span></a> - Evaluation API</p></li>
+<li><p><a class="reference internal" href="api_reference/matching.html"><span class="doc">Matching Module</span></a> - Pattern matching API</p></li>
+<li><p><a class="reference internal" href="api_reference/utils.html"><span class="doc">Utils Module</span></a> - Utility functions API</p></li>
+<li><p><a class="reference internal" href="api_reference/constants.html"><span class="doc">Constants Module</span></a> - Package constants</p></li>
+</ul>
+</section>
+<section id="need-help">
+<h2>Need Help?<a class="headerlink" href="#need-help" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Issues</strong>: <a class="reference external" href="https://github.com/gpizzorno/conllu_tools/issues">https://github.com/gpizzorno/conllu_tools/issues</a></p></li>
+<li><p><strong>Documentation</strong>: Use the search bar in these docs</p></li>
+<li><p><strong>More examples</strong>: Check the test files for more usage examples</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="user_guide/index.html" class="btn btn-neutral float-right" title="User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Gabe Pizzorno.</p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
