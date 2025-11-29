@@ -134,7 +134,7 @@ pip install --user -e .
 
 After installation, see:
 
-- [Quick Start Guide](quickstart.md) - Get started with common tasks
+- {doc}`quickstart` - Get started with common tasks
 - {doc}`user_guide/index` - Comprehensive usage guides
 - {doc}`examples/index` - Usage examples
 - {doc}`api_reference/index` - Full API documentation
