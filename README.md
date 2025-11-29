@@ -5,17 +5,18 @@
 [![Tests](https://github.com/gpizzorno/conllu_tools/actions/workflows/tests.yml/badge.svg)](https://github.com/gpizzorno/conllu_tools/actions/workflows/tests.yml)
 [![Documentation](https://img.shields.io/badge/Docs-latest-blue.svg)](https://gpizzorno.github.io/conllu_tools/)
 
-**CoNLL-U Tools** is a set of convenience tools for working with CoNLL-U files, UD treebanks, and annotated corpora. It provides converters, evaluation scripts, validation tools, and utilities for transforming, validating, and comparing linguistic data in [CoNLL-U](https://universaldependencies.org/format.html) and [brat](https://brat.nlplab.org) standoff formats.
+**CoNLL-U Tools** is a Python toolkit for working with CoNLL-U files, Universal Dependencies treebanks, and annotated corpora. It provides utilities for format conversion, validation, evaluation, pattern matching, and morphological normalization, supporting workflows with [CoNLL-U](https://universaldependencies.org/format.html) and [brat](https://brat.nlplab.org) standoff formats.
 
 [Read the documentation](https://gpizzorno.github.io/conllu_tools/)
 
 ## Features
 
-- **brat/CoNLL-U Interoperability**: Convert between brat [standoff](https://brat.nlplab.org/standoff.html) and [CoNLL-U](https://universaldependencies.org/format.html)
-- **Morphological Feature Utilities**: Normalize and map features across tagsets ([Perseus](https://universaldependencies.org/treebanks/la_perseus/index.html), [ITTB](https://universaldependencies.org/treebanks/la_ittb/index.html), [PROIEL](https://universaldependencies.org/treebanks/la_proiel/index.html), [DALME](https://dalme.org))
-- **Validation**: Check CoNLL-U files for format and annotation guideline compliance
-- **Evaluation**: Score system outputs against gold-standard CoNLL-U files, including enhanced dependencies
-- **Extensible**: Easily add new tagset converters or feature mappings
+- **Format Conversion**: Bidirectional conversion between brat [standoff](https://brat.nlplab.org/standoff.html) and [CoNLL-U](https://universaldependencies.org/format.html) formats
+- **Validation**: Check CoNLL-U files for format compliance and annotation guideline adherence
+- **Evaluation**: Score parser outputs against gold-standard files with comprehensive metrics
+- **Pattern Matching**: Find tokens and sentences matching complex linguistic criteria
+- **Morphological Utilities**: Normalize features, convert between tagsets ([Perseus](https://universaldependencies.org/treebanks/la_perseus/index.html), [ITTB](https://universaldependencies.org/treebanks/la_ittb/index.html), [PROIEL](https://universaldependencies.org/treebanks/la_proiel/index.html), [LLCT](https://universaldependencies.org/treebanks/la_llct/index.html))
+- **Extensible**: Add custom tagset converters and feature mappings
 
 For detailed information about each feature, see the [User Guide](https://gpizzorno.github.io/conllu_tools/user_guide/index.html).
 
@@ -116,56 +117,30 @@ print(f'LAS: {scores["LAS"].f1:.2%}')
 # LAS: 48.16%
 ```
 
-### Convert Between Tagsets
+### Pattern Matching
 
 ```python
-from conllu_tools.utils.upos import dalme_to_upos, upos_to_perseus
-from conllu_tools.utils.xpos import ittb_to_perseus, llct_to_perseus
-from conllu_tools.utils.features import feature_string_to_dict, feature_dict_to_string
+import conllu
+from conllu_tools.matching import build_pattern, find_in_corpus
 
-print(dalme_to_upos('adjective'))
-# Returns 'ADJ'
+# Load corpus
+with open('corpus.conllu', encoding='utf-8') as f:
+    corpus = conllu.parse(f.read())
 
-print(upos_to_perseus('NOUN'))
-# Returns 'n'
+# Find all adjective + noun sequences
+pattern = build_pattern('ADJ+NOUN', name='adj-noun')
+matches = find_in_corpus(corpus, [pattern])
 
-print(ittb_to_perseus('VERB', 'gen4|tem1|mod1'))  
-# Returns 'v1sp-----'
+for match in matches:
+    print(f"[{match.sentence_id}] {match.substring}")
+    print(f"  Forms: {match.forms}")
+    print(f"  Lemmata: {match.lemmata}")
 
-print(llct_to_perseus('VERB', 'v|v|3|s|p|i|a|-|-|-', 'Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act'))
-# Returns 'v3spia---'
-
-feat_dict = feature_string_to_dict('Case=Nom|Gender=Neut|Number=Sing')
-# Returns a dictionary: 
-{'Case': 'Nom', 'Gender': 'Neut', 'Number': 'Sing'}
-
-print(feature_dict_to_string(feat_dict)) 
-# Returns 'Case=Nom|Gender=Neut|Number=Sing'
-```
-
-### Normalize Morphology
-
-```python
-from conllu_tools.io import load_language_data
-from conllu_tools.utils.normalization import normalize_morphology
-
-feature_set = load_language_data('feats', language='la')
-
-# Normalize morphology with feature reconciliation
-# VerbForm is missing from feats but present in ref_feats
-xpos, feats = normalize_morphology(
-    upos='VERB',
-    xpos='v-s-ga-g-',
-    feats='Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|Voice=Act',
-    feature_set=feature_set,
-    ref_features='Aspect=Perf|Case=Gen|Degree=Pos|Number=Sing|VerbForm=Ger|Voice=Act'
-)
-
-print(xpos)
-# Returns 'v-stga-g-' (normalized and validated)
-
-print(feats)
-# Returns {'Aspect': 'Perf', 'Case': 'Gen', 'Degree': 'Pos', 'Number': 'Sing', 'VerbForm': 'Ger', 'Voice': 'Act'}
+# More pattern examples:
+build_pattern('NOUN:lemma=rex')                    # Noun with lemma 'rex'
+build_pattern('NOUN:feats=(Case=Abl)')             # Ablative noun
+build_pattern('DET+ADJ{0,2}+NOUN')                 # Det + 0-2 adjectives + noun
+build_pattern('ADP+NOUN:feats=(Case=Acc)')         # Preposition + accusative noun
 ```
 
 For more examples and detailed usage, see the [Quickstart Guide](https://gpizzorno.github.io/conllu_tools/quickstart.html).
@@ -177,13 +152,12 @@ The full documentation includes:
 - **[Installation Guide](https://gpizzorno.github.io/conllu_tools/installation.html)**: Detailed installation instructions and troubleshooting
 - **[Quickstart Guide](https://gpizzorno.github.io/conllu_tools/quickstart.html)**: Get started quickly with common tasks
 - **[User Guide](https://gpizzorno.github.io/conllu_tools/user_guide/index.html)**: Comprehensive guides for all features
-  - [brat Conversion](https://gpizzorno.github.io/conllu_tools/user_guide/brat_conversion.html): CoNLL-U ↔ brat conversion
+  - [Conversion](https://gpizzorno.github.io/conllu_tools/user_guide/conversion.html): CoNLL-U ↔ brat conversion
   - [Validation](https://gpizzorno.github.io/conllu_tools/user_guide/validation.html): Validation framework and recipes
   - [Evaluation](https://gpizzorno.github.io/conllu_tools/user_guide/evaluation.html): Metrics and evaluation workflows
-  - [Converters](https://gpizzorno.github.io/conllu_tools/user_guide/converters.html): Tagset conversions
-  - [Normalization](https://gpizzorno.github.io/conllu_tools/user_guide/normalization.html): Feature normalization
+  - [Pattern Matching](https://gpizzorno.github.io/conllu_tools/user_guide/matching.html): Find complex linguistic patterns
+  - [Utilities](https://gpizzorno.github.io/conllu_tools/user_guide/utils.html): Tagset conversion and normalization
 - **[API Reference](https://gpizzorno.github.io/conllu_tools/api_reference/index.html)**: Complete API documentation
-- **[Developer Guide](https://gpizzorno.github.io/conllu_tools/developer_guide/index.html)**: Architecture and testing guides for contributors
 
 
 ## Acknowledgments

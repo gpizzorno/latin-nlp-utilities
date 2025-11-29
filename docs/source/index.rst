@@ -15,7 +15,7 @@ CoNLL-U Tools Documentation
    :target: https://github.com/gpizzorno/conllu_tools/actions/workflows/tests.yml
    :alt: Tests
 
-**CoNLL-U Tools** is a set of convenience tools for working with CoNLL-U files, UD treebanks, and annotated corpora. It provides converters, evaluation scripts, validation tools, and utilities for transforming, validating, and comparing linguistic data in `CoNLL-U`_ and `brat`_ standoff formats.
+**CoNLL-U Tools** is a Python toolkit for working with CoNLL-U files, Universal Dependencies treebanks, and annotated corpora. It provides utilities for format conversion, validation, evaluation, pattern matching, and morphological normalization, supporting workflows with `CoNLL-U`_ and `brat`_ standoff formats.
 
 .. _CoNLL-U: https://universaldependencies.org/format.html
 .. _brat: https://brat.nlplab.org
@@ -23,18 +23,18 @@ CoNLL-U Tools Documentation
 Features
 --------
 
-- **brat/CoNLL-U Interoperability**: Convert between brat `standoff`_ and `CoNLL-U`_
-- **Morphological Feature Utilities**: Normalize and map features across tagsets (`Perseus`, `ITTB`, `PROIEL`, `DALME`)
-- **Validation**: Check CoNLL-U files for format and annotation guideline compliance
-- **Evaluation**: Score system outputs against gold-standard CoNLL-U files, including enhanced dependencies
-- **Extensible**: Easily add new tagset converters or feature mappings
+- **Format Conversion**: Bidirectional conversion between brat `standoff`_ and `CoNLL-U`_ formats
+- **Validation**: Check CoNLL-U files for format compliance and annotation guideline adherence
+- **Evaluation**: Score parser outputs against gold-standard files with comprehensive metrics
+- **Pattern Matching**: Find tokens and sentences matching complex linguistic criteria
+- **Morphological Utilities**: Normalize features, convert between tagsets (`Perseus`_, `ITTB`_, `PROIEL`_, `LLCT`_)
+- **Extensible**: Add custom tagset converters and feature mappings
 
 .. _standoff: https://brat.nlplab.org/standoff.html
-.. _conllu: https://universaldependencies.org/format.html
-.. _perseus: https://universaldependencies.org/treebanks/la_perseus/index.html
-.. _ittb: https://universaldependencies.org/treebanks/la_ittb/index.html
-.. _proiel: https://universaldependencies.org/treebanks/la_proiel/index.html
-.. _dalme: https://dalme.org
+.. _Perseus: https://universaldependencies.org/treebanks/la_perseus/index.html
+.. _ITTB: https://universaldependencies.org/treebanks/la_ittb/index.html
+.. _PROIEL: https://universaldependencies.org/treebanks/la_proiel/index.html
+.. _LLCT: https://universaldependencies.org/treebanks/la_llct/index.html
 
 Quick Links
 -----------
