@@ -3,13 +3,16 @@
 API Reference
 =============
 
-Complete API documentation for all modules:
+This section provides complete API documentation for all modules in the ``conllu_tools`` package.
 
-- :mod:`conllu_tools.io`: data loading and CoNLL-U/brat conversion utilities
-- :mod:`conllu_tools.validation`: CoNLL-U validation
-- :mod:`conllu_tools.evaluation`: CoNLL-U evaluation
-- :mod:`conllu_tools.matching`: Complex linguistic pattern matching
-- :mod:`conllu_tools.utils`: Tagset and format utilities
+**Core Modules:**
+
+- :doc:`io` - Data loading and CoNLL-U/brat format conversion utilities
+- :doc:`validation` - CoNLL-U format validation with configurable levels
+- :doc:`evaluation` - Scoring and evaluation of CoNLL-U annotations
+- :doc:`matching` - Complex linguistic pattern matching in parsed data
+- :doc:`utils` - Tagset conversion, morphology normalization, and format utilities
+- :doc:`constants` - Reference data for Universal Dependencies tags, relations, and mappings
 
 .. toctree::
    :maxdepth: 2
@@ -19,3 +22,4 @@ Complete API documentation for all modules:
    evaluation
    matching
    utils
+   constants
