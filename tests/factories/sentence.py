@@ -65,7 +65,7 @@ def build_conllu_sentence(sentence_dict: dict[str, Any], *, blank_line: bool = T
     return '\n'.join(lines)
 
 
-class ConlluSentenceFactory(factory.Factory):  # type: ignore[type-arg]
+class ConlluSentenceFactory(factory.Factory):  # type: ignore[name-defined]
     """Factory for generating CoNLL-U sentence dictionaries."""
 
     class Meta:
@@ -73,15 +73,15 @@ class ConlluSentenceFactory(factory.Factory):  # type: ignore[type-arg]
 
         model = dict
 
-    sent_id = factory.Sequence(lambda n: f'{n}')
+    sent_id = factory.Sequence(lambda n: f'{n}')  # type: ignore[attr-defined, no-untyped-call]
     lang = 'en'
 
-    @factory.lazy_attribute  # type: ignore[arg-type]
+    @factory.lazy_attribute  # type: ignore[attr-defined, misc]
     def tokens(self) -> list[dict[str, Any]]:
         """Generate default tokens for a valid sentence."""
         return copy.deepcopy(EN_SENTENCE['tokens'] if self.lang == 'en' else LA_SENTENCE['tokens'])
 
-    @factory.lazy_attribute  # type: ignore[arg-type]
+    @factory.lazy_attribute  # type: ignore[attr-defined, misc]
     def text(self) -> str:
         """Generate text dynamically from tokens.
 
@@ -93,7 +93,7 @@ class ConlluSentenceFactory(factory.Factory):  # type: ignore[type-arg]
             return ''
 
         parts = []
-        for token in tokens:  # type: ignore[attr-defined]
+        for token in tokens:
             token_id = token.get('id')
             form = token.get('form', '')
 
