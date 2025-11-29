@@ -6,11 +6,29 @@ This guide covers evaluating CoNLL-U annotations by comparing gold standard and 
 
 The evaluation module computes standard metrics for dependency parsing and linguistic annotation:
 
-- **UAS** (Unlabeled Attachment Score): Percentage of correct HEAD assignments
-- **LAS** (Labeled Attachment Score): Percentage of correct HEAD + DEPREL pairs
-- **UPOS Accuracy**: Percentage of correct universal POS tags
-- **XPOS Accuracy**: Percentage of correct language-specific POS tags
-- **Feature Accuracy**: Percentage of correct morphological feature sets
+- **Tokens**: measures how well system tokens match gold tokens.
+- **Sentences**: measures how well system sentences match gold sentences.
+- **Words**: measures how well system words can be aligned to gold words.
+- **UPOS** (Universal Part-of-Speech): F1-score over the set of UPOS in the system output and the gold standard.
+- **XPOS** (Extended Part-of-Speech): F1-score over the set of XPOS in the system output and the gold standard.
+- **UFeats** (Universal Features): F1-score over the set of UFeats in the system output and the gold standard.
+- **AllTags**: combines morphological tagging scores: UPOS, XPOS, and UFeats.
+- **Lemmas**: F1-score over the set of lemmata in the system output and the gold standard.
+- **UAS** (Unlabeled Attachment Score): F1-score over the set of HEAD values in the system output and the gold standard.
+- **LAS** (Labeled Attachment Score): F1-score over the set of dependencies (HEAD and DEPREL) in the system output and the gold standard (ignores subtypes).
+- **ELAS** (Enhanced-Dependency Labeled Attachment Score): F1-score over the set of enhanced dependencies in the system output and the gold standard (taking subtypes into account).
+- **EULAS** (Enhanced-Dependency Universal-Label Attachment Score): F1-score over the set of enhanced dependencies in the system output and the gold standard where labels are restricted to the universal dependency relation (ignores subtypes).
+- **CLAS** (Content-Word Labeled Attachment Score): F1-score over the set of dependencies (HEAD and DEPREL) in the system output and the gold standard for words with content DEPREL (ignores subtypes).
+- **MLAS** (Morphology-Aware Labeled Attachment Score): extension of CLAS that, in addition to HEAD and DEPREL, also includes UPOS, UFeats, and the scores of functional children in the score calculation.
+- **BLEX** (Bilexical Dependency Score): extension of CLAS that adds lemmas to the score calculation. 
+
+**References**:
+
+- https://universaldependencies.org/conll17/evaluation.html
+- https://universaldependencies.org/conll18/evaluation.html
+- https://universaldependencies.org/iwpt20/task_and_evaluation.html
+- https://universaldependencies.org/iwpt21/task_and_evaluation.html
+
 
 ## Quick Start
 
@@ -33,69 +51,6 @@ print(f"UAS: {scores['UAS'].f1:.2f}%")
 print(f"LAS: {scores['LAS'].f1:.2f}%")
 print(f"UPOS: {scores['UPOS'].f1:.2f}%")
 ```
-
-## Understanding Metrics
-
-### Unlabeled Attachment Score (UAS)
-
-Measures how often the parser correctly identifies which word is the head (governor) of each token,
-regardless of the dependency label.
-
-```python
-# Gold:  word1 → word2 (nsubj)
-# System: word1 → word2 (obj)
-# Result: Correct for UAS (head is right), incorrect for LAS (label is wrong)
-```
-
-**When to use**: Evaluating basic syntactic structure understanding.
-
-### Labeled Attachment Score (LAS)
-
-Measures how often the parser correctly identifies both the head AND the dependency relation label.
-
-```python
-# Gold:  word1 → word2 (nsubj)
-# System: word1 → word2 (nsubj)
-# Result: Correct for both UAS and LAS
-```
-
-**When to use**: Full parsing accuracy evaluation.
-
-### UPOS Accuracy
-
-Measures correct universal part-of-speech tagging.
-
-```python
-# Gold:  VERB
-# System: NOUN
-# Result: Incorrect
-```
-
-**When to use**: Evaluating morphological tagging.
-
-### XPOS Accuracy
-
-Measures correct language-specific POS tagging.
-
-```python
-# Gold:  VBD (past tense verb)
-# System: VBZ (3rd person singular present)
-# Result: Incorrect
-```
-
-**When to use**: Evaluating fine-grained morphological analysis.
-
-### Features Accuracy
-
-Measures correct morphological feature sets (FEATS column).
-
-```python
-# Gold:  Case=Nom|Gender=Masc|Number=Sing
-# System: Case=Nom|Gender=Masc|Number=Plur
-# Result: Incorrect (Number differs)
-```
-
-**When to use**: Evaluating detailed morphological annotation.
 
 ## Advanced Usage
 
@@ -153,8 +108,6 @@ print(f"Correct: {las_score.correct}")
 if las_score.aligned_total:
     print(f"Aligned accuracy: {las_score.aligned_accuracy:.2f}%")
 ```
-
-
 
 ## Common Issues
 

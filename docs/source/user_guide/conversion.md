@@ -46,7 +46,7 @@ This creates:
 
 **output_root** (bool, optional)
 : If `True`, creates explicit ROOT nodes for sentence roots. This makes the dependency
-  structure more visible in Brat. Default: `False`.
+  structure more visible in Brat. Default: `True`.
 
 **sents_per_doc** (int, optional)
 : Number of sentences per output document. If specified, long files are split into
@@ -273,5 +273,5 @@ If you see garbled characters:
 
 ## See Also
 
-- {doc}`../api_reference/io` - Detailed API documentation
-- [Examples](../examples/io.md) - Conversion examples
+- {doc}`/api_reference/io` - Detailed API documentation
+- {doc}`/examples/io` - Conversion examples

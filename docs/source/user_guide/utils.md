@@ -1,6 +1,6 @@
 # Utils
 
-[ADD INTRO]
+The `conllu_tools.utils` module provides utilities for working with morphological annotations, including XPOS format conversion, feature validation, and UPOS tag mapping. These tools are particularly useful for harmonizing annotations from different Latin treebanks (Perseus, PROIEL, ITTB, LLCT) into a common format.
 
 ## Morphology Normalization
 
@@ -195,8 +195,72 @@ FEATS_TO_XPOS = {
 
 ### Convert XPOS to Features
 
+The `xpos_to_features` function extracts morphological features from a Perseus-format XPOS string:
 
-[ADD CONTENT]
+```python
+from conllu_tools.utils.features import xpos_to_features
+
+# Extract features from verb XPOS
+feats = xpos_to_features('v3spia---')
+print(feats)
+# Output: {'Person': '3', 'Number': 'Sing', 'Tense': 'Pres', 'Mood': 'Ind', 'Voice': 'Act'}
+
+# Extract features from noun XPOS
+feats = xpos_to_features('n-s---mn-')
+print(feats)
+# Output: {'Number': 'Sing', 'Gender': 'Masc', 'Case': 'Nom'}
+
+# Extract features from adjective XPOS
+feats = xpos_to_features('a-p---fgs')
+print(feats)
+# Output: {'Number': 'Plur', 'Gender': 'Fem', 'Case': 'Gen', 'Degree': 'Sup'}
+
+# Positions with '-' are skipped
+feats = xpos_to_features('---------')
+print(feats)
+# Output: {}
+```
+
+**Position-to-Feature Mapping:**
+
+The function uses the `XPOS_TO_FEATS` mapping constant (inverse of `FEATS_TO_XPOS`):
+
+```python
+# Example mappings (position, character) → (feature, value)
+XPOS_TO_FEATS = {
+    (2, '1'): ('Person', '1'),   # First person
+    (2, '2'): ('Person', '2'),   # Second person
+    (2, '3'): ('Person', '3'),   # Third person
+    (3, 's'): ('Number', 'Sing'), # Singular
+    (3, 'p'): ('Number', 'Plur'), # Plural
+    (4, 'p'): ('Tense', 'Pres'),  # Present
+    (4, 'r'): ('Tense', 'Past'),  # Perfect
+    (4, 'i'): ('Aspect', 'Imp'),  # Imperfect
+    (5, 'i'): ('Mood', 'Ind'),    # Indicative
+    (5, 's'): ('Mood', 'Sub'),    # Subjunctive
+    (5, 'n'): ('VerbForm', 'Inf'), # Infinitive
+    (5, 'p'): ('VerbForm', 'Part'), # Participle
+    (6, 'a'): ('Voice', 'Act'),   # Active
+    (6, 'p'): ('Voice', 'Pass'),  # Passive
+    (7, 'm'): ('Gender', 'Masc'), # Masculine
+    (7, 'f'): ('Gender', 'Fem'),  # Feminine
+    (7, 'n'): ('Gender', 'Neut'), # Neuter
+    (8, 'n'): ('Case', 'Nom'),    # Nominative
+    (8, 'g'): ('Case', 'Gen'),    # Genitive
+    (8, 'a'): ('Case', 'Acc'),    # Accusative
+    (9, 'p'): ('Degree', 'Pos'),  # Positive
+    (9, 'c'): ('Degree', 'Cmp'),  # Comparative
+    (9, 's'): ('Degree', 'Sup'),  # Superlative
+    # ... and more
+}
+```
+
+**Use cases:**
+
+- Extracting features from XPOS when FEATS column is empty or incomplete
+- Verifying consistency between XPOS and FEATS
+- Converting legacy annotations that only have XPOS
+- Component of `normalize_morphology` function
 
 
 ### Validate Features
@@ -322,11 +386,6 @@ Ensure XPOS positions are valid for the given UPOS:
 ```python
 from conllu_tools.utils.xpos import validate_xpos
 
-# Correct UPOS mismatch in first position
-validated = validate_xpos(upos='NOUN', xpos='a-s---fn-')
-print(validated)
-# Output: 'n-s---fn-' (first character corrected from 'a' to 'n')
-
 # Remove invalid positions for UPOS
 validated = validate_xpos(upos='NOUN', xpos='n1s---mn-')
 print(validated)
@@ -337,14 +396,19 @@ validated = validate_xpos(upos='VERB', xpos='v3spia---')
 print(validated)
 # Output: 'v3spia---' (all positions valid for verbs)
 
-# Handle short or malformed XPOS
+# Handle short or malformed XPOS - returns default with UPOS code
 validated = validate_xpos(upos='ADJ', xpos='A')
 print(validated)
-# Output: 'a--------' (padded to 9 characters)
+# Output: 'a--------' (returns default since length != 9)
+
+# Handle None XPOS
+validated = validate_xpos(upos='NOUN', xpos=None)
+print(validated)
+# Output: 'n--------' (default for NOUN)
 ```
 
 **Position validity rules (Perseus format):**
-- **Position 1**: Must match UPOS (n=NOUN, v=VERB, a=ADJ, p=PRON, m=NUM, etc.)
+- **Position 1**: Should match UPOS (set by caller or `format_xpos`)
 - **Position 2**: Only valid for 'v' (verbs)
 - **Position 3**: Valid for n, v, a, p, m (nouns, verbs, adjectives, pronouns, numerals)
 - **Positions 4-6**: Only valid for 'v' (verbs)
@@ -352,10 +416,9 @@ print(validated)
 - **Position 9**: Only valid for 'a' (adjectives)
 
 **What it does:**
-- Ensures first character matches UPOS Perseus code
-- Validates each position against UPOS-specific rules
+- Validates each position (2-9) against UPOS-specific rules
 - Replaces invalid positions with '-'
-- Pads or truncates to exactly 9 characters
+- Returns default XPOS if input is None or not exactly 9 characters
 - Returns validated Perseus-format XPOS string
 
 **Use cases:**
