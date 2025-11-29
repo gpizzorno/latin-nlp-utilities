@@ -69,9 +69,7 @@ print("Converted back to CoNLL-U!")
 
 ## Validation
 
-Validate CoNLL-U files for format and linguistic correctness.
-
-### Basic Validation
+Validate CoNLL-U files for format and linguistic correctness:
 
 ```python
 from conllu_tools import ConlluValidator
@@ -107,9 +105,7 @@ for error in reporter.format_errors():
 
 ## Evaluation
 
-Evaluate parser output against gold standard.
-
-### Basic Evaluation
+Evaluate parser output against gold standard:
 
 ```python
 from conllu_tools import ConlluEvaluator
@@ -124,93 +120,109 @@ scores = evaluator.evaluate_files(
 # Print scores
 print(f"Unlabeled Attachment Score (UAS): {scores['UAS']:.2f}%")
 print(f"Labeled Attachment Score (LAS): {scores['LAS']:.2f}%")
-print(f"UPOS Accuracy: {scores['UPOS']:.2f}%")
 ```
 
 ## Pattern Matching
 
-[ADD CONTENT]
+Find linguistic patterns in your CoNLL-U corpus.
+
+### Basic Pattern Search
+
+```python
+import conllu
+from conllu_tools.matching import build_pattern, find_in_corpus
+
+# Load corpus
+with open('corpus.conllu', encoding='utf-8') as f:
+    corpus = conllu.parse(f.read())
+
+# Find all adjective + noun sequences
+pattern = build_pattern('ADJ+NOUN', name='adj-noun')
+matches = find_in_corpus(corpus, [pattern])
+
+for match in matches:
+    print(f"[{match.sentence_id}] {match.substring}")
+    print(f"  Forms: {match.forms}")
+    print(f"  Lemmata: {match.lemmata}")
+```
+
+### Pattern Syntax Examples
+
+```python
+# Match by UPOS
+build_pattern('NOUN')              # Any noun
+build_pattern('NOUN|VERB')         # Noun or verb
+build_pattern('*')                 # Any token
+
+# Match with conditions
+build_pattern('NOUN:lemma=rex')                    # Noun with lemma 'rex'
+build_pattern('NOUN:feats=(Case=Abl)')             # Ablative noun
+build_pattern('NOUN:feats=(Case=Nom,Number=Sing)') # Singular nominative
+
+# Multi-token sequences
+build_pattern('DET+NOUN')                  # Determiner + noun
+build_pattern('ADP+NOUN:feats=(Case=Acc)') # Preposition + accusative noun
+build_pattern('DET+ADJ{0,2}+NOUN')         # Det + 0-2 adjectives + noun
+
+# Negation and substring matching
+build_pattern('!PUNCT')              # Not punctuation
+build_pattern('*:form=<ae>')         # Form contains 'ae'
+build_pattern('NOUN:form=um>')       # Noun ending in 'um'
+```
 
 
 ## Utils
 
-[ADD INTRO]
+Utilities for tagset conversion, morphology normalization, and feature validation.
 
 ### Normalize Morphology
 
-Normalize XPOS and FEATS together with automatic format detection and validation:
+The main utility function for harmonizing morphological annotations:
 
 ```python
 from conllu_tools.io import load_language_data
-from conllu_tools.utils.normalization import normalize_morphology
+from conllu_tools.utils import normalize_morphology
 
 feature_set = load_language_data('feats', language='la')
 
-# Example: NUM with NumForm feature reconciliation
 xpos, feats = normalize_morphology(
-    upos='NUM',
-    xpos='m-p---fa-',
-    feats='Case=Acc|Gender=Fem|Number=Plur',
+    upos='VERB',
+    xpos='v|v|3|s|p|i|a|-|-|-',  # LLCT format (auto-detected)
+    feats='Mood=Ind|Number=Sing|Person=3|Tense=Pres|Voice=Act',
     feature_set=feature_set,
-    ref_features='NumForm=Word'  # Missing feature added from reference
 )
 
-print(xpos)
-# Output: 'm-p---fa-' (validated)
-
-print(feats)
-# Output: {'Case': 'Acc', 'Gender': 'Fem', 'NumForm': 'Word', 'Number': 'Plur'}
+print(xpos)   # 'v3spia---' (converted to Perseus format)
+print(feats)  # {'Mood': 'Ind', 'Number': 'Sing', 'Person': '3', ...}
 ```
 
-**What it does:**
-- Detects and converts XPOS format (LLCT, ITTB, PROIEL → Perseus)
-- Validates XPOS positions against UPOS
-- Filters invalid features for the given UPOS
-- Reconciles with reference features (ref_features)
-- Returns tuple of (normalized_xpos, validated_features)
-
-Convert between different tagsets.
-
-### XPOS Conversion
-
-Standardize XPOS tags from different treebanks:
-
-```python
-from conllu_tools.utils.upos import dalme_to_upos, upos_to_perseus
-from conllu_tools.utils.xpos import ittb_to_perseus, llct_to_perseus
-
-print(dalme_to_upos('adjective'))
-# Returns 'ADJ'
-
-print(upos_to_perseus('NOUN'))
-# Returns 'n'
-
-print(ittb_to_perseus('VERB', 'gen4|tem1|mod1'))  
-# Returns 'v1sp-----'
-
-# LLCT converter requires UPOS, XPOS, and FEATS
-print(llct_to_perseus('NOUN', 'n|n|-|s|-|-|-|m|n|-', 'Case=Nom|Gender=Masc|Number=Sing'))
-# Returns 'n-s---mn-'
-```
+**What it does:** Auto-detects XPOS format (LLCT, ITTB, PROIEL) → converts to Perseus → validates against UPOS → reconciles features.
 
 ### Feature Conversion
 
-Convert between feature string and dictionary formats:
+```python
+from conllu_tools.utils import feature_string_to_dict, feature_dict_to_string
+
+# String ↔ dictionary conversion
+feat_dict = feature_string_to_dict("Case=Nom|Gender=Masc|Number=Sing")
+# {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+
+feat_str = feature_dict_to_string({'Number': 'Sing', 'Case': 'Gen'})
+# 'Case=Gen|Number=Sing' (sorted alphabetically)
+```
+
+### XPOS Conversion
 
 ```python
-from conllu_tools.utils.features import feature_string_to_dict, feature_dict_to_string
+from conllu_tools.utils import format_xpos, upos_to_perseus
 
-# String to dictionary
-feat_string = "Case=Nom|Gender=Masc|Number=Sing"
-feat_dict = feature_string_to_dict(feat_string)
-print(feat_dict)
-# Output: {'Case': 'Nom', 'Gender': 'Masc', 'Number': 'Sing'}
+# Convert UPOS to Perseus code
+upos_to_perseus('NOUN')  # 'n'
 
-# Dictionary to string (automatically sorted)
-feat_dict = {'Number': 'Sing', 'Case': 'Gen', 'Gender': 'Fem'}
-feat_string = feature_dict_to_string(feat_dict)
-print(feat_string)
-# Output: Case=Gen|Gender=Fem|Number=Sing
+# Auto-detect and convert any XPOS format to Perseus
+format_xpos('VERB', 'v|v|3|s|p|i|a|-|-|-', feats)  # LLCT → 'v3spia---'
+format_xpos('NOUN', 'gen2|casA', feats)             # ITTB → 'n-s---fn-'
+format_xpos('NOUN', 'Nb', feats)                    # PROIEL → 'n-s---na-'
 ```
 
 
@@ -220,26 +232,27 @@ Now that you’ve seen the basics, dive deeper:
 
 **User Guides**
 
-- [Conversion](user_guide/conversion.md) - Conversion guide
-- [Validation](user_guide/validation.md) - Validation guide
-- [Evaluation](user_guide/evaluation.md) - Detailed evaluation metrics
-- [Matching](user_guide/matching.md) - Pattern matching guide
-- [Utils](user_guide/utils.md) - Utils guide
+- {doc}`user_guide/conversion` - Detailed conversion workflows
+- {doc}`user_guide/validation` - Comprehensive validation guide
+- {doc}`user_guide/evaluation` - Advanced evaluation metrics
+- {doc}`user_guide/matching` - Pattern matching patterns
+- {doc}`user_guide/utils` - Utility functions guide
 
 **Examples**
 
-- [Input/Output](examples/io.md)
-- [Validation](examples/validation.md)
-- [Evaluation](examples/evaluation.md)
-- [Normalization](examples/normalization.md)
+- {doc}`examples/io` - I/O examples
+- {doc}`examples/validation` - Validation examples
+- {doc}`examples/evaluation` - Evaluation examples
+- {doc}`examples/normalization` - Normalization examples
 
 **API Reference**
 
-- {doc}`api_reference/io` - Input/Output/Conversion API
+- {doc}`api_reference/io` - I/O and conversion API
 - {doc}`api_reference/validation` - Validation API
 - {doc}`api_reference/evaluation` - Evaluation API
 - {doc}`api_reference/matching` - Pattern matching API
-- {doc}`api_reference/utils` - Utils functions
+- {doc}`api_reference/utils` - Utility functions API
+- {doc}`api_reference/constants` - Package constants
 
 ## Need Help?
 
